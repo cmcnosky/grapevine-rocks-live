@@ -1116,8 +1116,34 @@ main h1[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
 html:not(.site-ready) #primary, html:not(.site-ready) .menu-toggle, html:not(.site-ready) .foot-inner nav {
   visibility: hidden;
 }
-.composer-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-@media (max-width: 410px) { .composer-fields { grid-template-columns: 1fr; gap: 0; } }
+.composer-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  min-width: 0;
+}
+.composer-fields > label {
+  min-width: 0;
+}
+.content-form .composer-fields input[type="date"],
+.content-form .composer-fields input[type="time"] {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  max-width: 100%;
+  min-inline-size: 0;
+  min-width: 0;
+  width: 100%;
+}
+@media (max-width: 410px) {
+  .composer-fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
 
 .contact-panel {
   min-width: 0;
