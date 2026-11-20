@@ -47,7 +47,6 @@ jobs:
           fi
 
       - name: Commit the mirrored publication
-        id: publish
         if: steps.mirror.outputs.changed == 'true'
         shell: bash
         run: |
@@ -65,6 +64,7 @@ jobs:
       # the branch head. This also recovers on the next run if a prior push
       # succeeded but its build request failed.
       - name: Confirm or request the legacy GitHub Pages build
+        if: ${{ always() && !cancelled() }}
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -73,8 +73,10 @@ jobs:
           branch="${{ github.event.repository.default_branch }}"
           git fetch --quiet origin "$branch"
           branch_head="$(git rev-parse "origin/$branch")"
-          latest_commit="$(gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest" --jq '.commit')"
-          latest_status="$(gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest" --jq '.status')"
+          read -r latest_commit latest_status < <(
+            gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest" \
+              --jq '.commit + " " + .status'
+          )
           if [[ "$latest_commit" != "$branch_head" || "$latest_status" == "errored" ]]; then
             gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds" --silent
             echo "Requested a Pages build for $branch_head."

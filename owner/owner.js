@@ -224,7 +224,8 @@
   }
 
   function isCatalog(value) {
-    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+    if (!value || typeof value !== "object" || Array.isArray(value))
+      return false;
     if (!Array.isArray(value.venues)) return false;
     return Array.isArray(value.events) || Array.isArray(value.shows);
   }
@@ -289,7 +290,9 @@
       )
         fail("Complete the name, address and description for every venue.");
       if (!isHttpUrl(venue.url))
-        fail("Every venue website must be a complete http:// or https:// address.");
+        fail(
+          "Every venue website must be a complete http:// or https:// address.",
+        );
       if (
         !Array.isArray(venue.features) ||
         venue.features.some((feature) => typeof feature !== "string")
@@ -310,7 +313,9 @@
         !String(show.genres || "").trim() ||
         !String(show.cover || "").trim()
       )
-        fail("Complete the title, artist, genre and cover fields for every show.");
+        fail(
+          "Complete the title, artist, genre and cover fields for every show.",
+        );
       if (!venueIds.has(show.venueId))
         fail("Every show must use a venue that is still in the catalog.");
       if (!isDate(show.date) || !isTime(show.time))
@@ -363,7 +368,9 @@
 
   function isDirty() {
     if (!state.catalog || !state.publishedCatalog) return false;
-    return JSON.stringify(state.catalog) !== JSON.stringify(state.publishedCatalog);
+    return (
+      JSON.stringify(state.catalog) !== JSON.stringify(state.publishedCatalog)
+    );
   }
 
   function editionFormValues() {
@@ -486,7 +493,11 @@
       useCatalog(payload);
       return "loaded";
     }
-    if (!payload || !isCatalog(payload.catalog) || !Object.hasOwn(payload, "revision"))
+    if (
+      !payload ||
+      !isCatalog(payload.catalog) ||
+      !Object.hasOwn(payload, "revision")
+    )
       throw new ApiError(0, { reason: "invalid-catalog" });
     const draft = clone(pending.catalog);
     if (pending.editionDraft)
@@ -553,7 +564,6 @@
         setWorkspaceAlert(
           "The catalog changed while your session was inactive. Your unpublished copy has not been overwritten.",
         );
-      else setStatus("Catalog loaded.");
       [elements.showsTab, elements.venuesTab, elements.editionTab]
         .find((tab) => tab.getAttribute("aria-selected") === "true")
         ?.focus();
@@ -610,18 +620,12 @@
   function renderShows() {
     const query = elements.showSearch.value.trim().toLocaleLowerCase();
     const sorted = [...shows()].sort((a, b) =>
-      [a.date || "", a.time || "", a.title || ""].join("|").localeCompare(
-        [b.date || "", b.time || "", b.title || ""].join("|"),
-      ),
+      [a.date || "", a.time || "", a.title || ""]
+        .join("|")
+        .localeCompare([b.date || "", b.time || "", b.title || ""].join("|")),
     );
     const filtered = sorted.filter((show) =>
-      [
-        show.title,
-        show.artist,
-        show.date,
-        show.time,
-        venueName(show.venueId),
-      ]
+      [show.title, show.artist, show.date, show.time, venueName(show.venueId)]
         .join(" ")
         .toLocaleLowerCase()
         .includes(query),
@@ -666,10 +670,7 @@
       String(a.name || "").localeCompare(String(b.name || "")),
     );
     const filtered = sorted.filter((venue) =>
-      [venue.name, venue.address]
-        .join(" ")
-        .toLocaleLowerCase()
-        .includes(query),
+      [venue.name, venue.address].join(" ").toLocaleLowerCase().includes(query),
     );
     elements.venuesCount.textContent = query
       ? filtered.length + " of " + sorted.length + " venues"
@@ -729,7 +730,9 @@
       month: "2-digit",
       day: "2-digit",
     }).formatToParts(new Date());
-    const value = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+    const value = Object.fromEntries(
+      parts.map((part) => [part.type, part.value]),
+    );
     return value.year + "-" + value.month + "-" + value.day;
   }
 
@@ -849,7 +852,11 @@
       urlInput.value = source.url || "";
       urlInput.dataset.sourceField = "url";
       urlField.append(urlInput);
-      const remove = makeElement("button", "text-button danger", "Remove source");
+      const remove = makeElement(
+        "button",
+        "text-button danger",
+        "Remove source",
+      );
       remove.type = "button";
       remove.disabled = state.editor.sourceRecords.length === 1;
       remove.addEventListener("click", () => {
@@ -929,7 +936,9 @@
       isNew: !existing,
       original: record,
       sourceRecords:
-        type === "show" && Array.isArray(record.sources) && record.sources.length
+        type === "show" &&
+        Array.isArray(record.sources) &&
+        record.sources.length
           ? clone(record.sources)
           : type === "show"
             ? [{ label: "", url: "" }]
@@ -942,26 +951,122 @@
       (existing ? "Edit " : "Add ") + (type === "show" ? "show" : "venue");
     elements.editorSave.textContent = existing ? "Save changes" : "Add " + type;
 
-    addField({ name: "id", label: "ID", value: record.id, readonly: true, full: true });
+    addField({
+      name: "id",
+      label: "ID",
+      value: record.id,
+      readonly: true,
+      full: true,
+    });
     if (type === "show") {
-      addField({ name: "title", label: "Show title", value: record.title, required: true });
-      addField({ name: "artist", label: "Artist", value: record.artist, required: true });
+      addField({
+        name: "title",
+        label: "Show title",
+        value: record.title,
+        required: true,
+      });
+      addField({
+        name: "artist",
+        label: "Artist",
+        value: record.artist,
+        required: true,
+      });
       addVenueSelect(record.venueId);
-      addField({ name: "date", label: "Date", value: record.date, type: "date", required: true });
-      addField({ name: "time", label: "Start time", value: record.time, type: "time", required: true });
-      addField({ name: "endTime", label: "End time", value: record.endTime, type: "time" });
-      addField({ name: "genres", label: "Genre or format", value: record.genres, required: true, full: true });
-      addField({ name: "cover", label: "Cover or admission", value: record.cover, required: true, full: true });
-      addField({ name: "summary", label: "Summary", value: record.summary, type: "textarea", full: true, maxLength: 1200 });
-      addField({ name: "sourceStatus", label: "Source status", value: record.sourceStatus, full: true });
-      addField({ name: "sourceNote", label: "Source note", value: record.sourceNote, type: "textarea", full: true, maxLength: 1200 });
-      addField({ name: "verifiedAt", label: "Checked date", value: record.verifiedAt, type: "date" });
+      addField({
+        name: "date",
+        label: "Date",
+        value: record.date,
+        type: "date",
+        required: true,
+      });
+      addField({
+        name: "time",
+        label: "Start time",
+        value: record.time,
+        type: "time",
+        required: true,
+      });
+      addField({
+        name: "endTime",
+        label: "End time",
+        value: record.endTime,
+        type: "time",
+      });
+      addField({
+        name: "genres",
+        label: "Genre or format",
+        value: record.genres,
+        required: true,
+        full: true,
+      });
+      addField({
+        name: "cover",
+        label: "Cover or admission",
+        value: record.cover,
+        required: true,
+        full: true,
+      });
+      addField({
+        name: "summary",
+        label: "Summary",
+        value: record.summary,
+        type: "textarea",
+        full: true,
+        maxLength: 1200,
+      });
+      addField({
+        name: "sourceStatus",
+        label: "Source status",
+        value: record.sourceStatus,
+        full: true,
+      });
+      addField({
+        name: "sourceNote",
+        label: "Source note",
+        value: record.sourceNote,
+        type: "textarea",
+        full: true,
+        maxLength: 1200,
+      });
+      addField({
+        name: "verifiedAt",
+        label: "Checked date",
+        value: record.verifiedAt,
+        type: "date",
+      });
       addSourceEditor(record);
     } else {
-      addField({ name: "name", label: "Venue name", value: record.name, required: true, full: true });
-      addField({ name: "address", label: "Address", value: record.address, required: true, full: true });
-      addField({ name: "url", label: "Website", value: record.url, type: "url", required: true, full: true });
-      addField({ name: "description", label: "Description", value: record.description, type: "textarea", required: true, full: true, maxLength: 1200 });
+      addField({
+        name: "name",
+        label: "Venue name",
+        value: record.name,
+        required: true,
+        full: true,
+      });
+      addField({
+        name: "address",
+        label: "Address",
+        value: record.address,
+        required: true,
+        full: true,
+      });
+      addField({
+        name: "url",
+        label: "Website",
+        value: record.url,
+        type: "url",
+        required: true,
+        full: true,
+      });
+      addField({
+        name: "description",
+        label: "Description",
+        value: record.description,
+        type: "textarea",
+        required: true,
+        full: true,
+        maxLength: 1200,
+      });
       addField({
         name: "features",
         label: "Features",
@@ -1059,7 +1164,9 @@
         for (const field of ["name", "address", "url", "description"])
           updated[field] = String(data.get(field) || "").trim();
         if (!isHttpUrl(updated.url))
-          throw new Error("The venue website must begin with http:// or https://.");
+          throw new Error(
+            "The venue website must begin with http:// or https://.",
+          );
         updated.features = [
           ...new Set(
             String(data.get("features") || "")
@@ -1080,7 +1187,10 @@
       }
       closeEditor();
       renderCatalog();
-      setStatus((type === "show" ? "Show" : "Venue") + " saved. Publish changes when ready.");
+      setStatus(
+        (type === "show" ? "Show" : "Venue") +
+          " saved. Publish changes when ready.",
+      );
     } catch (error) {
       setEditorError(error.message || "Review the form and try again.");
     }
@@ -1114,7 +1224,9 @@
     elements.confirmTitle.textContent = title;
     elements.confirmMessage.textContent = message;
     elements.confirmAction.textContent = label;
-    elements.confirmAction.className = danger ? "danger-button" : "primary-button";
+    elements.confirmAction.className = danger
+      ? "danger-button"
+      : "primary-button";
     elements.confirmDialog.returnValue = "cancel";
     elements.confirmDialog.showModal();
     window.requestAnimationFrame(() => elements.confirmCancel.focus());
@@ -1220,7 +1332,9 @@
         state.conflictDraft = clone(state.catalog);
         elements.conflictPanel.hidden = false;
         elements.downloadDraft.hidden = false;
-        setWorkspaceAlert("Publishing stopped because the catalog changed elsewhere.");
+        setWorkspaceAlert(
+          "Publishing stopped because the catalog changed elsewhere.",
+        );
       } else if (error.status === 401 || error.status === 403) {
         showLogin(errorMessage(error), { preserveDraft: true });
       } else {
@@ -1259,7 +1373,8 @@
   }
 
   function downloadUnpublishedCopy() {
-    const draft = state.conflictDraft || (state.conflict ? state.catalog : null);
+    const draft =
+      state.conflictDraft || (state.conflict ? state.catalog : null);
     if (!draft) return;
     const blob = new Blob([JSON.stringify(draft, null, 2) + "\n"], {
       type: "application/json",
@@ -1311,7 +1426,7 @@
   }
 
   function handleTabKeys(event) {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
     const order = ["shows", "venues", "edition"];
     if (event.key === "Home") return selectTab(order[0], true);

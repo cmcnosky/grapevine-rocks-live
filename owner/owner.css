@@ -492,7 +492,6 @@ input[readonly] {
 }
 
 .editor-fields .full-field,
-.editor-fields details,
 .source-editor {
   grid-column: 1 / -1;
 }
@@ -528,19 +527,6 @@ input[readonly] {
 
 .source-row label {
   margin-top: 0;
-}
-
-.editor-fields details {
-  margin-top: 1.2rem;
-  padding: 0.85rem;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--surface-subtle);
-}
-
-.editor-fields summary {
-  cursor: pointer;
-  font-weight: 750;
 }
 
 .field-help {
