@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://grapevine-rocks-live-publishing.cmcnosky.chatgpt.site; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="theme-color" content="#191719" />
+    <title>Log in | Grapevine Rocks Live</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="../assets/barlow-condensed-black.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="../owner/owner.css?v=2" />
+    <script defer src="../owner/owner-config.js"></script>
+    <script defer src="../owner/owner.js?v=2"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#owner-main">Skip to content</a>
+
+    <main id="owner-main">
+      <section id="login-view" class="login-view" aria-labelledby="login-title">
+        <div class="login-panel">
+          <a
+            class="login-brand"
+            href="../#home"
+            aria-label="GRL Grapevine Rocks Live home"
+          >
+            <span class="brand-icon" aria-hidden="true">GRL<span>★</span></span>
+            <span class="wordmark" aria-hidden="true"
+              >GRAPEVINE<br />ROCKS LIVE</span
+            >
+          </a>
+
+          <form id="login-form" class="login-card">
+            <h1 id="login-title">Log in</h1>
+            <div
+              id="login-error"
+              class="form-message error-message"
+              role="alert"
+              tabindex="-1"
+              hidden
+            ></div>
+
+            <label for="username">Username</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autocomplete="username"
+              autocapitalize="none"
+              spellcheck="false"
+              required
+            />
+
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+
+            <button id="sign-in" class="primary-button" type="submit">
+              Log in
+            </button>
+            <a class="guide-link" href="../#guide"
+              >Music Guide <span aria-hidden="true">→</span></a
+            >
+          </form>
+        </div>
+        <div class="login-art" aria-hidden="true"></div>
+        <noscript
+          ><p class="noscript-message">
+            JavaScript is required to log in.
+          </p></noscript
+        >
+      </section>
+
+      <section
+        id="workspace"
+        class="workspace"
+        aria-labelledby="workspace-title"
+        hidden
+      >
+        <header class="app-header">
+          <div>
+            <p class="app-name">Grapevine Rocks Live</p>
+            <h1 id="workspace-title">Content manager</h1>
+          </div>
+          <button id="sign-out" class="secondary-button" type="button">
+            Sign out
+          </button>
+        </header>
+
+        <div
+          id="workspace-status"
+          class="status-bar"
+          role="status"
+          aria-live="polite"
+        ></div>
+        <div
+          id="workspace-alert"
+          class="alert-bar"
+          role="alert"
+          tabindex="-1"
+          hidden
+        ></div>
+
+        <section
+          id="conflict-panel"
+          class="conflict-panel"
+          aria-labelledby="conflict-title"
+          hidden
+        >
+          <div>
+            <h2 id="conflict-title">A newer version is available</h2>
+            <p id="conflict-copy">
+              This copy was not published. Reload the latest catalog before
+              publishing again.
+            </p>
+          </div>
+          <div class="conflict-actions">
+            <button
+              id="download-draft"
+              class="secondary-button"
+              type="button"
+              hidden
+            >
+              Download unpublished copy
+            </button>
+            <button id="reload-latest" class="secondary-button" type="button">
+              Reload latest
+            </button>
+          </div>
+        </section>
+
+        <div class="workspace-toolbar">
+          <div class="tabs" role="tablist" aria-label="Catalog sections">
+            <button
+              id="shows-tab"
+              role="tab"
+              aria-selected="true"
+              aria-controls="shows-panel"
+              tabindex="0"
+              type="button"
+            >
+              Shows
+            </button>
+            <button
+              id="venues-tab"
+              role="tab"
+              aria-selected="false"
+              aria-controls="venues-panel"
+              tabindex="-1"
+              type="button"
+            >
+              Venues
+            </button>
+            <button
+              id="edition-tab"
+              role="tab"
+              aria-selected="false"
+              aria-controls="edition-panel"
+              tabindex="-1"
+              type="button"
+            >
+              Edition
+            </button>
+          </div>
+          <div class="publish-controls">
+            <span id="change-state" class="change-state"
+              >No unpublished changes</span
+            >
+            <button id="publish" class="primary-button" type="button" disabled>
+              Publish changes
+            </button>
+          </div>
+        </div>
+
+        <section id="shows-panel" role="tabpanel" aria-labelledby="shows-tab">
+          <div class="section-heading">
+            <div>
+              <h2>Shows</h2>
+              <p id="shows-count" class="record-count"></p>
+            </div>
+            <button id="add-show" class="primary-button" type="button">
+              Add show
+            </button>
+          </div>
+          <label class="search-field" for="show-search">
+            <span>Search shows</span>
+            <input
+              id="show-search"
+              type="search"
+              placeholder="Artist, venue or date"
+            />
+          </label>
+          <div id="shows-list" class="record-list" aria-live="polite"></div>
+        </section>
+
+        <section
+          id="venues-panel"
+          role="tabpanel"
+          aria-labelledby="venues-tab"
+          hidden
+        >
+          <div class="section-heading">
+            <div>
+              <h2>Venues</h2>
+              <p id="venues-count" class="record-count"></p>
+            </div>
+            <button id="add-venue" class="primary-button" type="button">
+              Add venue
+            </button>
+          </div>
+          <label class="search-field" for="venue-search">
+            <span>Search venues</span>
+            <input
+              id="venue-search"
+              type="search"
+              placeholder="Name or address"
+            />
+          </label>
+          <div id="venues-list" class="record-list" aria-live="polite"></div>
+        </section>
+
+        <section
+          id="edition-panel"
+          role="tabpanel"
+          aria-labelledby="edition-tab"
+          hidden
+        >
+          <div class="section-heading">
+            <div>
+              <h2>Guide edition</h2>
+              <p class="record-count">
+                Set the date range and label used by the published guide.
+              </p>
+            </div>
+          </div>
+          <form id="edition-form" class="edition-form" novalidate>
+            <label for="edition-start"
+              ><span>Start date</span
+              ><input id="edition-start" name="startDate" type="date" required
+            /></label>
+            <label for="edition-end"
+              ><span>End date</span
+              ><input id="edition-end" name="endDate" type="date" required
+            /></label>
+            <label class="full-field" for="edition-label"
+              ><span>Edition label</span
+              ><input
+                id="edition-label"
+                name="label"
+                type="text"
+                maxlength="160"
+                required
+            /></label>
+            <label class="full-field" for="edition-checked"
+              ><span>Source checked date</span
+              ><input
+                id="edition-checked"
+                name="sourceCheckedDate"
+                type="date"
+                required
+            /></label>
+            <div
+              id="edition-error"
+              class="form-message error-message full-field"
+              role="alert"
+              tabindex="-1"
+              hidden
+            ></div>
+            <div class="edition-actions full-field">
+              <button class="primary-button" type="submit">Save edition</button>
+            </div>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <dialog
+      id="editor-dialog"
+      class="modal editor-modal"
+      aria-labelledby="editor-title"
+    >
+      <form id="editor-form" method="dialog" novalidate>
+        <div class="modal-header">
+          <h2 id="editor-title"></h2>
+          <button
+            id="editor-close"
+            class="icon-button"
+            type="button"
+            aria-label="Close editor"
+          >
+            ×
+          </button>
+        </div>
+        <div
+          id="editor-error"
+          class="form-message error-message"
+          role="alert"
+          tabindex="-1"
+          hidden
+        ></div>
+        <div id="editor-fields" class="editor-fields"></div>
+        <div class="modal-actions">
+          <button id="editor-cancel" class="secondary-button" type="button">
+            Cancel
+          </button>
+          <button id="editor-save" class="primary-button" type="submit">
+            Save
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog
+      id="confirm-dialog"
+      class="modal confirm-modal"
+      aria-labelledby="confirm-title"
+      aria-describedby="confirm-message"
+    >
+      <form method="dialog">
+        <h2 id="confirm-title"></h2>
+        <p id="confirm-message"></p>
+        <div class="modal-actions">
+          <button id="confirm-cancel" class="secondary-button" value="cancel">
+            Cancel
+          </button>
+          <button
+            id="confirm-action"
+            class="danger-button"
+            value="confirm"
+          ></button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

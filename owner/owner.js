@@ -75,7 +75,7 @@
 
   class ApiError extends Error {
     constructor(status, payload) {
-      super("Owner API request failed");
+      super("Publishing API request failed");
       this.name = "ApiError";
       this.status = status;
       this.payload = payload;
@@ -175,21 +175,21 @@
     if (error?.payload?.reason === "timeout")
       return "The request timed out. Try again.";
     if (error?.payload?.reason === "unavailable")
-      return "The owner service is unavailable. Try again later.";
+      return "The login service is unavailable. Try again later.";
     if (error?.status === 429)
       return "Too many attempts. Wait a moment, then try again.";
     if (error?.status === 401 || error?.status === 403) {
       if (context === "login" && !state.privateKey)
-        return "Use the private owner link on this device, then sign in again.";
+        return "Open the private access link on this device, then try again.";
       return context === "login"
         ? "The username or password was not accepted."
-        : "Your session has ended. Sign in again.";
+        : "The session has ended. Log in again.";
     }
     if (error?.status === 409 || error?.status === 412)
       return "A newer catalog version is available.";
     if (error?.status === 400 || error?.status === 422)
       return "The catalog was not accepted. Review the entries and try again.";
-    if (context === "login") return "Unable to sign in. Try again.";
+    if (context === "login") return "Unable to log in. Try again.";
     return "The request could not be completed. Try again.";
   }
 
@@ -478,7 +478,7 @@
     elements.loginView.hidden = false;
     elements.password.value = "";
     setLoginError(message);
-    document.title = "Owner login | Grapevine Rocks Live";
+    document.title = "Log in | Grapevine Rocks Live";
     elements.username.focus();
   }
 
@@ -535,7 +535,7 @@
     setLoginError("");
     if (!elements.loginForm.reportValidity()) return;
     setBusy(true);
-    elements.signIn.textContent = "Signing in…";
+    elements.signIn.textContent = "Logging in…";
     try {
       const payload = await request(
         "/login",
@@ -559,7 +559,7 @@
       setLoginError("");
       showWorkspace();
       if (outcome === "restored")
-        setStatus("Signed in. Unpublished changes restored.");
+        setStatus("Session restored. Unpublished changes are ready.");
       else if (outcome === "conflict")
         setWorkspaceAlert(
           "The catalog changed while your session was inactive. Your unpublished copy has not been overwritten.",
@@ -572,7 +572,7 @@
       setLoginError(errorMessage(error, "login"));
     } finally {
       setBusy(false);
-      elements.signIn.textContent = "Sign in";
+      elements.signIn.textContent = "Log in";
     }
   }
 

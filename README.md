@@ -4,7 +4,7 @@ The Grapevine live music guide is published on [GitHub Pages](https://cmcnosky.g
 
 ## Editing the guide
 
-Open the private owner bookmark on a new browser, then sign in at [Owner login](https://cmcnosky.github.io/grapevine-rocks-live/owner/). The editor manages shows, venues and the guide edition. Save each edit, then select **Publish changes**. Publication creates a numbered revision in the hosted database. Editors working from an older revision must reload before publishing their changes.
+Open the private login bookmark on a new browser, then sign in at [Log in](https://cmcnosky.github.io/grapevine-rocks-live/login/). The editor manages shows, venues and the guide edition. Save each edit, then select **Publish changes**. Publication creates a numbered revision in the hosted database. Editors working from an older revision must reload before publishing their changes.
 
 ## Public data and calendars
 
