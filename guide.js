@@ -1014,6 +1014,7 @@
   function eventRow(event, options) {
     const venue = getVenue(event.venueId);
     const compact = options && options.compact ? " grl-event-row--compact" : "";
+    const headingTag = options && options.headingLevel === 2 ? "h2" : "h3";
     const artistLine =
       event.artist && event.artist !== event.title
         ? "<strong>" + escapeHTML(event.artist) + "</strong> · "
@@ -1040,11 +1041,11 @@
       listingStatus(event, false),
       "<span>",
       escapeHTML(event.genres),
-      "</span></div><h3><a href=\"#show/",
+      "</span></div><" + headingTag + "><a href=\"#show/",
       encodeURIComponent(event.id),
       '">',
       escapeHTML(event.title),
-      "</a></h3><p>",
+      "</a></" + headingTag + "><p>",
       artistLine,
       escapeHTML(formatTime(event.time)),
       event.endTime ? "–" + escapeHTML(formatTime(event.endTime)) : "",
@@ -1061,11 +1062,16 @@
     ].join("");
   }
 
-  function emptyState(title, copy) {
+  function emptyState(title, copy, headingLevel) {
+    const headingTag = headingLevel === 2 ? "h2" : "h3";
     return (
-      '<div class="grl-empty"><h3>' +
+      '<div class="grl-empty"><' +
+      headingTag +
+      ">" +
       escapeHTML(title) +
-      "</h3><p>" +
+      "</" +
+      headingTag +
+      "><p>" +
       escapeHTML(copy) +
       "</p></div>"
     );
@@ -1200,12 +1206,13 @@
       results.innerHTML = matches.length
         ? matches
             .map(function (event) {
-              return eventRow(event);
+              return eventRow(event, { headingLevel: 2 });
             })
             .join("")
         : emptyState(
             "No listings match",
             "Clear a filter or choose another date or venue.",
+            2,
           );
     };
     form.addEventListener("input", draw);

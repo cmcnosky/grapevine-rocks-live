@@ -260,13 +260,13 @@
   font-size: 2rem;
 }
 
-.grl-event-copy h3 {
+.grl-event-copy :is(h2, h3) {
   font-size: clamp(1.8rem, 4.4vw, 3.2rem);
   margin: 0.3rem 0 0.55rem;
   text-transform: uppercase;
 }
 
-.grl-event-copy h3 a {
+.grl-event-copy :is(h2, h3) a {
   text-decoration: none;
 }
 
@@ -754,7 +754,7 @@
     justify-self: start;
   }
 
-  .grl-event-copy h3 {
+  .grl-event-copy :is(h2, h3) {
     font-size: clamp(1.6rem, 9vw, 2.4rem);
   }
 
