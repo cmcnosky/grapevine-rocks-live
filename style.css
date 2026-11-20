@@ -1118,3 +1118,19 @@ html:not(.site-ready) #primary, html:not(.site-ready) .menu-toggle, html:not(.si
 }
 .composer-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 @media (max-width: 410px) { .composer-fields { grid-template-columns: 1fr; gap: 0; } }
+
+.contact-panel {
+  min-width: 0;
+  background: #f3ebdb;
+  border-top: 4px solid var(--ink);
+  padding: clamp(1.1rem, 2.5vw, 2rem);
+}
+.contact-panel > p { margin: .8rem 0 1.1rem; }
+.contact-panel .contact-sources { margin-bottom: 0; }
+.contact-panel .composer-output {
+  padding: 1.2rem 0 0;
+  margin-top: 1.4rem;
+  border-top: 1px solid #766b70;
+  background: transparent;
+}
+.grl-event-kicker .grl-source-link { display: inline-flex; align-items: center; min-height: 26px; padding-inline: 2px; }

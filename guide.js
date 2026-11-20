@@ -593,7 +593,11 @@
   function safeURL(value) {
     if (!value) return "";
     try {
-      const url = new URL(value, window.location.href);
+      const baseURL =
+        typeof window !== "undefined" && window.location?.href
+          ? window.location.href
+          : "https://cmcnosky.github.io/grapevine-rocks-live/";
+      const url = new URL(value, baseURL);
       return ["http:", "https:", "webcal:"].includes(url.protocol)
         ? url.href
         : "";
@@ -613,6 +617,11 @@
     return catalog.venues.find(function (venue) {
       return venue.id === venueId;
     });
+  }
+
+  function defaultSummary(event, venue) {
+    if (!venue) return event.title + " in Grapevine.";
+    return event.title + " at " + venue.name.replace(/[.!?]+$/, "") + ".";
   }
 
   function publicEvents() {
@@ -1044,9 +1053,11 @@
     }
     const venue = getVenue(event.venueId);
     const sources = eventSources(event);
-    const lede =
-      event.summary ||
-      event.title + (venue ? " at " + venue.name + "." : " in Grapevine.");
+    const lede = event.summary || defaultSummary(event, venue);
+    const past =
+      event.date < chicagoDateKey()
+        ? '<span class="grl-archive-label">Past</span>'
+        : "";
     const sourceList = sources
       .map(function (source) {
         return (
@@ -1068,6 +1079,7 @@
       "</strong><span>",
       escapeHTML(monthShort(event.date)),
       '</span></div><div><p class="grl-eyebrow">',
+      past,
       listingStatus(event, true),
       "<span>",
       escapeHTML(event.genres),
@@ -1215,8 +1227,7 @@
       const venue = getVenue(event.venueId);
       const sources = eventSources(event);
       const description = [
-        event.summary ||
-          event.title + (venue ? " at " + venue.name + "." : " in Grapevine."),
+        event.summary || defaultSummary(event, venue),
         event.endTime ? "" : "End time not listed.",
         event.sourceNote || "",
       ]

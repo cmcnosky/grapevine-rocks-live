@@ -1,0 +1,2 @@
+# Calendar clients require CRLF line endings and byte-counted folded lines.
+*.ics -text whitespace=-blank-at-eol,cr-at-eol
