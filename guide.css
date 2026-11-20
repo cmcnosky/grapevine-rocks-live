@@ -825,6 +825,8 @@
 }
 
 @media print {
+  html, body, main { background: white !important; }
+  :focus, :focus-visible { outline: none !important; }
   .grl-show-page .grl-back-link, .grl-show-date-block, .grl-show-poster::after { display: none; }
   .grl-show-poster {
     display: block;
