@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 0,
+  "revision": 1,
   "edition": {
     "startDate": "2026-11-20",
     "endDate": "2026-11-26",
@@ -369,7 +369,7 @@
       "venueId": "chez-fabien",
       "date": "2026-11-20",
       "time": "19:30",
-      "sourceNote": "GRL lists 7–10 PM; Chez Fabien lists 7:30–10:30 PM. The venue time is shown."
+      "sourceNote": "Chez Fabien posts a 7:30–10:30 p.m. set. The GRL weekend guide lists 7–10 p.m."
     },
     {
       "endTime": "22:30",
