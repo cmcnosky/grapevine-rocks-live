@@ -1,0 +1,472 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Grapevine Rocks Live//Music Guide//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Grapevine Rocks Live Calendar
+X-WR-TIMEZONE:America/Chicago
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:America/Chicago
+X-LIC-LOCATION:America/Chicago
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0600
+TZOFFSETTO:-0500
+TZNAME:CDT
+DTSTART:20070311T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0600
+TZNAME:CST
+DTSTART:20071104T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:napolis-dathan-martin-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T153000
+SUMMARY:Dathan Martin
+DESCRIPTION:Dathan Martin at Napoli’s Italian Restaurant.\nEnd time not
+  listed.
+LOCATION:Napoli’s Italian Restaurant\, 309 South Main Street\, Grapevin
+ e\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:hop-sting-bobby-falk-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T180000
+DTEND;TZID=America/Chicago:20261120T210000
+SUMMARY:Bobby Falk Group
+DESCRIPTION:Bobby Falk Group at Hop & Sting Brewing Co..
+LOCATION:Hop & Sting Brewing Co.\, 906 Jean Street\, Grapevine\, TX 76051
+CATEGORIES:Taps & Tracks
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:third-rail-dusty-moats-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T190000
+DTEND;TZID=America/Chicago:20261120T210000
+SUMMARY:Dusty Moats
+DESCRIPTION:Dusty Moats at Third Rail at Harvest Hall.
+LOCATION:Third Rail at Harvest Hall\, 815 South Main Street\, Grapevine\,
+  TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:hotel-vin-corey-breedlove-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T190000
+DTEND;TZID=America/Chicago:20261120T220000
+SUMMARY:Corey Breedlove
+DESCRIPTION:Corey Breedlove at Hotel Vin Lobby Lounge.
+LOCATION:Hotel Vin Lobby Lounge\, 215 East Dallas Road\, Grapevine\, TX 7
+ 6051
+CATEGORIES:Live in the Living Room
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:rock-brews-chasing-angels-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T190000
+SUMMARY:Chasing Angels
+DESCRIPTION:Chasing Angels at Rock & Brews Grapevine.\nEnd time not liste
+ d.
+LOCATION:Rock & Brews Grapevine\, 520 West State Highway 114\, Grapevine\
+ , TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:grapevine-elks-brent-rozell-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T191500
+SUMMARY:Brent Rozell & The Soulmates
+DESCRIPTION:Brent Rozell & The Soulmates at Grapevine Elks Lodge #2483.\n
+ End time not listed.
+LOCATION:Grapevine Elks Lodge #2483\, 909 Bushong Road\, Grapevine\, TX 7
+ 6051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:ajs-josh-ingram-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T193000
+SUMMARY:Josh Ingram
+DESCRIPTION:Josh Ingram at AJ’s on Main.\nEnd time not listed.
+LOCATION:AJ’s on Main\, 651 South Main Street\, Grapevine\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:chez-fabien-ford-nelson-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T193000
+DTEND;TZID=America/Chicago:20261120T223000
+SUMMARY:Ford Nelson
+DESCRIPTION:Ford Nelson at Chez Fabien Bistro.\nGRL lists 7–10 PM\; Che
+ z Fabien lists 7:30–10:30 PM. The venue time is shown.
+LOCATION:Chez Fabien Bistro\, 316 South Main Street\, Grapevine\, TX 7605
+ 1
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:piaf-aautumn-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T193000
+DTEND;TZID=America/Chicago:20261120T223000
+SUMMARY:Aautumn
+DESCRIPTION:Aautumn at PIAF Kitchen + Wine + Bar.\nGRL lists 7–9:30 PM\
+ ; PIAF lists 7:30–10:30 PM. The venue time is shown.
+LOCATION:PIAF Kitchen + Wine + Bar\, 129 South Main Street\, Suite 130\, 
+ Grapevine\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:vfw-dan-shinedling-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T200000
+SUMMARY:Dan Shinedling
+DESCRIPTION:Dan Shinedling at Airport Cities VFW Post 10454.\nEnd time no
+ t listed.
+LOCATION:Airport Cities VFW Post 10454\, 221 North Main Street\, Grapevin
+ e\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:tolberts-alternatives-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T210000
+DTEND;TZID=America/Chicago:20261120T235900
+SUMMARY:The Alternatives
+DESCRIPTION:Tolbert’s identifies The Alternatives as a nineties and alt
+ ernative act.\nGRL rounds the end time to midnight. Tolbert’s lists 11
+ :59 PM\, the time shown here.
+LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
+ Grapevine\, TX 76051
+CATEGORIES:Nineties • Alternative
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:willhoites-strangle-love-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T210000
+DTEND;TZID=America/Chicago:20261121T010000
+SUMMARY:Strangle Love
+DESCRIPTION:Strangle Love at Willhoite’s Restaurant.\nGRL lists Strangl
+ e Love on both Friday and Saturday. Confirm the night with Willhoite’s
+ .
+LOCATION:Willhoite’s Restaurant\, 432 South Main Street\, Grapevine\, T
+ X 76051
+CATEGORIES:Monsters of Rock show
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:chill-dj-mike-b-2026-11-20@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261120T220000
+SUMMARY:DJ Mike B
+DESCRIPTION:DJ Mike B at Chill Bar & Grill.\nEnd time not listed.
+LOCATION:Chill Bar & Grill\, 814 South Main Street\, Grapevine\, TX 76051
+CATEGORIES:DJ
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:third-rail-halftones-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T190000
+DTEND;TZID=America/Chicago:20261121T210000
+SUMMARY:The Halftones
+DESCRIPTION:The Halftones at Third Rail at Harvest Hall.
+LOCATION:Third Rail at Harvest Hall\, 815 South Main Street\, Grapevine\,
+  TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:bohemian-bull-shannon-morales-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T190000
+DTEND;TZID=America/Chicago:20261121T220000
+SUMMARY:Shannon Morales & The Max
+DESCRIPTION:Shannon Morales & The Max at Bohemian Bull Grapevine.
+LOCATION:Bohemian Bull Grapevine\, 1112 West Northwest Highway\, Grapevin
+ e\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:rock-brews-8-tracks-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T190000
+SUMMARY:The 8 Tracks
+DESCRIPTION:The 8 Tracks at Rock & Brews Grapevine.\nEnd time not listed.
+LOCATION:Rock & Brews Grapevine\, 520 West State Highway 114\, Grapevine\
+ , TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:grape-vine-springs-road-trip-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T190000
+SUMMARY:Road Trip
+DESCRIPTION:Road Trip at Grape Vine Springs Winery.\nEnd time not listed.
+LOCATION:Grape Vine Springs Winery\, 409 South Main Street\, Grapevine\, 
+ TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:ajs-christian-haworth-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T193000
+SUMMARY:Christian Haworth
+DESCRIPTION:Christian Haworth at AJ’s on Main.\nEnd time not listed.
+LOCATION:AJ’s on Main\, 651 South Main Street\, Grapevine\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:chez-fabien-sylvester-jones-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T193000
+DTEND;TZID=America/Chicago:20261121T223000
+SUMMARY:Sylvester Jones Jr.
+DESCRIPTION:Sylvester Jones Jr. at Chez Fabien Bistro.\nGRL lists Sylvest
+ er Jones Jr.\, 7–10 PM\; Chez Fabien lists Sylvester Jones\, 7:30–10
+ :30 PM. The venue time is shown.
+LOCATION:Chez Fabien Bistro\, 316 South Main Street\, Grapevine\, TX 7605
+ 1
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:piaf-aautumn-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T193000
+DTEND;TZID=America/Chicago:20261121T223000
+SUMMARY:Aautumn
+DESCRIPTION:Aautumn at PIAF Kitchen + Wine + Bar.\nGRL lists 7–9:30 PM\
+ ; PIAF lists 7:30–10:30 PM. The venue time is shown.
+LOCATION:PIAF Kitchen + Wine + Bar\, 129 South Main Street\, Suite 130\, 
+ Grapevine\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:vfw-jd-monson-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T200000
+SUMMARY:JD Monson
+DESCRIPTION:JD Monson at Airport Cities VFW Post 10454.\nEnd time not lis
+ ted.
+LOCATION:Airport Cities VFW Post 10454\, 221 North Main Street\, Grapevin
+ e\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:tolberts-cherry-bomb-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T210000
+DTEND;TZID=America/Chicago:20261121T235900
+SUMMARY:Cherry Bomb
+DESCRIPTION:Tolbert’s describes Cherry Bomb as a tribute to the women o
+ f rock.\nGRL rounds the end time to midnight. Tolbert’s lists 11:59 PM
+ \, the time shown here.
+LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
+ Grapevine\, TX 76051
+CATEGORIES:Women of rock tribute
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:willhoites-strangle-love-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T210000
+DTEND;TZID=America/Chicago:20261122T010000
+SUMMARY:Strangle Love
+DESCRIPTION:Strangle Love at Willhoite’s Restaurant.\nGRL lists Strangl
+ e Love on both Friday and Saturday. Confirm the night with Willhoite’s
+ .
+LOCATION:Willhoite’s Restaurant\, 432 South Main Street\, Grapevine\, T
+ X 76051
+CATEGORIES:Monsters of Rock show
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:chill-dj-junior-2026-11-21@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261121T220000
+SUMMARY:DJ Junior in the Mix
+DESCRIPTION:DJ Junior in the Mix at Chill Bar & Grill.\nEnd time not list
+ ed.
+LOCATION:Chill Bar & Grill\, 814 South Main Street\, Grapevine\, TX 76051
+CATEGORIES:DJ
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:ajs-brendon-preece-2026-11-22@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261122T130000
+SUMMARY:Brendon Preece
+DESCRIPTION:Brendon Preece at AJ’s on Main.\nEnd time not listed.
+LOCATION:AJ’s on Main\, 651 South Main Street\, Grapevine\, TX 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:tolberts-country-dead-2026-11-22@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261122T143000
+DTEND;TZID=America/Chicago:20261122T173000
+SUMMARY:The Country Dead
+DESCRIPTION:Tolbert’s bills The Country Dead as Grateful Dead gone coun
+ try.
+LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
+ Grapevine\, TX 76051
+CATEGORIES:Grateful Dead • Country
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:bohemian-bull-blues-jam-2026-11-22@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261122T170000
+DTEND;TZID=America/Chicago:20261122T200000
+SUMMARY:Blues at the Bull
+DESCRIPTION:Blues at the Bull at Bohemian Bull Grapevine.
+LOCATION:Bohemian Bull Grapevine\, 1112 West Northwest Highway\, Grapevin
+ e\, TX 76051
+CATEGORIES:Open blues jam
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:tolberts-jordan-whitmore-2026-11-22@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261122T190000
+DTEND;TZID=America/Chicago:20261122T210000
+SUMMARY:Jordan Whitmore
+DESCRIPTION:Tolbert’s identifies Jordan Whitmore as a Texas songwriter 
+ and storyteller.
+LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
+ Grapevine\, TX 76051
+CATEGORIES:Texas songwriter • Storyteller
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:willhoites-guy-patrick-2026-11-22@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261122T190000
+SUMMARY:Guy Patrick
+DESCRIPTION:Guy Patrick at Willhoite’s Restaurant.\nEnd time not listed
+ .
+LOCATION:Willhoite’s Restaurant\, 432 South Main Street\, Grapevine\, T
+ X 76051
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:chill-sunday-karaoke-2026-11-22@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261122T220000
+SUMMARY:Sunday Karaoke
+DESCRIPTION:Sunday Karaoke at Chill Bar & Grill.\nEnd time not listed.
+LOCATION:Chill Bar & Grill\, 814 South Main Street\, Grapevine\, TX 76051
+CATEGORIES:Karaoke
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:tolberts-andrea-venezio-2026-11-23@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261123T190000
+DTEND;TZID=America/Chicago:20261123T213000
+SUMMARY:Andrea Venezio
+DESCRIPTION:Tolbert’s lists an acoustic solo set by Andrea Venezio.
+LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
+ Grapevine\, TX 76051
+CATEGORIES:Acoustic solo
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:tolberts-chaz-marie-band-2026-11-24@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261124T193000
+DTEND;TZID=America/Chicago:20261124T220000
+SUMMARY:Chaz Marie Band
+DESCRIPTION:Tolbert’s describes Chaz Marie Band as blues\, classic rock
+  and soul.
+LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
+ Grapevine\, TX 76051
+CATEGORIES:Blues • Classic rock • Soul
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:tolberts-miller-jam-2026-11-25@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261125T200000
+DTEND;TZID=America/Chicago:20261125T233000
+SUMMARY:The Miller Jam
+DESCRIPTION:Tolbert’s lists The Miller Family Annual Jam.
+LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
+ Grapevine\, TX 76051
+CATEGORIES:Annual family jam
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:chez-fabien-michael-2026-11-26@cmcnosky.github.io
+DTSTAMP:20261120T200218Z
+SEQUENCE:0
+DTSTART;TZID=America/Chicago:20261126T193000
+DTEND;TZID=America/Chicago:20261126T213000
+SUMMARY:Michael
+DESCRIPTION:Michael at Chez Fabien Bistro.
+LOCATION:Chez Fabien Bistro\, 316 South Main Street\, Grapevine\, TX 7605
+ 1
+CATEGORIES:Live music
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
