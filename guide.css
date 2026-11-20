@@ -591,6 +591,10 @@
   color: #ffb68e;
 }
 
+.grl-show-poster .grl-archive-label {
+  color: #d8baff;
+}
+
 .grl-show-date-block {
   align-content: center;
   aspect-ratio: 1;

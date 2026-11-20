@@ -1133,4 +1133,4 @@ html:not(.site-ready) #primary, html:not(.site-ready) .menu-toggle, html:not(.si
   border-top: 1px solid #766b70;
   background: transparent;
 }
-.grl-event-kicker .grl-source-link { display: inline-flex; align-items: center; min-height: 26px; padding-inline: 2px; }
+.grl-event-kicker .grl-source-link { display: inline-flex; align-items: center; min-height: 36px; padding-inline: 4px; }
