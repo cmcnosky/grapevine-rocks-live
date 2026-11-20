@@ -657,6 +657,7 @@
     );
   }
   function updates() {
+    const calendarLinks = window.GRLGuide.calendarLinks();
     return (
       header(
         "Stay close to the music",
@@ -667,10 +668,12 @@
       '<div class="wrap compact updates-grid"><section class="story calendar-card"><span class="meta">Public music calendar</span><h2>Keep the listings in your calendar app</h2><p>Subscribe once to receive calendar updates from the published guide, or download the current calendar file.</p><div class="calendar-actions">' +
       externalButton(
         "Subscribe in your calendar app",
-        "webcal://cmcnosky.github.io/grapevine-rocks-live/calendar.ics",
+        calendarLinks.subscribe,
         "ink",
       ) +
-      '<a class="btn light" href="./calendar.ics" download>Download calendar file</a></div><p class="meta">Show details can change. Open each listing’s source and check with the venue before heading out.</p></section><section class="story follow-card"><span class="meta">On social</span><h2>Follow Grapevine Rocks Live</h2><p>Instagram and Facebook carry the music guides, venue coverage and new GRL stories. Find GRL on every channel below.</p><p class="inline-links">' +
+      '<a class="btn light" href="' +
+      esc(calendarLinks.download) +
+      '" download data-grl-calendar-download>Download calendar file</a></div><p class="meta">Show details can change. Open each listing’s source and check with the venue before heading out.</p></section><section class="story follow-card"><span class="meta">On social</span><h2>Follow Grapevine Rocks Live</h2><p>Instagram and Facebook carry the music guides, venue coverage and new GRL stories. Find GRL on every channel below.</p><p class="inline-links">' +
       profileLinks() +
       '</p><p><a class="text-link" href="#guide">Browse the published music guide</a></p></section></div>'
     );
@@ -745,7 +748,7 @@
     if (e.target.closest("a")) closeMenu();
   });
   document.getElementById("social-links").innerHTML = profileLinks();
-  function render() {
+  function render(options = {}) {
     closeMenu();
     let [route, id = ""] = location.hash.slice(1).split("/");
     route = route || "home";
@@ -785,7 +788,7 @@
       bindReaders();
       window.GRLArchive.bind();
     } else {
-      window.GRLGuide.render(route, id);
+      window.GRLGuide.render(route, id, { focus: !options.preserveFocus });
     }
     const heading = main.querySelector("h1"),
       title = (heading?.innerText || heading?.textContent || "Music guide")
@@ -797,7 +800,7 @@
         : title + " | Grapevine Rocks Live";
     document.getElementById("site-announcer").textContent =
       route === "home" ? "Grapevine Rocks Live home" : title;
-    window.scrollTo(0, 0);
+    if (!options.preserveScroll) window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", () => {
     render();
@@ -805,6 +808,25 @@
   });
   window.addEventListener("pageshow", (e) => {
     if (e.persisted) render();
+  });
+  window.addEventListener("grl:catalog-ready", () => {
+    const active = document.activeElement;
+    const control =
+      active &&
+      main.contains(active) &&
+      active.closest(
+        'a, button, input, select, textarea, [contenteditable="true"]',
+      );
+    const refresh = () => {
+      const restoreId =
+        active && main.contains(active) && active.id ? active.id : "";
+      render({ preserveFocus: true, preserveScroll: true });
+      if (restoreId) document.getElementById(restoreId)?.focus({ preventScroll: true });
+      document.getElementById("site-announcer").textContent =
+        "Music guide updated";
+    };
+    if (control) control.addEventListener("blur", refresh, { once: true });
+    else refresh();
   });
   render();
   document.documentElement.classList.add("site-ready");

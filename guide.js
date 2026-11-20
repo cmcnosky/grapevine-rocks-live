@@ -2,14 +2,10 @@
   "use strict";
 
   const CHECKED_DATE = "2026-11-20";
-  const EDITION_START = "2026-11-20";
-  const EDITION_END = "2026-11-26";
   const CALENDAR_TIMEZONE = "America/Chicago";
   const CALENDAR_DOWNLOAD = "./calendar.ics";
   const CALENDAR_SUBSCRIBE =
     "webcal://cmcnosky.github.io/grapevine-rocks-live/calendar.ics";
-  // Initial published feed revision. Increment when a committed event changes.
-  const CALENDAR_SEQUENCE = 0;
   const GRL_WEEKEND_URL = "https://www.instagram.com/p/Df6zjpSFMKI/";
   const GRL_WEEKEND_SOURCE = {
     label: "GRL weekend guide",
@@ -47,7 +43,7 @@
     };
   }
 
-  const catalog = {
+  const embeddedCatalog = {
     venues: [
       {
         id: "tolberts",
@@ -567,6 +563,20 @@
     ],
   };
 
+  let catalog = {
+    schemaVersion: 1,
+    revision: 0,
+    edition: {
+      startDate: "2026-11-20",
+      endDate: "2026-11-26",
+      label: "November 20–26, 2026",
+      sourceCheckedDate: CHECKED_DATE,
+    },
+    venues: embeddedCatalog.venues,
+    events: embeddedCatalog.events,
+  };
+  let catalogSource = "embedded";
+
   const handledRoutes = new Set(["guide", "venues", "venue", "show"]);
   const sourceBadges = {
     "GRL guide": "GRL",
@@ -606,11 +616,264 @@
     }
   }
 
+  function requiredString(value, field) {
+    const text = typeof value === "string" ? value.trim() : "";
+    if (!text) throw new TypeError(field + " must be a nonempty string.");
+    return text;
+  }
+
+  function optionalString(value) {
+    return typeof value === "string" ? value.trim() : "";
+  }
+
+  function strictWebURL(value, field) {
+    const text = requiredString(value, field);
+    let url;
+    try {
+      url = new URL(text);
+    } catch (error) {
+      throw new TypeError(field + " must be an absolute web URL.");
+    }
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      throw new TypeError(field + " must use http or https.");
+    }
+    return url.href;
+  }
+
+  function validDate(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return false;
+    const parsed = new Date(value + "T00:00:00Z");
+    return (
+      !Number.isNaN(parsed.valueOf()) &&
+      parsed.toISOString().slice(0, 10) === value
+    );
+  }
+
+  function requiredDate(value, field) {
+    const text = requiredString(value, field);
+    if (!validDate(text)) throw new TypeError(field + " must be YYYY-MM-DD.");
+    return text;
+  }
+
+  function requiredTime(value, field) {
+    const text = requiredString(value, field);
+    if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(text)) {
+      throw new TypeError(field + " must be HH:MM in 24-hour time.");
+    }
+    return text;
+  }
+
+  function optionalTime(value, field) {
+    const text = optionalString(value);
+    return text ? requiredTime(text, field) : "";
+  }
+
+  function requiredId(value, field) {
+    const text = requiredString(value, field);
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(text)) {
+      throw new TypeError(field + " must be a lowercase kebab-case ID.");
+    }
+    return text;
+  }
+
+  function normalizeCatalog(payload) {
+    let input = payload;
+    if (typeof input === "string") {
+      try {
+        input = JSON.parse(input);
+      } catch (error) {
+        throw new TypeError("The catalog JSON string could not be parsed.");
+      }
+    }
+    if (!input || typeof input !== "object" || Array.isArray(input)) {
+      throw new TypeError("The catalog must be a JSON object.");
+    }
+    if (input.schemaVersion !== 1) {
+      throw new TypeError("The catalog schemaVersion must be 1.");
+    }
+    if (!Number.isInteger(input.revision) || input.revision < 0) {
+      throw new TypeError("The catalog revision must be a nonnegative integer.");
+    }
+    const rawEdition = input.edition;
+    if (!rawEdition || typeof rawEdition !== "object" || Array.isArray(rawEdition)) {
+      throw new TypeError("The catalog edition must be an object.");
+    }
+    const edition = {
+      ...rawEdition,
+      startDate: requiredDate(rawEdition.startDate, "edition.startDate"),
+      endDate: requiredDate(rawEdition.endDate, "edition.endDate"),
+      label: requiredString(rawEdition.label, "edition.label"),
+      sourceCheckedDate: requiredDate(
+        rawEdition.sourceCheckedDate,
+        "edition.sourceCheckedDate",
+      ),
+    };
+    if (edition.endDate < edition.startDate) {
+      throw new TypeError("edition.endDate cannot precede edition.startDate.");
+    }
+    if (!Array.isArray(input.venues) || !Array.isArray(input.shows)) {
+      throw new TypeError("The catalog must contain venues and shows arrays.");
+    }
+    const venueIds = new Set();
+    const venues = input.venues.map(function (rawVenue, index) {
+      const field = "venues[" + index + "]";
+      if (!rawVenue || typeof rawVenue !== "object" || Array.isArray(rawVenue)) {
+        throw new TypeError(field + " must be an object.");
+      }
+      const id = requiredId(rawVenue.id, field + ".id");
+      if (venueIds.has(id)) throw new TypeError("Duplicate venue ID: " + id);
+      venueIds.add(id);
+      if (!Array.isArray(rawVenue.features)) {
+        throw new TypeError(field + ".features must be an array.");
+      }
+      return {
+        ...rawVenue,
+        id: id,
+        name: requiredString(rawVenue.name, field + ".name"),
+        address: requiredString(rawVenue.address, field + ".address"),
+        url: strictWebURL(rawVenue.url, field + ".url"),
+        description: requiredString(
+          rawVenue.description,
+          field + ".description",
+        ),
+        features: rawVenue.features.map(function (feature, featureIndex) {
+          return requiredString(
+            feature,
+            field + ".features[" + featureIndex + "]",
+          );
+        }),
+      };
+    });
+    const showIds = new Set();
+    const events = input.shows.map(function (rawShow, index) {
+      const field = "shows[" + index + "]";
+      if (!rawShow || typeof rawShow !== "object" || Array.isArray(rawShow)) {
+        throw new TypeError(field + " must be an object.");
+      }
+      const id = requiredId(rawShow.id, field + ".id");
+      if (showIds.has(id)) throw new TypeError("Duplicate show ID: " + id);
+      showIds.add(id);
+      const venueId = requiredId(rawShow.venueId, field + ".venueId");
+      if (!venueIds.has(venueId)) {
+        throw new TypeError(field + ".venueId does not match a venue.");
+      }
+      if (!Array.isArray(rawShow.sources) || !rawShow.sources.length) {
+        throw new TypeError(field + ".sources must contain at least one source.");
+      }
+      const sources = rawShow.sources.map(function (rawSource, sourceIndex) {
+        const sourceField = field + ".sources[" + sourceIndex + "]";
+        if (!rawSource || typeof rawSource !== "object" || Array.isArray(rawSource)) {
+          throw new TypeError(sourceField + " must be an object.");
+        }
+        return {
+          ...rawSource,
+          label: requiredString(rawSource.label, sourceField + ".label"),
+          url: strictWebURL(rawSource.url, sourceField + ".url"),
+        };
+      });
+      const verifiedAt = optionalString(rawShow.verifiedAt);
+      if (verifiedAt && !validDate(verifiedAt)) {
+        throw new TypeError(field + ".verifiedAt must be YYYY-MM-DD.");
+      }
+      return {
+        ...rawShow,
+        id: id,
+        title: requiredString(rawShow.title, field + ".title"),
+        artist: requiredString(rawShow.artist, field + ".artist"),
+        venueId: venueId,
+        date: requiredDate(rawShow.date, field + ".date"),
+        time: requiredTime(rawShow.time, field + ".time"),
+        endTime: optionalTime(rawShow.endTime, field + ".endTime"),
+        genres: requiredString(rawShow.genres, field + ".genres"),
+        cover: requiredString(rawShow.cover, field + ".cover"),
+        summary: optionalString(rawShow.summary),
+        sourceStatus: optionalString(rawShow.sourceStatus),
+        sourceNote: optionalString(rawShow.sourceNote),
+        verifiedAt: verifiedAt,
+        sources: sources,
+      };
+    });
+    return {
+      ...input,
+      schemaVersion: 1,
+      revision: input.revision,
+      edition: edition,
+      venues: venues,
+      events: events,
+    };
+  }
+
+  function activateCatalog(nextCatalog, source) {
+    catalog = nextCatalog;
+    catalogSource = source;
+    if (
+      typeof window.dispatchEvent === "function" &&
+      typeof window.CustomEvent === "function"
+    ) {
+      window.dispatchEvent(
+        new window.CustomEvent("grl:catalog-ready", {
+          detail: { source: source, revision: nextCatalog.revision },
+        }),
+      );
+    }
+  }
+
+  async function fetchCatalog(url, source) {
+    const requestURL = new URL(url, window.location.href);
+    requestURL.searchParams.set("_grl", String(Date.now()));
+    const response = await window.fetch(requestURL.href, {
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) {
+      throw new Error("Catalog request failed with HTTP " + response.status + ".");
+    }
+    return {
+      catalog: normalizeCatalog(await response.json()),
+      source: source,
+    };
+  }
+
+  async function loadOwnerCatalog() {
+    if (
+      typeof window.fetch !== "function" ||
+      !window.location ||
+      !/^https?:$/.test(window.location.protocol)
+    ) {
+      return { source: catalogSource, revision: catalog.revision };
+    }
+    const requests = [];
+    const liveURL = safeURL(window.GRL_CATALOG_URL);
+    if (liveURL) requests.push([liveURL, "live"]);
+    requests.push([
+      new URL("owner-content.json", window.location.href).href,
+      "packaged",
+    ]);
+    for (const request of requests) {
+      try {
+        const result = await fetchCatalog(request[0], request[1]);
+        activateCatalog(result.catalog, result.source);
+        return { source: result.source, revision: result.catalog.revision };
+      } catch (error) {
+        if (typeof console !== "undefined" && console.warn) {
+          console.warn("GRL catalog source unavailable; trying fallback.", error);
+        }
+      }
+    }
+    return { source: catalogSource, revision: catalog.revision };
+  }
+
   function directionsURL(address) {
     return (
       "https://www.google.com/maps/search/?api=1&query=" +
       encodeURIComponent(address)
     );
+  }
+
+  function calendarSubscribeURL() {
+    const override = safeURL(window.GRL_FEED_URL);
+    if (!override) return CALENDAR_SUBSCRIBE;
+    return override.replace(/^https?:/i, "webcal:");
   }
 
   function getVenue(venueId) {
@@ -680,14 +943,16 @@
 
   function editionState() {
     const today = chicagoDateKey();
-    if (today < EDITION_START) {
+    const edition = catalog.edition;
+    if (today < edition.startDate) {
       return {
         key: "upcoming",
         label: "Upcoming edition",
-        note: "This edition begins Friday, November 20, 2026.",
+        note:
+          "This edition begins " + formatDate(edition.startDate, true) + ".",
       };
     }
-    if (today > EDITION_END) {
+    if (today > edition.endDate) {
       return {
         key: "archive",
         label: "Edition archive",
@@ -835,16 +1100,27 @@
       ),
     ).sort();
     const edition = editionState();
+    const weekendSource = events.some(function (event) {
+      return eventSources(event).some(function (source) {
+        return source.url === GRL_WEEKEND_URL;
+      });
+    })
+      ? ' · <a class="grl-weekend-source" href="' +
+        escapeHTML(GRL_WEEKEND_URL) +
+        '" target="_blank" rel="noreferrer">Weekend source</a>'
+      : "";
     return [
       '<section class="grl-page grl-guide-page" aria-labelledby="guide-title">',
       '<header class="grl-page-head"><p class="grl-eyebrow">',
       escapeHTML(edition.label),
       '</p><h1 id="guide-title">Live music guide.</h1>',
-      '<p class="grl-page-intro"><strong>November 20–26, 2026</strong> · Search ',
+      '<p class="grl-page-intro"><strong>',
+      escapeHTML(catalog.edition.label),
+      "</strong> · Search ",
       events.length,
-      ' live music, DJ and karaoke listings across Grapevine. <a class="grl-weekend-source" href="',
-      escapeHTML(GRL_WEEKEND_URL),
-      '" target="_blank" rel="noreferrer">Weekend source</a></p></header>',
+      " live music, DJ and karaoke listings across Grapevine",
+      weekendSource,
+      ".</p></header>",
       '<form class="grl-filters" id="grl-guide-filters" aria-label="Filter live music guide">',
       '<label><span>Artist or show</span><input id="grl-filter-query" type="search" placeholder="Try Cherry Bomb" autocomplete="off"></label>',
       '<label><span>Date</span><select id="grl-filter-date"><option value="">All dates</option>',
@@ -879,8 +1155,8 @@
       '<p>Download this edition, or subscribe to the calendar URL in a compatible calendar app.</p></div>',
       '<div class="grl-calendar-actions"><a class="grl-button" href="',
       escapeHTML(CALENDAR_DOWNLOAD),
-      '" download>Download .ics</a><a class="grl-button grl-button--outline" href="',
-      escapeHTML(CALENDAR_SUBSCRIBE),
+      '" download data-grl-calendar-download>Download .ics</a><a class="grl-button grl-button--outline" data-grl-calendar-subscribe href="',
+      escapeHTML(calendarSubscribeURL()),
       '">Subscribe</a></div></section>',
       '<aside class="grl-guide-cta"><div><p class="grl-eyebrow">The GRL newsletter</p>',
       "<h2>Get the next music guide in your inbox.</h2></div>",
@@ -1023,7 +1299,9 @@
       '<section class="grl-section" aria-labelledby="venue-shows-title"><div class="grl-section-heading">',
       '<p class="grl-eyebrow">',
       escapeHTML(edition.label),
-      '</p><h2 id="venue-shows-title">November 20–26 listings</h2></div>',
+      '</p><h2 id="venue-shows-title">',
+      escapeHTML(catalog.edition.label),
+      " listings</h2></div>",
       '<div class="grl-event-list">',
       events.length
         ? events
@@ -1099,9 +1377,13 @@
         ? '<aside class="grl-source-note"><strong>Check before you go.</strong><p>' +
           escapeHTML(event.sourceNote) +
           "</p></aside>"
-        : '<p class="grl-source-freshness">Sources checked ' +
-          escapeHTML(formatDate(event.verifiedAt, true)) +
-          ". Schedules can change.</p>",
+        : '<p class="grl-source-freshness">' +
+          (event.verifiedAt
+            ? "Sources checked " +
+              escapeHTML(formatDate(event.verifiedAt, true)) +
+              ". "
+            : "") +
+          "Schedules can change.</p>",
       '<div class="grl-show-actions"><button class="grl-button" type="button" id="grl-download-show">Add to calendar (.ics)</button>',
       venue
         ? '<a class="grl-button grl-button--outline" href="' +
@@ -1134,9 +1416,12 @@
       sources.length
         ? "<div><dt>Sources</dt><dd>" +
           sourceList +
-          "<br><small>Checked " +
-          escapeHTML(formatDate(event.verifiedAt, true)) +
-          "</small></dd></div>"
+          (event.verifiedAt
+            ? "<br><small>Checked " +
+              escapeHTML(formatDate(event.verifiedAt, true)) +
+              "</small>"
+            : "") +
+          "</dd></div>"
         : "",
       "</dl></div></section>",
     ].join("");
@@ -1192,7 +1477,8 @@
       .replace(/\.\d{3}Z$/, "Z");
   }
 
-  function calendarText(eventList, name) {
+  function calendarText(eventList, name, calendarCatalog) {
+    const feedCatalog = calendarCatalog || catalog;
     const generatedAt = calendarStamp(new Date());
     const lines = [
       "BEGIN:VCALENDAR",
@@ -1224,7 +1510,9 @@
       "END:VTIMEZONE",
     ];
     eventList.forEach(function (event) {
-      const venue = getVenue(event.venueId);
+      const venue = feedCatalog.venues.find(function (candidate) {
+        return candidate.id === event.venueId;
+      });
       const sources = eventSources(event);
       const description = [
         event.summary || defaultSummary(event, venue),
@@ -1242,7 +1530,7 @@
         "BEGIN:VEVENT",
         "UID:" + event.id + "@cmcnosky.github.io",
         "DTSTAMP:" + generatedAt,
-        "SEQUENCE:" + CALENDAR_SEQUENCE,
+        "SEQUENCE:" + feedCatalog.revision,
         "DTSTART;TZID=" +
           CALENDAR_TIMEZONE +
           ":" +
@@ -1282,30 +1570,22 @@
     );
   }
 
-  function calendarFeed() {
+  function calendarFeed(input) {
+    const feedCatalog =
+      typeof input === "undefined" ? catalog : normalizeCatalog(input);
     return calendarText(
-      publicEvents(),
+      feedCatalog.events.slice().sort(function (a, b) {
+        return (a.date + "T" + a.time).localeCompare(b.date + "T" + b.time);
+      }),
       "Grapevine Rocks Live Calendar",
+      feedCatalog,
     );
   }
 
-  function downloadShowCalendar(event) {
-    const content = calendarText(
-      [event],
-      event.title + " — Grapevine Rocks Live",
-    );
+  function downloadCalendarFile(content, fileName) {
     const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
     const objectURL = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    const fileName =
-      event.date +
-      "-" +
-      event.title
-        .toLocaleLowerCase()
-        .normalize("NFKD")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "") +
-      ".ics";
     link.href = objectURL;
     link.download = fileName;
     link.hidden = true;
@@ -1315,6 +1595,31 @@
     window.setTimeout(function () {
       URL.revokeObjectURL(objectURL);
     }, 1000);
+  }
+
+  function downloadCalendar() {
+    downloadCalendarFile(
+      calendarFeed(),
+      "grapevine-rocks-live-calendar.ics",
+    );
+  }
+
+  function downloadShowCalendar(event) {
+    const content = calendarText(
+      [event],
+      event.title + " — Grapevine Rocks Live",
+      catalog,
+    );
+    const fileName =
+      event.date +
+      "-" +
+      event.title
+        .toLocaleLowerCase()
+        .normalize("NFKD")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "") +
+      ".ics";
+    downloadCalendarFile(content, fileName);
   }
 
   function bindShow(id) {
@@ -1342,7 +1647,7 @@
     );
   }
 
-  function render(route, id) {
+  function render(route, id, options) {
     if (!handledRoutes.has(route)) return false;
     const main = document.querySelector("#main");
     if (!main) return false;
@@ -1362,11 +1667,29 @@
       (main.querySelector("h1")?.textContent || "Music guide") +
       " | Grapevine Rocks Live";
     const heading = main.querySelector("h1");
-    if (heading) {
+    if (heading && (!options || options.focus !== false)) {
       heading.tabIndex = -1;
       heading.focus({ preventScroll: true });
     }
     return true;
+  }
+
+  function publicCatalog() {
+    const output = clone(catalog);
+    output.shows = output.events;
+    delete output.events;
+    return output;
+  }
+
+  const catalogReady = loadOwnerCatalog();
+
+  if (typeof document !== "undefined") {
+    document.addEventListener("click", function (event) {
+      const trigger = event.target.closest("[data-grl-calendar-download]");
+      if (!trigger) return;
+      event.preventDefault();
+      downloadCalendar();
+    });
   }
 
   window.GRLGuide = Object.freeze({
@@ -1381,6 +1704,18 @@
     getVenues: function () {
       return clone(catalog.venues);
     },
+    getCatalog: publicCatalog,
+    catalogStatus: function () {
+      return { source: catalogSource, revision: catalog.revision };
+    },
+    ready: catalogReady,
     calendarFeed: calendarFeed,
+    calendarLinks: function () {
+      return {
+        download: CALENDAR_DOWNLOAD,
+        subscribe: calendarSubscribeURL(),
+      };
+    },
+    downloadCalendar: downloadCalendar,
   });
 })();

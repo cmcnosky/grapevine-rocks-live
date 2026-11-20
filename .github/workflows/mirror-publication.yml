@@ -1,0 +1,83 @@
+name: Mirror published catalog
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: mirror-published-catalog
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    name: Mirror owner publication
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GRL_CATALOG_URL: https://grapevine-rocks-live-publishing.cmcnosky.chatgpt.site/public/catalog.json
+
+    steps:
+      - name: Check out the publishing branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Mirror and validate the public catalog
+        id: mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/mirror-catalog.cjs
+          git diff --check -- owner-content.json calendar.ics
+          if [[ -n "$(git status --porcelain -- owner-content.json calendar.ics)" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit the mirrored publication
+        id: publish
+        if: steps.mirror.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- owner-content.json calendar.ics
+          git commit -m "chore: mirror published GRL catalog"
+          git pull --rebase origin "${{ github.event.repository.default_branch }}"
+          git push origin "HEAD:${{ github.event.repository.default_branch }}"
+
+      # Commits made with GITHUB_TOKEN do not start a branch-based Pages build.
+      # Keep the repository's legacy main/root source for ordinary pushes, then
+      # explicitly request a build when the latest Pages build does not cover
+      # the branch head. This also recovers on the next run if a prior push
+      # succeeded but its build request failed.
+      - name: Confirm or request the legacy GitHub Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch="${{ github.event.repository.default_branch }}"
+          git fetch --quiet origin "$branch"
+          branch_head="$(git rev-parse "origin/$branch")"
+          latest_commit="$(gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest" --jq '.commit')"
+          latest_status="$(gh api "repos/${GITHUB_REPOSITORY}/pages/builds/latest" --jq '.status')"
+          if [[ "$latest_commit" != "$branch_head" || "$latest_status" == "errored" ]]; then
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds" --silent
+            echo "Requested a Pages build for $branch_head."
+          else
+            echo "Pages already covers $branch_head with status $latest_status."
+          fi

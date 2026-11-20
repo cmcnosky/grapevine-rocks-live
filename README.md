@@ -1,20 +1,16 @@
 # Grapevine Rocks Live
 
-[Visit Grapevine Rocks Live](https://cmcnosky.github.io/grapevine-rocks-live/)
+The Grapevine live music guide is published on [GitHub Pages](https://cmcnosky.github.io/grapevine-rocks-live/).
 
-The live music calendar, venue directory, GRL TV, community events and social archive for Grapevine, Texas.
+## Editing the guide
 
-## Publication
+Open the private owner bookmark on a new browser, then sign in at [Owner login](https://cmcnosky.github.io/grapevine-rocks-live/owner/). The editor manages shows, venues and the guide edition. Save each edit, then select **Publish changes**. Publication creates a numbered revision in the hosted database. Editors working from an older revision must reload before publishing their changes.
 
-GitHub Pages publishes the repository root from the main branch. Ordinary hash links open individual shows, venues, stories and series. To serve the site locally, run `python3 -m http.server` from the repository root.
+## Public data and calendars
 
-## Editorial files
-
-- `guide.js` holds published show and venue records, calendar filtering and iCalendar serialization.
-- `calendar.ics` is the public subscription feed. After changing calendar records, run `node scripts/update-calendar.cjs` and commit the updated feed with the source data.
-- `media.js` contains the GRL profile links and featured original stories.
-- `archive-data.js` and `archive.js` power the searchable Instagram post index.
-- `app.js` contains public routes, directory entries and contact options.
-- `assets/` contains the site artwork and fonts, with the two font licenses.
-
-Show records retain their sources so an editor can check times and amend a listing. The site links to the original publisher for social media. Visitors choose where to send a drafted message. Contact details stay out of this repository.
+- `owner-source.js` specifies the public catalog and subscription feed. The login verifier and session records are held by the publishing service.
+- `guide.js` validates and displays the current catalog, builds individual and full calendar downloads, and provides an embedded fallback.
+- `owner-content.json` is the GitHub copy of the published catalog. The scheduled **Mirror published catalog** workflow updates it and the legacy `calendar.ics` subscription. GitHub also allows a manual workflow run.
+- `media.js`, `archive-data.js` and `archive.js` supply the featured stories, social links and searchable Instagram archive.
+- `app.js` contains visitor routes and the contact-message forms. The visitor chooses where to send a prepared message.
+- `assets/` contains artwork, fonts and their license files.

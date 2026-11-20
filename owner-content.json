@@ -1,0 +1,934 @@
+{
+  "schemaVersion": 1,
+  "revision": 0,
+  "edition": {
+    "startDate": "2026-11-20",
+    "endDate": "2026-11-26",
+    "label": "November 20–26, 2026",
+    "sourceCheckedDate": "2026-11-20"
+  },
+  "venues": [
+    {
+      "id": "tolberts",
+      "name": "Tolbert’s Restaurant & Chili Parlor",
+      "address": "423 South Main Street, Grapevine, TX 76051",
+      "url": "https://tolbertsrestaurant.com/",
+      "description": "A Main Street restaurant and concert room with a published live-music calendar.",
+      "features": [
+        "Live music",
+        "Food + bar",
+        "Main Street"
+      ]
+    },
+    {
+      "id": "willhoites",
+      "name": "Willhoite’s Restaurant",
+      "address": "432 South Main Street, Grapevine, TX 76051",
+      "url": "https://www.willhoites.com/",
+      "description": "A long-running Grapevine restaurant and bar whose official site advertises live music Wednesday through Sunday.",
+      "features": [
+        "Live music",
+        "Food + bar",
+        "Late night"
+      ]
+    },
+    {
+      "id": "ajs-on-main",
+      "name": "AJ’s on Main",
+      "address": "651 South Main Street, Grapevine, TX 76051",
+      "url": "https://www.ajsonmaintx.com/",
+      "description": "A Main Street barbecue destination listed in the City of Grapevine’s downtown guide.",
+      "features": [
+        "Barbecue",
+        "Main Street",
+        "Local venue"
+      ]
+    },
+    {
+      "id": "third-rail",
+      "name": "Third Rail at Harvest Hall",
+      "address": "815 South Main Street, Grapevine, TX 76051",
+      "url": "https://www.harvesthall.com/about",
+      "description": "Harvest Hall’s intimate event space with a year-round mix of bands, DJs, comedy and community programming.",
+      "features": [
+        "Live music",
+        "Events",
+        "Food hall"
+      ]
+    },
+    {
+      "id": "glass-cactus",
+      "name": "Glass Cactus",
+      "address": "1501 Gaylord Trail, Grapevine, TX 76051",
+      "url": "https://glasscactus.gaylordtexan.com/nightlife",
+      "description": "A large lakeside nightlife venue at Gaylord Texan with live music, DJs and a dance floor.",
+      "features": [
+        "Live music",
+        "Nightlife",
+        "21+"
+      ]
+    },
+    {
+      "id": "napolis",
+      "name": "Napoli’s Italian Restaurant",
+      "address": "309 South Main Street, Grapevine, TX 76051",
+      "url": "https://www.napolisgrapevine.com/",
+      "description": "A family-run Italian restaurant and bar in historic downtown Grapevine.",
+      "features": [
+        "Restaurant",
+        "Full bar",
+        "Main Street"
+      ]
+    },
+    {
+      "id": "hop-and-sting",
+      "name": "Hop & Sting Brewing Co.",
+      "address": "906 Jean Street, Grapevine, TX 76051",
+      "url": "https://hopandsting.myshopify.com/pages/food-truck-schedule",
+      "description": "A Grapevine brewery and taproom whose official site lists live music among its regular events.",
+      "features": [
+        "Brewery",
+        "Live music",
+        "Family friendly"
+      ]
+    },
+    {
+      "id": "hotel-vin-lobby",
+      "name": "Hotel Vin Lobby Lounge",
+      "address": "215 East Dallas Road, Grapevine, TX 76051",
+      "url": "https://www.hotelvin.com/",
+      "description": "The lobby lounge at Hotel Vin, next to Grapevine Main Station and Harvest Hall.",
+      "features": [
+        "Hotel lounge",
+        "Live music",
+        "Downtown"
+      ]
+    },
+    {
+      "id": "rock-and-brews",
+      "name": "Rock & Brews Grapevine",
+      "address": "520 West State Highway 114, Grapevine, TX 76051",
+      "url": "https://www.rockandbrews.com/grapevine",
+      "description": "A rock-themed restaurant and sports bar whose official site promotes regular live music.",
+      "features": [
+        "Live music",
+        "Restaurant",
+        "All ages"
+      ]
+    },
+    {
+      "id": "chez-fabien",
+      "name": "Chez Fabien Bistro",
+      "address": "316 South Main Street, Grapevine, TX 76051",
+      "url": "https://chezfabienbistro.com/",
+      "description": "A French-inspired Main Street bistro with an official live-music calendar.",
+      "features": [
+        "Live music",
+        "Bistro",
+        "Main Street"
+      ]
+    },
+    {
+      "id": "piaf",
+      "name": "PIAF Kitchen + Wine + Bar",
+      "address": "129 South Main Street, Suite 130, Grapevine, TX 76051",
+      "url": "https://piafkitchen.com/the-perch-rooftop-patio/",
+      "description": "A Mediterranean restaurant whose rooftop Perch publishes a live-music calendar.",
+      "features": [
+        "Live music",
+        "Rooftop",
+        "Main Street"
+      ]
+    },
+    {
+      "id": "grapevine-elks",
+      "name": "Grapevine Elks Lodge #2483",
+      "address": "909 Bushong Road, Grapevine, TX 76051",
+      "url": "https://www.grapevineelks.org/",
+      "description": "The Grapevine lodge of the Benevolent and Protective Order of Elks.",
+      "features": [
+        "Lodge",
+        "Community",
+        "Live music"
+      ]
+    },
+    {
+      "id": "airport-cities-vfw",
+      "name": "Airport Cities VFW Post 10454",
+      "address": "221 North Main Street, Grapevine, TX 76051",
+      "url": "https://www.vfw10454.net/",
+      "description": "A VFW post and public canteen on North Main Street.",
+      "features": [
+        "VFW post",
+        "Open to public",
+        "Live music"
+      ]
+    },
+    {
+      "id": "chill",
+      "name": "Chill Bar & Grill",
+      "address": "814 South Main Street, Grapevine, TX 76051",
+      "url": "https://chilldfw.com/",
+      "description": "A late-night Main Street bar and restaurant whose official site promotes DJs, live music and themed events.",
+      "features": [
+        "DJ",
+        "Karaoke",
+        "Late night"
+      ]
+    },
+    {
+      "id": "bohemian-bull",
+      "name": "Bohemian Bull Grapevine",
+      "address": "1112 West Northwest Highway, Grapevine, TX 76051",
+      "url": "https://www.bohemianbull.com/index.html?draft=grapevine",
+      "description": "A neighborhood restaurant and beer garden with live-music programming.",
+      "features": [
+        "Live music",
+        "Open jam",
+        "Restaurant"
+      ]
+    },
+    {
+      "id": "grape-vine-springs",
+      "name": "Grape Vine Springs Winery",
+      "address": "409 South Main Street, Grapevine, TX 76051",
+      "url": "https://www.grapevinespringswinery.com/",
+      "description": "A Main Street winery with an official calendar for upcoming events.",
+      "features": [
+        "Winery",
+        "Live music",
+        "Main Street"
+      ]
+    }
+  ],
+  "shows": [
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "napolis-dathan-martin-2026-11-20",
+      "title": "Dathan Martin",
+      "artist": "Dathan Martin",
+      "venueId": "napolis",
+      "date": "2026-11-20",
+      "time": "15:30"
+    },
+    {
+      "endTime": "21:00",
+      "genres": "Taps & Tracks",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "hop-sting-bobby-falk-2026-11-20",
+      "title": "Bobby Falk Group",
+      "artist": "Bobby Falk Group",
+      "venueId": "hop-and-sting",
+      "date": "2026-11-20",
+      "time": "18:00"
+    },
+    {
+      "endTime": "21:00",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL + venue",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Harvest Hall event",
+          "url": "https://www.harvesthall.com/events/tarrant-county/dusty-moats--live-at-third-rail"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "third-rail-dusty-moats-2026-11-20",
+      "title": "Dusty Moats",
+      "artist": "Dusty Moats",
+      "venueId": "third-rail",
+      "date": "2026-11-20",
+      "time": "19:00"
+    },
+    {
+      "endTime": "22:00",
+      "genres": "Live in the Living Room",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "hotel-vin-corey-breedlove-2026-11-20",
+      "title": "Corey Breedlove",
+      "artist": "Corey Breedlove",
+      "venueId": "hotel-vin-lobby",
+      "date": "2026-11-20",
+      "time": "19:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "rock-brews-chasing-angels-2026-11-20",
+      "title": "Chasing Angels",
+      "artist": "Chasing Angels",
+      "venueId": "rock-and-brews",
+      "date": "2026-11-20",
+      "time": "19:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "grapevine-elks-brent-rozell-2026-11-20",
+      "title": "Brent Rozell & The Soulmates",
+      "artist": "Brent Rozell & The Soulmates",
+      "venueId": "grapevine-elks",
+      "date": "2026-11-20",
+      "time": "19:15"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "ajs-josh-ingram-2026-11-20",
+      "title": "Josh Ingram",
+      "artist": "Josh Ingram",
+      "venueId": "ajs-on-main",
+      "date": "2026-11-20",
+      "time": "19:30"
+    },
+    {
+      "endTime": "22:30",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "Times differ — recheck",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Chez Fabien calendar",
+          "url": "https://chezfabienbistro.com/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "chez-fabien-ford-nelson-2026-11-20",
+      "title": "Ford Nelson",
+      "artist": "Ford Nelson",
+      "venueId": "chez-fabien",
+      "date": "2026-11-20",
+      "time": "19:30",
+      "sourceNote": "GRL lists 7–10 PM; Chez Fabien lists 7:30–10:30 PM. The venue time is shown."
+    },
+    {
+      "endTime": "22:30",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "Times differ — recheck",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "PIAF calendar",
+          "url": "https://piafkitchen.com/the-perch-rooftop-patio/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "piaf-aautumn-2026-11-20",
+      "title": "Aautumn",
+      "artist": "Aautumn",
+      "venueId": "piaf",
+      "date": "2026-11-20",
+      "time": "19:30",
+      "sourceNote": "GRL lists 7–9:30 PM; PIAF lists 7:30–10:30 PM. The venue time is shown."
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "vfw-dan-shinedling-2026-11-20",
+      "title": "Dan Shinedling",
+      "artist": "Dan Shinedling",
+      "venueId": "airport-cities-vfw",
+      "date": "2026-11-20",
+      "time": "20:00"
+    },
+    {
+      "endTime": "23:59",
+      "genres": "Nineties • Alternative",
+      "cover": "Not listed",
+      "summary": "Tolbert’s identifies The Alternatives as a nineties and alternative act.",
+      "sourceStatus": "GRL + venue",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Tolbert’s calendar",
+          "url": "https://tolbertsrestaurant.com/calendar/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "tolberts-alternatives-2026-11-20",
+      "title": "The Alternatives",
+      "artist": "The Alternatives",
+      "venueId": "tolberts",
+      "date": "2026-11-20",
+      "time": "21:00",
+      "sourceNote": "GRL rounds the end time to midnight. Tolbert’s lists 11:59 PM, the time shown here."
+    },
+    {
+      "endTime": "01:00",
+      "genres": "Monsters of Rock show",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide — recheck",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "willhoites-strangle-love-2026-11-20",
+      "title": "Strangle Love",
+      "artist": "Strangle Love",
+      "venueId": "willhoites",
+      "date": "2026-11-20",
+      "time": "21:00",
+      "sourceNote": "GRL lists Strangle Love on both Friday and Saturday. Confirm the night with Willhoite’s."
+    },
+    {
+      "endTime": "",
+      "genres": "DJ",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "chill-dj-mike-b-2026-11-20",
+      "title": "DJ Mike B",
+      "artist": "DJ Mike B",
+      "venueId": "chill",
+      "date": "2026-11-20",
+      "time": "22:00"
+    },
+    {
+      "endTime": "21:00",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL + venue",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Harvest Hall event",
+          "url": "https://www.harvesthall.com/events/tarrant-county/the-halftones--live-at-third-rail"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "third-rail-halftones-2026-11-21",
+      "title": "The Halftones",
+      "artist": "The Halftones",
+      "venueId": "third-rail",
+      "date": "2026-11-21",
+      "time": "19:00"
+    },
+    {
+      "endTime": "22:00",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "bohemian-bull-shannon-morales-2026-11-21",
+      "title": "Shannon Morales & The Max",
+      "artist": "Shannon Morales & The Max",
+      "venueId": "bohemian-bull",
+      "date": "2026-11-21",
+      "time": "19:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "rock-brews-8-tracks-2026-11-21",
+      "title": "The 8 Tracks",
+      "artist": "The 8 Tracks",
+      "venueId": "rock-and-brews",
+      "date": "2026-11-21",
+      "time": "19:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "grape-vine-springs-road-trip-2026-11-21",
+      "title": "Road Trip",
+      "artist": "Road Trip",
+      "venueId": "grape-vine-springs",
+      "date": "2026-11-21",
+      "time": "19:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "ajs-christian-haworth-2026-11-21",
+      "title": "Christian Haworth",
+      "artist": "Christian Haworth",
+      "venueId": "ajs-on-main",
+      "date": "2026-11-21",
+      "time": "19:30"
+    },
+    {
+      "endTime": "22:30",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "Details differ — recheck",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Chez Fabien calendar",
+          "url": "https://chezfabienbistro.com/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "chez-fabien-sylvester-jones-2026-11-21",
+      "title": "Sylvester Jones Jr.",
+      "artist": "Sylvester Jones Jr.",
+      "venueId": "chez-fabien",
+      "date": "2026-11-21",
+      "time": "19:30",
+      "sourceNote": "GRL lists Sylvester Jones Jr., 7–10 PM; Chez Fabien lists Sylvester Jones, 7:30–10:30 PM. The venue time is shown."
+    },
+    {
+      "endTime": "22:30",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "Times differ — recheck",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "PIAF calendar",
+          "url": "https://piafkitchen.com/the-perch-rooftop-patio/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "piaf-aautumn-2026-11-21",
+      "title": "Aautumn",
+      "artist": "Aautumn",
+      "venueId": "piaf",
+      "date": "2026-11-21",
+      "time": "19:30",
+      "sourceNote": "GRL lists 7–9:30 PM; PIAF lists 7:30–10:30 PM. The venue time is shown."
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "vfw-jd-monson-2026-11-21",
+      "title": "JD Monson",
+      "artist": "JD Monson",
+      "venueId": "airport-cities-vfw",
+      "date": "2026-11-21",
+      "time": "20:00"
+    },
+    {
+      "endTime": "23:59",
+      "genres": "Women of rock tribute",
+      "cover": "Not listed",
+      "summary": "Tolbert’s describes Cherry Bomb as a tribute to the women of rock.",
+      "sourceStatus": "GRL + venue",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Tolbert’s calendar",
+          "url": "https://tolbertsrestaurant.com/calendar/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "tolberts-cherry-bomb-2026-11-21",
+      "title": "Cherry Bomb",
+      "artist": "Cherry Bomb",
+      "venueId": "tolberts",
+      "date": "2026-11-21",
+      "time": "21:00",
+      "sourceNote": "GRL rounds the end time to midnight. Tolbert’s lists 11:59 PM, the time shown here."
+    },
+    {
+      "endTime": "01:00",
+      "genres": "Monsters of Rock show",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide — recheck",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "willhoites-strangle-love-2026-11-21",
+      "title": "Strangle Love",
+      "artist": "Strangle Love",
+      "venueId": "willhoites",
+      "date": "2026-11-21",
+      "time": "21:00",
+      "sourceNote": "GRL lists Strangle Love on both Friday and Saturday. Confirm the night with Willhoite’s."
+    },
+    {
+      "endTime": "",
+      "genres": "DJ",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "chill-dj-junior-2026-11-21",
+      "title": "DJ Junior in the Mix",
+      "artist": "DJ Junior in the Mix",
+      "venueId": "chill",
+      "date": "2026-11-21",
+      "time": "22:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "ajs-brendon-preece-2026-11-22",
+      "title": "Brendon Preece",
+      "artist": "Brendon Preece",
+      "venueId": "ajs-on-main",
+      "date": "2026-11-22",
+      "time": "13:00"
+    },
+    {
+      "endTime": "17:30",
+      "genres": "Grateful Dead • Country",
+      "cover": "Not listed",
+      "summary": "Tolbert’s bills The Country Dead as Grateful Dead gone country.",
+      "sourceStatus": "GRL + venue",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Tolbert’s calendar",
+          "url": "https://tolbertsrestaurant.com/calendar/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "tolberts-country-dead-2026-11-22",
+      "title": "The Country Dead",
+      "artist": "The Country Dead",
+      "venueId": "tolberts",
+      "date": "2026-11-22",
+      "time": "14:30"
+    },
+    {
+      "endTime": "20:00",
+      "genres": "Open blues jam",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "bohemian-bull-blues-jam-2026-11-22",
+      "title": "Blues at the Bull",
+      "artist": "Open blues jam hosted by Mister Fantastic Blues Band",
+      "venueId": "bohemian-bull",
+      "date": "2026-11-22",
+      "time": "17:00"
+    },
+    {
+      "endTime": "21:00",
+      "genres": "Texas songwriter • Storyteller",
+      "cover": "Not listed",
+      "summary": "Tolbert’s identifies Jordan Whitmore as a Texas songwriter and storyteller.",
+      "sourceStatus": "GRL + venue",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Tolbert’s calendar",
+          "url": "https://tolbertsrestaurant.com/calendar/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "tolberts-jordan-whitmore-2026-11-22",
+      "title": "Jordan Whitmore",
+      "artist": "Jordan Whitmore",
+      "venueId": "tolberts",
+      "date": "2026-11-22",
+      "time": "19:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "willhoites-guy-patrick-2026-11-22",
+      "title": "Guy Patrick",
+      "artist": "Guy Patrick",
+      "venueId": "willhoites",
+      "date": "2026-11-22",
+      "time": "19:00"
+    },
+    {
+      "endTime": "",
+      "genres": "Karaoke",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "GRL guide",
+      "sources": [
+        {
+          "label": "GRL weekend guide",
+          "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "chill-sunday-karaoke-2026-11-22",
+      "title": "Sunday Karaoke",
+      "artist": "Sing with Shag, hosted by Shannon Cobb",
+      "venueId": "chill",
+      "date": "2026-11-22",
+      "time": "22:00"
+    },
+    {
+      "endTime": "21:30",
+      "genres": "Acoustic solo",
+      "cover": "Not listed",
+      "summary": "Tolbert’s lists an acoustic solo set by Andrea Venezio.",
+      "sourceStatus": "Venue-published",
+      "sources": [
+        {
+          "label": "Tolbert’s calendar",
+          "url": "https://tolbertsrestaurant.com/calendar/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "tolberts-andrea-venezio-2026-11-23",
+      "title": "Andrea Venezio",
+      "artist": "Andrea Venezio",
+      "venueId": "tolberts",
+      "date": "2026-11-23",
+      "time": "19:00"
+    },
+    {
+      "endTime": "22:00",
+      "genres": "Blues • Classic rock • Soul",
+      "cover": "Not listed",
+      "summary": "Tolbert’s describes Chaz Marie Band as blues, classic rock and soul.",
+      "sourceStatus": "Venue-published",
+      "sources": [
+        {
+          "label": "Tolbert’s calendar",
+          "url": "https://tolbertsrestaurant.com/calendar/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "tolberts-chaz-marie-band-2026-11-24",
+      "title": "Chaz Marie Band",
+      "artist": "Chaz Marie Band",
+      "venueId": "tolberts",
+      "date": "2026-11-24",
+      "time": "19:30"
+    },
+    {
+      "endTime": "23:30",
+      "genres": "Annual family jam",
+      "cover": "Not listed",
+      "summary": "Tolbert’s lists The Miller Family Annual Jam.",
+      "sourceStatus": "Venue-published",
+      "sources": [
+        {
+          "label": "Tolbert’s calendar",
+          "url": "https://tolbertsrestaurant.com/calendar/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "tolberts-miller-jam-2026-11-25",
+      "title": "The Miller Jam",
+      "artist": "The Miller Jam",
+      "venueId": "tolberts",
+      "date": "2026-11-25",
+      "time": "20:00"
+    },
+    {
+      "endTime": "21:30",
+      "genres": "Live music",
+      "cover": "Not listed",
+      "summary": "",
+      "sourceStatus": "Venue-published",
+      "sources": [
+        {
+          "label": "Chez Fabien calendar",
+          "url": "https://chezfabienbistro.com/"
+        }
+      ],
+      "verifiedAt": "2026-11-20",
+      "id": "chez-fabien-michael-2026-11-26",
+      "title": "Michael",
+      "artist": "Michael",
+      "venueId": "chez-fabien",
+      "date": "2026-11-26",
+      "time": "19:30"
+    }
+  ]
+}
