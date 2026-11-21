@@ -130,14 +130,16 @@
   min-height: 11rem;
   overflow: hidden;
   border-right: 2px solid var(--brand-ink);
-  background: #d8c8ff;
+  background: var(--brand-ink);
 }
 
 .library-card-media img {
+  position: absolute;
+  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  min-height: 11rem;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .library-card-media--fallback {
@@ -375,10 +377,6 @@
     border-bottom: 2px solid var(--brand-ink);
   }
 
-  .library-card-media img {
-    min-height: 0;
-    aspect-ratio: 2 / 1;
-  }
 
   .library-card-actions {
     grid-column: 1;

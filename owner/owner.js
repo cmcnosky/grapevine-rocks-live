@@ -726,19 +726,20 @@
       return media;
     }
     const image = document.createElement("img");
-    image.src = src;
+    const hasSmallerFile = photo.thumbWidth > 0 && photo.thumbWidth < photo.width;
+    if (hasSmallerFile) {
+      image.sizes = "auto, (max-width: 660px) 94vw, 18rem";
+      image.srcset = src + " " + photo.thumbWidth + "w, " + photo.src + " " + photo.width + "w";
+    }
+    image.src = hasSmallerFile ? src : localPhotoSource(photo.src);
     image.alt = String(photo.alt || "");
     image.loading = "lazy";
     image.decoding = "async";
     image.referrerPolicy = "no-referrer";
-    image.width = 360;
-    image.height = 220;
-    const framing =
-      photo.framing?.[type === "show" ? "listing" : "directory"] || {};
-    if (["cover", "contain"].includes(framing.fit))
-      image.style.objectFit = framing.fit;
-    const position = framing.position || photo.position;
-    if (position) image.style.objectPosition = position;
+    if (photo.width && photo.height) {
+      image.width = photo.width;
+      image.height = photo.height;
+    }
     image.addEventListener("error", fallback, { once: true });
     media.append(image);
     return media;

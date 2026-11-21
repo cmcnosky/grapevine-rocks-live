@@ -988,35 +988,52 @@
     return collection && Object.hasOwn(collection, key) ? collection[key] : null;
   }
 
+  function photoHeader(baseClass, photo) {
+    if (!photo) return '<header class="' + baseClass + '">';
+    let sizing = "";
+    if (photo.width > 0 && photo.height > 0 && Number.isInteger(photo.width) && Number.isInteger(photo.height)) {
+      sizing = ' style="--photo-ratio:' + (photo.width / photo.height).toFixed(5) +
+        ';--photo-width:' + photo.width + 'px"';
+    }
+    return '<header class="' + baseClass + ' with-photo"' + sizing + '>';
+  }
+
   function photoImage(photo, small, surface = "detail") {
-    const framing = photo.framing && typeof photo.framing === "object" &&
-      photo.framing[surface] && typeof photo.framing[surface] === "object"
-      ? photo.framing[surface] : {};
-    const preferredPosition = framing.position || photo.position || "";
-    const position = /^\d{1,3}% \d{1,3}%$/.test(preferredPosition)
-      ? ' style="object-position:' + preferredPosition + '"' : "";
-    const fitClass = /^(cover|contain)$/.test(framing.fit || "") && framing.fit === "contain"
+    const frame = photo.framing?.[surface] || {};
+    const position = frame.position || photo.position;
+    const customFocus = small && /^\d{1,3}% \d{1,3}%$/.test(position || "")
+      ? ' style="object-position:' + position + '"' : "";
+    const fitClass = small && (frame.fit === "contain" || !photo.thumb)
       ? ' class="grl-photo-fit-contain"' : "";
-    const src = small && photo.thumb ? photo.thumb : photo.src;
-    const width = Number.isInteger(photo.width) && photo.width > 0 ? photo.width : 800;
-    const height = Number.isInteger(photo.height) && photo.height > 0 ? photo.height : 550;
-    return '<img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="' +
-      escapeHTML(src) + '" alt="' + escapeHTML(photo.alt) + '" width="' + width +
-      '" height="' + height + '"' + fitClass + position + '>';
+    const width = photo.width;
+    const height = photo.height;
+    const dimensions = Number.isInteger(width) && width > 0 && Number.isInteger(height) && height > 0
+      ? ' width="' + width + '" height="' + height + '"' : "";
+    const hasSmallerFile = small && photo.thumb && photo.thumbWidth > 0 && photo.thumbWidth < width;
+    const sizes = surface === "directory" ? "auto, (max-width: 760px) 94vw, 37rem"
+      : "auto, (max-width: 760px) 94vw, 22rem";
+    const candidates = hasSmallerFile
+      ? ' srcset="' + escapeHTML(photo.thumb) + ' ' + photo.thumbWidth + 'w, ' +
+        escapeHTML(photo.src) + ' ' + width + 'w" sizes="' + sizes + '"' : "";
+    return '<img loading="' + (surface === "detail" ? "eager" : "lazy") +
+      '" decoding="async" referrerpolicy="no-referrer" src="' +
+      escapeHTML(hasSmallerFile ? photo.thumb : photo.src) + '" alt="' + escapeHTML(photo.alt) +
+      '"' + dimensions + candidates + fitClass + customFocus + '>';
   }
 
   function creditedPhoto(photo, className, surface = "detail") {
     if (!photo) return "";
     return '<figure class="grl-photo ' + className + '">' + photoImage(photo, false, surface) +
-      '<figcaption>' + (photo.caption ? escapeHTML(photo.caption) + ' ' : '') + '<a href="' + escapeHTML(safeURL(photo.source)) +
+      '<figcaption>' + (photo.caption ? '<span>' + escapeHTML(photo.caption) + '</span>' : '') + '<a class="grl-credit" href="' + escapeHTML(safeURL(photo.source)) +
       '" target="_blank" rel="noreferrer">' + escapeHTML(photo.credit) + '</a>' +
-      ' · <a href="' + escapeHTML(photo.src) + '" target="_blank" rel="noreferrer">Full photo</a>' +
-      (photo.license && photo.licenseUrl ? ' · <a href="' + escapeHTML(safeURL(photo.licenseUrl)) + '" target="_blank" rel="noreferrer">' + escapeHTML(photo.license) + '</a>' : '') + '</figcaption></figure>';
+      '<a class="grl-full-photo" href="' + escapeHTML(photo.src) + '" target="_blank" rel="noreferrer">Full photo</a>' +
+      (photo.license && photo.licenseUrl ? '<a href="' + escapeHTML(safeURL(photo.licenseUrl)) + '" target="_blank" rel="noreferrer">' + escapeHTML(photo.license) + '</a>' : '') + '</figcaption></figure>';
   }
 
   function listingImages(artist, room, event, venue) {
     if (!artist && !room) return "";
-    return '<div class="grl-listing-images' + (artist && room ? ' paired' : '') + '">' +
+    const layout = artist && room ? " paired" : artist ? " solo-artist" : "";
+    return '<div class="grl-listing-images' + layout + '">' +
       (artist ? '<figure class="artist-shot"><a href="#show/' + encodeURIComponent(event.id) +
         '" aria-label="Show details for ' + escapeHTML(event.title) + '">' + photoImage(artist, true, "listing") + '</a></figure>' : '') +
       (room ? '<figure class="venue-shot"><a href="#venue/' + encodeURIComponent(venue.id) +
@@ -1308,9 +1325,10 @@
       return event.venueId === venue.id;
     });
     const edition = editionState();
+    const venuePhoto = listingPhoto("venues", venue);
     return [
       '<section class="grl-page" aria-labelledby="venue-title"><a class="grl-back-link" href="#venues">Back to all venues</a>',
-      '<header class="grl-page-head grl-venue-hero' + (listingPhoto("venues", venue) ? ' with-photo' : '') + '"><div><p class="grl-eyebrow">Venue guide</p>',
+      photoHeader("grl-page-head grl-venue-hero", venuePhoto), '<div><p class="grl-eyebrow">Venue guide</p>',
       '<h1 id="venue-title">',
       escapeHTML(venue.name),
       '</h1><p class="grl-page-intro">',
@@ -1324,7 +1342,7 @@
       '" target="_blank" rel="noreferrer" aria-label="Get directions to ',
       escapeHTML(venue.name),
       '">Directions</a></div></div>',
-      creditedPhoto(listingPhoto("venues", venue), "grl-venue-photo"),
+      creditedPhoto(venuePhoto, "grl-venue-photo"),
       '</header>',
       '<section class="grl-section" aria-labelledby="venue-shows-title"><div class="grl-section-heading">',
       '<p class="grl-eyebrow">',
@@ -1361,6 +1379,7 @@
     }
     const venue = getVenue(event.venueId);
     const sources = eventSources(event);
+    const artistPhoto = listingPhoto("artists", event);
 
     const past =
       event.date < chicagoDateKey()
@@ -1380,14 +1399,14 @@
     return [
       '<section class="grl-page grl-show-page" aria-labelledby="show-title">',
       '<a class="grl-back-link" href="#guide">Back to the music guide</a>',
-      '<header class="grl-gig-head' + (listingPhoto("artists", event) ? ' with-photo' : '') + '"><div class="grl-gig-type">',
+      photoHeader("grl-gig-head", artistPhoto), '<div class="grl-gig-type">',
       '<p class="grl-gig-date">', past, escapeHTML(formatDate(event.date, true)), '</p>',
       '<h1 id="show-title">', escapeHTML(event.title), '</h1>',
       event.artist !== event.title ? '<p class="grl-gig-artist">' + escapeHTML(event.artist) + '</p>' : '',
       '<p class="grl-gig-time">', escapeHTML(formatTime(event.time)),
       event.endTime ? '–' + escapeHTML(formatTime(event.endTime)) : '', '</p>',
       venue ? '<a class="grl-gig-room" href="#venue/' + encodeURIComponent(venue.id) + '">' + escapeHTML(venue.name) + '</a>' : '',
-      '</div>', creditedPhoto(listingPhoto("artists", event), "grl-performer-photo"), '</header>',
+      '</div>', creditedPhoto(artistPhoto, "grl-performer-photo"), '</header>',
       '<div class="grl-show-grid"><section class="grl-show-info"><h2>Show details</h2>',
       event.summary ? '<p class="grl-show-lede">' + escapeHTML(event.summary) + '</p>' : '',
       event.sourceNote ? '<aside class="grl-source-note"><strong>Check before you go.</strong><p>' +

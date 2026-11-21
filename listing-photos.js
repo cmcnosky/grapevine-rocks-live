@@ -9,6 +9,7 @@ window.GRLPhotos = {
       "source": "https://www.instagram.com/reel/DeDuTx6thfW/",
       "src": "assets/photos/artists/aautumn.webp",
       "thumb": "assets/photos/thumbs/artists/aautumn.webp",
+      "thumbWidth": 427,
       "width": 1012
     },
     "Andrea Venezio": {
@@ -19,6 +20,7 @@ window.GRLPhotos = {
       "source": "https://www.veneziomusic.com/",
       "src": "assets/photos/artists/andrea-venezio.webp",
       "thumb": "assets/photos/thumbs/artists/andrea-venezio.webp",
+      "thumbWidth": 600,
       "width": 1500
     },
     "Bobby Falk Group": {
@@ -30,6 +32,7 @@ window.GRLPhotos = {
       "source": "https://www.bobbyfalkmusic.com/about",
       "src": "assets/photos/artists/bobby-falk-group.webp",
       "thumb": "assets/photos/thumbs/artists/bobby-falk-group.webp",
+      "thumbWidth": 600,
       "width": 1800
     },
     "Brendon Preece": {
@@ -40,6 +43,7 @@ window.GRLPhotos = {
       "source": "https://lulusfunfoodmusic.com/event/brendon-preece-destin/2025-04-28/",
       "src": "assets/photos/artists/brendon-preece.webp",
       "thumb": "assets/photos/thumbs/artists/brendon-preece.webp",
+      "thumbWidth": 600,
       "width": 1155
     },
     "Brent Rozell & The Soulmates": {
@@ -55,6 +59,7 @@ window.GRLPhotos = {
       "source": "https://www.brentrozell.com/photos.html",
       "src": "assets/photos/artists/brent-rozell-and-the-soulmates.webp?v=4d06c19167",
       "thumb": "assets/photos/thumbs/artists/brent-rozell-and-the-soulmates.webp?v=e711b46906",
+      "thumbWidth": 640,
       "width": 1067
     },
     "Chasing Angels": {
@@ -65,36 +70,46 @@ window.GRLPhotos = {
       "source": "https://www.instagram.com/p/DduwS30jRO4/",
       "src": "assets/photos/artists/chasing-angels.webp",
       "thumb": "assets/photos/thumbs/artists/chasing-angels.webp",
+      "thumbWidth": 570,
       "width": 720
     },
     "Chaz Marie Band": {
       "alt": "Chaz Marie Band performing on the GrapeFest gazebo stage.",
       "credit": "Grapevine Rocks Live / Elexis Rice",
-      "height": 540,
-      "position": "50% 50%",
+      "height": 900,
+      "position": "50% 31%",
       "source": "https://www.instagram.com/p/DdaMZEWisDE/",
-      "src": "assets/photos/artists/chaz-marie-band.webp",
-      "thumb": "assets/photos/thumbs/artists/chaz-marie-band.webp",
+      "src": "assets/photos/artists/chaz-marie-band.webp?v=e2672e3e14",
+      "thumb": "assets/photos/thumbs/artists/chaz-marie-band.webp?v=e7835ec316",
+      "thumbWidth": 608,
       "width": 720
     },
     "Cherry Bomb": {
-      "alt": "Cherry Bomb's vocalist performing onstage at Tolbert's, with the drummer behind her.",
-      "credit": "Grapevine Rocks Live",
-      "height": 540,
-      "position": "50% 45%",
-      "source": "https://www.instagram.com/p/Dc5eMZAljoj/",
-      "src": "assets/photos/artists/cherry-bomb.webp",
-      "thumb": "assets/photos/thumbs/artists/cherry-bomb.webp",
-      "width": 720
+      "alt": "Four Cherry Bomb members smiling together onstage under pink lights, with electric guitar and bass.",
+      "credit": "English Bob Photography / Cherry Bomb Texas",
+      "framing": {
+        "listing": {
+          "fit": "contain",
+          "position": "50% 48%"
+        }
+      },
+      "height": 1239,
+      "position": "50% 48%",
+      "source": "https://cherrybombtexas.com/",
+      "src": "assets/photos/artists/cherry-bomb.webp?v=e9fd1a326a",
+      "thumb": "assets/photos/thumbs/artists/cherry-bomb.webp?v=f242916d53",
+      "thumbWidth": 900,
+      "width": 2048
     },
     "Christian Haworth": {
       "alt": "Christian Haworth singing and playing acoustic guitar with fellow musicians at the VFW.",
       "credit": "Grapevine Rocks Live",
-      "height": 540,
-      "position": "50% 50%",
+      "height": 900,
+      "position": "50% 33%",
       "source": "https://www.instagram.com/p/Daws9IttHvf/",
-      "src": "assets/photos/artists/christian-haworth.webp",
-      "thumb": "assets/photos/thumbs/artists/christian-haworth.webp",
+      "src": "assets/photos/artists/christian-haworth.webp?v=b80c89f0dd",
+      "thumb": "assets/photos/thumbs/artists/christian-haworth.webp?v=fc079abbf2",
+      "thumbWidth": 608,
       "width": 720
     },
     "Corey Breedlove": {
@@ -105,6 +120,7 @@ window.GRLPhotos = {
       "source": "https://www.coreybreedlove.com/",
       "src": "assets/photos/artists/corey-breedlove.webp",
       "thumb": "assets/photos/thumbs/artists/corey-breedlove.webp",
+      "thumbWidth": 600,
       "width": 1800
     },
     "DJ Junior in the Mix": {
@@ -115,6 +131,7 @@ window.GRLPhotos = {
       "source": "https://radiodjs.com/portfolio_item/junior/",
       "src": "assets/photos/artists/dj-junior-in-the-mix.webp",
       "thumb": "assets/photos/thumbs/artists/dj-junior-in-the-mix.webp",
+      "thumbWidth": 576,
       "width": 576
     },
     "Dan Shinedling": {
@@ -125,6 +142,7 @@ window.GRLPhotos = {
       "source": "https://www.linkedin.com/posts/danshinedlingjr_ramblin-aid-activity-7366251073772113920-y0Rq",
       "src": "assets/photos/artists/dan-shinedling.webp",
       "thumb": "assets/photos/thumbs/artists/dan-shinedling.webp",
+      "thumbWidth": 600,
       "width": 1066
     },
     "Dathan Martin": {
@@ -136,6 +154,7 @@ window.GRLPhotos = {
       "source": "https://www.instagram.com/reel/DdX8qxrNbhm/",
       "src": "assets/photos/artists/dathan-martin.webp",
       "thumb": "assets/photos/thumbs/artists/dathan-martin.webp",
+      "thumbWidth": 428,
       "width": 720
     },
     "Dusty Moats": {
@@ -146,6 +165,7 @@ window.GRLPhotos = {
       "source": "https://www.dropbox.com/scl/fo/pkp787kspv1pldst86okw/APITi6sij0JowMkl-PktUwQ/17E4A7E5-F3B2-4CD4-9F91-A3CE5DF72E89.JPEG?rlkey=mipz6di586t8i39oit6iuurc8&dl=0",
       "src": "assets/photos/artists/dusty-moats.webp",
       "thumb": "assets/photos/thumbs/artists/dusty-moats.webp",
+      "thumbWidth": 600,
       "width": 1200
     },
     "Ford Nelson": {
@@ -156,16 +176,18 @@ window.GRLPhotos = {
       "source": "https://www.instagram.com/reel/Ddc_8OWtflX/",
       "src": "assets/photos/artists/ford-nelson.webp",
       "thumb": "assets/photos/thumbs/artists/ford-nelson.webp",
+      "thumbWidth": 427,
       "width": 720
     },
     "Guy Patrick": {
       "alt": "Guy Patrick singing and playing electric guitar at Napoli's.",
       "credit": "Grapevine Rocks Live / Shots from Gary",
-      "height": 540,
-      "position": "50% 45%",
+      "height": 1080,
+      "position": "50% 10%",
       "source": "https://www.instagram.com/p/DeSkAD9tusk/",
-      "src": "assets/photos/artists/guy-patrick.webp",
-      "thumb": "assets/photos/thumbs/artists/guy-patrick.webp",
+      "src": "assets/photos/artists/guy-patrick.webp?v=7327e247e3",
+      "thumb": "assets/photos/thumbs/artists/guy-patrick.webp?v=48e86ce7c3",
+      "thumbWidth": 507,
       "width": 720
     },
     "JD Monson": {
@@ -176,6 +198,7 @@ window.GRLPhotos = {
       "source": "https://jdmonson.com/home",
       "src": "assets/photos/artists/jd-monson.webp",
       "thumb": "assets/photos/thumbs/artists/jd-monson.webp",
+      "thumbWidth": 600,
       "width": 1400
     },
     "Jordan Whitmore": {
@@ -186,6 +209,7 @@ window.GRLPhotos = {
       "source": "https://www.jordanwhitmore.com/epk",
       "src": "assets/photos/artists/jordan-whitmore.webp",
       "thumb": "assets/photos/thumbs/artists/jordan-whitmore.webp",
+      "thumbWidth": 600,
       "width": 1024
     },
     "Josh Ingram": {
@@ -196,16 +220,18 @@ window.GRLPhotos = {
       "source": "https://www.instagram.com/p/Dc73cyOlgCO/",
       "src": "assets/photos/artists/josh-ingram.webp",
       "thumb": "assets/photos/thumbs/artists/josh-ingram.webp",
+      "thumbWidth": 570,
       "width": 720
     },
     "Open blues jam hosted by Mister Fantastic Blues Band": {
       "alt": "Members of Mister Fantastic Blues Band performing with saxophones and guitars at Bohemian Bull.",
       "credit": "Grapevine Rocks Live / Gary",
-      "height": 540,
-      "position": "50% 50%",
+      "height": 870,
+      "position": "50% 18%",
       "source": "https://www.instagram.com/p/DdhxHQbjTKV/",
-      "src": "assets/photos/artists/mister-fantastic-blues-band.webp",
-      "thumb": "assets/photos/thumbs/artists/mister-fantastic-blues-band.webp",
+      "src": "assets/photos/artists/mister-fantastic-blues-band.webp?v=c61807e2bf",
+      "thumb": "assets/photos/thumbs/artists/mister-fantastic-blues-band.webp?v=638e8cd775",
+      "thumbWidth": 629,
       "width": 720
     },
     "Road Trip": {
@@ -216,16 +242,18 @@ window.GRLPhotos = {
       "source": "https://www.grapevinespringswinery.com/events/2025/10/4/live-music-road-trip",
       "src": "assets/photos/artists/road-trip.webp",
       "thumb": "assets/photos/thumbs/artists/road-trip.webp",
+      "thumbWidth": 600,
       "width": 810
     },
     "Shannon Morales & The Max": {
       "alt": "Shannon Morales singing with The Max during a live set at Bohemian Bull.",
       "credit": "Grapevine Rocks Live / Shots from Gary",
-      "height": 540,
-      "position": "50% 50%",
+      "height": 850,
+      "position": "50% 38%",
       "source": "https://www.instagram.com/p/DeDgxgDtrZb/",
-      "src": "assets/photos/artists/shannon-morales-and-the-max.webp",
-      "thumb": "assets/photos/thumbs/artists/shannon-morales-and-the-max.webp",
+      "src": "assets/photos/artists/shannon-morales-and-the-max.webp?v=c953b9c4e6",
+      "thumb": "assets/photos/thumbs/artists/shannon-morales-and-the-max.webp?v=7f04a41770",
+      "thumbWidth": 644,
       "width": 720
     },
     "Sing with Shag, hosted by Shannon Cobb": {
@@ -236,52 +264,50 @@ window.GRLPhotos = {
       "source": "https://voyagedallas.com/interview/daily-inspiration-meet-shannon-cobb/",
       "src": "assets/photos/artists/shannon-cobb.webp",
       "thumb": "assets/photos/thumbs/artists/shannon-cobb.webp",
+      "thumbWidth": 600,
       "width": 960
     },
     "Strangle Love": {
       "alt": "Members of Strangle Love playing guitar and bass during a live performance",
       "credit": "Strangle Love official video",
-      "height": 720,
       "framing": {
-        "detail": {
-          "fit": "contain"
-        },
         "listing": {
           "fit": "contain"
         }
       },
+      "height": 720,
       "position": "50% 38%",
       "source": "https://www.youtube.com/watch?v=ECg1Rcy9dYY",
       "src": "assets/photos/artists/strangle-love.webp",
       "thumb": "assets/photos/thumbs/artists/strangle-love.webp",
+      "thumbWidth": 600,
       "width": 1280
     },
     "Sylvester Jones Jr.": {
       "alt": "Sylvester Jones Jr. playing saxophone on the Piaf patio.",
       "credit": "Grapevine Rocks Live / Gary",
-      "height": 540,
-      "position": "50% 50%",
+      "height": 960,
+      "position": "50% 10%",
       "source": "https://www.instagram.com/p/Dd-uM5hNE98/",
-      "src": "assets/photos/artists/sylvester-jones-jr.webp",
-      "thumb": "assets/photos/thumbs/artists/sylvester-jones-jr.webp",
+      "src": "assets/photos/artists/sylvester-jones-jr.webp?v=6ea54dc1ff",
+      "thumb": "assets/photos/thumbs/artists/sylvester-jones-jr.webp?v=b4205aabc9",
+      "thumbWidth": 570,
       "width": 720
     },
     "The 8 Tracks": {
       "alt": "The 8 Tracks performing onstage with their vocalist at center.",
       "credit": "The 8 Tracks",
-      "height": 1080,
       "framing": {
-        "detail": {
-          "fit": "contain"
-        },
         "listing": {
           "fit": "contain"
         }
       },
+      "height": 1080,
       "position": "50% 45%",
       "source": "https://8tracksband.com/",
       "src": "assets/photos/artists/the-8-tracks.webp",
       "thumb": "assets/photos/thumbs/artists/the-8-tracks.webp",
+      "thumbWidth": 600,
       "width": 1080
     },
     "The Alternatives": {
@@ -292,22 +318,24 @@ window.GRLPhotos = {
       "source": "https://www.instagram.com/reel/DbNA6WHtFmB/",
       "src": "assets/photos/artists/the-alternatives.webp",
       "thumb": "assets/photos/thumbs/artists/the-alternatives.webp",
+      "thumbWidth": 427,
       "width": 1012
     },
     "The Halftones": {
       "alt": "The Halftones performing together on a blue-lit stage.",
       "credit": "The Halftones",
-      "height": 666,
       "framing": {
-        "detail": {
+        "listing": {
           "fit": "contain"
         }
       },
+      "height": 1243,
       "position": "50% 50%",
       "source": "https://www.thehalftonesband.com/theband",
-      "src": "assets/photos/artists/the-halftones.webp",
-      "thumb": "assets/photos/thumbs/artists/the-halftones.webp",
-      "width": 1600
+      "src": "assets/photos/artists/the-halftones.webp?v=1ac5d3b014",
+      "thumb": "assets/photos/thumbs/artists/the-halftones.webp?v=06eba81840",
+      "thumbWidth": 1200,
+      "width": 2400
     }
   },
   "venues": {
@@ -319,6 +347,7 @@ window.GRLPhotos = {
       "source": "https://www.vfw10454.net/",
       "src": "assets/photos/venues/airport-cities-vfw.webp",
       "thumb": "assets/photos/thumbs/venues/airport-cities-vfw.webp",
+      "thumbWidth": 600,
       "width": 972
     },
     "ajs-on-main": {
@@ -329,6 +358,7 @@ window.GRLPhotos = {
       "source": "https://www.ajsonmaintx.com/",
       "src": "assets/photos/venues/ajs-on-main.webp",
       "thumb": "assets/photos/thumbs/venues/ajs-on-main.webp",
+      "thumbWidth": 600,
       "width": 800
     },
     "bohemian-bull": {
@@ -339,6 +369,7 @@ window.GRLPhotos = {
       "source": "https://www.bohemianbull.com/locations/grapevine-tx.html",
       "src": "assets/photos/venues/bohemian-bull.webp?v=6440b90751",
       "thumb": "assets/photos/thumbs/venues/bohemian-bull.webp?v=f34e36cf18",
+      "thumbWidth": 640,
       "width": 1600
     },
     "chez-fabien": {
@@ -349,6 +380,7 @@ window.GRLPhotos = {
       "source": "https://chezfabienbistro.com/",
       "src": "assets/photos/venues/chez-fabien.webp",
       "thumb": "assets/photos/thumbs/venues/chez-fabien.webp",
+      "thumbWidth": 600,
       "width": 1500
     },
     "chill": {
@@ -359,6 +391,7 @@ window.GRLPhotos = {
       "source": "https://chilldfw.com/grapevine/",
       "src": "assets/photos/venues/chill.webp",
       "thumb": "assets/photos/thumbs/venues/chill.webp",
+      "thumbWidth": 600,
       "width": 1536
     },
     "glass-cactus": {
@@ -369,6 +402,7 @@ window.GRLPhotos = {
       "source": "https://glasscactus.gaylordtexan.com/meetings",
       "src": "assets/photos/venues/glass-cactus.webp",
       "thumb": "assets/photos/thumbs/venues/glass-cactus.webp",
+      "thumbWidth": 600,
       "width": 1406
     },
     "grape-vine-springs": {
@@ -379,6 +413,7 @@ window.GRLPhotos = {
       "source": "https://assets.simpleviewinc.com/simpleview/image/upload/v1/clients/grapevine/Urban_Wine_Trail_Guide_22f8bdfd-8abd-408d-b494-91e8c672f8bc.pdf",
       "src": "assets/photos/venues/grape-vine-springs.webp",
       "thumb": "assets/photos/thumbs/venues/grape-vine-springs.webp",
+      "thumbWidth": 600,
       "width": 1055
     },
     "grapevine-elks": {
@@ -389,6 +424,7 @@ window.GRLPhotos = {
       "source": "https://www.elks.org/lodges/home.cfm?LodgeNumber=2483",
       "src": "assets/photos/venues/grapevine-elks.webp",
       "thumb": "assets/photos/thumbs/venues/grapevine-elks.webp",
+      "thumbWidth": 600,
       "width": 1000
     },
     "hop-and-sting": {
@@ -399,6 +435,7 @@ window.GRLPhotos = {
       "source": "https://hopandsting.myshopify.com/pages/food-truck-schedule",
       "src": "assets/photos/venues/hop-and-sting.webp",
       "thumb": "assets/photos/thumbs/venues/hop-and-sting.webp",
+      "thumbWidth": 600,
       "width": 1080
     },
     "hotel-vin-lobby": {
@@ -409,6 +446,7 @@ window.GRLPhotos = {
       "source": "https://www.hotelvin.com/gallery",
       "src": "assets/photos/venues/hotel-vin-lobby.webp",
       "thumb": "assets/photos/thumbs/venues/hotel-vin-lobby.webp",
+      "thumbWidth": 600,
       "width": 1000
     },
     "napolis": {
@@ -419,27 +457,30 @@ window.GRLPhotos = {
       "source": "https://www.napolisgrapevine.com/",
       "src": "assets/photos/venues/napolis.webp",
       "thumb": "assets/photos/thumbs/venues/napolis.webp",
+      "thumbWidth": 600,
       "width": 986
     },
     "piaf": {
-      "alt": "The Perch rooftop at PIAF with patio tables and an illuminated PIAF sign.",
+      "alt": "Tables and red chairs on PIAF’s covered rooftop patio, with the blue PIAF sign beside the open windows.",
       "credit": "PIAF Kitchen + Wine + Bar",
-      "height": 1000,
-      "position": "50% 45%",
-      "source": "https://piafkitchen.com/the-perch-rooftop-patio/",
-      "src": "assets/photos/venues/piaf.webp",
-      "thumb": "assets/photos/thumbs/venues/piaf.webp",
-      "width": 655
+      "height": 800,
+      "position": "50% 50%",
+      "source": "https://piafkitchen.com/",
+      "src": "assets/photos/venues/piaf.webp?v=3ffb307149",
+      "thumb": "assets/photos/thumbs/venues/piaf.webp?v=3d5ab3f6a1",
+      "thumbWidth": 720,
+      "width": 1200
     },
     "rock-and-brews": {
       "alt": "Rock & Brews Grapevine exterior with its illuminated guitar and restaurant signs.",
       "credit": "Rock & Brews Grapevine",
-      "height": 900,
+      "height": 1200,
       "position": "50% 50%",
       "source": "https://www.rockandbrews.com/grapevine",
-      "src": "assets/photos/venues/rock-and-brews.webp",
-      "thumb": "assets/photos/thumbs/venues/rock-and-brews.webp",
-      "width": 1200
+      "src": "assets/photos/venues/rock-and-brews.webp?v=8825b89f6b",
+      "thumb": "assets/photos/thumbs/venues/rock-and-brews.webp?v=5054f8f9b7",
+      "thumbWidth": 720,
+      "width": 1600
     },
     "third-rail": {
       "alt": "Third Rail at Harvest Hall with lounge seating, bar, and an empty stage.",
@@ -449,6 +490,7 @@ window.GRLPhotos = {
       "source": "https://www.harvesthall.com/about",
       "src": "assets/photos/venues/third-rail.webp",
       "thumb": "assets/photos/thumbs/venues/third-rail.webp",
+      "thumbWidth": 600,
       "width": 748
     },
     "tolberts": {
@@ -459,6 +501,7 @@ window.GRLPhotos = {
       "source": "https://tolbertsrestaurant.com/",
       "src": "assets/photos/venues/tolberts.webp",
       "thumb": "assets/photos/thumbs/venues/tolberts.webp",
+      "thumbWidth": 600,
       "width": 1360
     },
     "willhoites": {
@@ -469,6 +512,7 @@ window.GRLPhotos = {
       "source": "https://www.willhoites.com/about-us/",
       "src": "assets/photos/venues/willhoites.webp?v=bd6a86dd8d",
       "thumb": "assets/photos/thumbs/venues/willhoites.webp?v=418fd694f8",
+      "thumbWidth": 720,
       "width": 1600
     }
   }
