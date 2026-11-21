@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const ACCESS_KEY_STORAGE = "grl-owner-access-key";
+  const LEGACY_ACCESS_KEY_STORAGE = "grl-owner-access-key";
   const REQUEST_TIMEOUT_MS = 20000;
 
   const elements = {
@@ -69,7 +69,6 @@
     editor: null,
     confirmResolve: null,
     returnFocus: null,
-    privateKey: "",
     busy: false,
   };
 
@@ -82,17 +81,10 @@
     }
   }
 
-  function readPrivateKey() {
+  function clearLegacyAccessKey() {
     const rawFragment = window.location.hash.slice(1);
     const params = new URLSearchParams(rawFragment);
-    const fragmentKey = String(params.get("key") || "").trim();
-    if (fragmentKey) {
-      state.privateKey = fragmentKey;
-      try {
-        window.localStorage.setItem(ACCESS_KEY_STORAGE, fragmentKey);
-      } catch (_error) {
-        // The key remains available for this page even if storage is blocked.
-      }
+    if (params.has("key")) {
       params.delete("key");
       const remaining = params.toString();
       window.history.replaceState(
@@ -102,14 +94,11 @@
           window.location.search +
           (remaining ? "#" + remaining : ""),
       );
-      return;
     }
     try {
-      state.privateKey = String(
-        window.localStorage.getItem(ACCESS_KEY_STORAGE) || "",
-      ).trim();
+      window.localStorage.removeItem(LEGACY_ACCESS_KEY_STORAGE);
     } catch (_error) {
-      state.privateKey = "";
+      // Login still works if browser storage is unavailable.
     }
   }
 
@@ -179,8 +168,6 @@
     if (error?.status === 429)
       return "Too many attempts. Wait a moment, then try again.";
     if (error?.status === 401 || error?.status === 403) {
-      if (context === "login" && !state.privateKey)
-        return "Open the private access link on this device, then try again.";
       return context === "login"
         ? "The username or password was not accepted."
         : "The session has ended. Log in again.";
@@ -545,7 +532,6 @@
           body: JSON.stringify({
             username: elements.username.value.trim(),
             password: elements.password.value,
-            accessKey: state.privateKey,
           }),
         },
         false,
@@ -1467,7 +1453,7 @@
     selectTab(order[next], true);
   }
 
-  readPrivateKey();
+  clearLegacyAccessKey();
   elements.loginForm.addEventListener("submit", signIn);
   elements.signOut.addEventListener("click", signOut);
   elements.publish.addEventListener("click", publishCatalog);
@@ -1506,7 +1492,7 @@
     requestEditorClose();
   });
   elements.confirmDialog.addEventListener("close", finishConfirmation);
-  window.addEventListener("hashchange", readPrivateKey);
+  window.addEventListener("hashchange", clearLegacyAccessKey);
   window.addEventListener("beforeunload", (event) => {
     if (!hasChanges()) return;
     event.preventDefault();
