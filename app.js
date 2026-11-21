@@ -164,7 +164,7 @@
       .map((show) => show.date)
       .filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
       .sort();
-    if (!dates.length) return "Published music listings";
+    if (!dates.length) return "Grapevine, Texas";
     const first = dates[0],
       last = dates.at(-1),
       firstYear = first.slice(0, 4),
@@ -173,12 +173,12 @@
       lastMonth = last.slice(0, 7);
     if (first === last)
       return (
-        "Published listings · " +
+        "Show dates · " +
         displayDate(first, { month: "short", day: "numeric", year: "numeric" })
       );
     if (firstYear === lastYear && firstMonth === lastMonth)
       return (
-        "Published listings · " +
+        "Show dates · " +
         displayDate(first, { month: "short", day: "numeric" }) +
         "–" +
         displayDate(last, { day: "numeric" }) +
@@ -186,7 +186,7 @@
         lastYear
       );
     return (
-      "Published listings · " +
+      "Show dates · " +
       displayDate(first, { month: "short", day: "numeric", year: "numeric" }) +
       "–" +
       displayDate(last, { month: "short", day: "numeric", year: "numeric" })
@@ -252,7 +252,7 @@
       '</p><h1>Grapevine<br><span>After Dark.</span></h1><p>Find a band, pick a room, and make a night of it. Your field guide to live music in Grapevine, Texas.</p><div class="hero-actions">' +
       button("Explore the music guide", "#guide") +
       '<a class="text-link" href="#tv">Explore GRL TV</a></div></div><figure class="poster"><img src="assets/hero.webp" fetchpriority="high" width="1350" height="900" alt="An illustrated guitarist in a fringed jacket under a hot-pink and orange stage sun."><figcaption><span>GRAPEVINE ROCKS LIVE</span><span><span class="poster-star" aria-hidden="true">★</span> TEXAS</span></figcaption></figure></div></section>' +
-      '<div class="music-strip"><div class="wrap" aria-label="Music covered">Rock <i aria-hidden="true">✦</i> Country <i aria-hidden="true">✦</i> Blues <i aria-hidden="true">✦</i> Americana <i aria-hidden="true">✦</i> Pop <i aria-hidden="true">✦</i> Live in Grapevine</div></div>' +
+      '<div class="music-strip"><ul class="wrap" aria-label="Music covered"><li>Rock</li><li>Country</li><li>Blues</li><li>Americana</li><li>Pop</li></ul></div>' +
       '<section class="band"><div class="wrap"><div class="top-line"><div><h2 class="display">On the bill</h2></div><a class="text-link" href="#guide">See the full guide</a></div><div class="home-guide">' +
       window.GRLGuide.homeRows() +
       '</div><p class="home-original">Read the original <a href="https://www.instagram.com/p/Df6zjpSFMKI/">GRL weekend guide on Instagram</a> or explore <a href="#events">community events</a>.</p></div></section>' +
@@ -685,18 +685,18 @@
         "About Grapevine Rocks Live",
         "Music guides, venue coverage and original stories from around Grapevine.",
       ) +
-      '<div class="wrap compact about-copy"><h2 class="box-title">Meet Jaime</h2><p>Jaime Paxton launched Grapevine Rocks Live in 2026 to help people find live music and discover the venues, musicians and local businesses behind it. <a href="https://www.instagram.com/reel/DcsJi0btzxQ/" rel="external noopener">Watch Jaime introduce GRL</a>.</p><h2 class="box-title">Find a show</h2><p>Browse the <a href="#guide">music guide</a> by date, artist or venue, then open a listing for its published source. Times and lineups can change, so check with the venue before heading out.</p><h2 class="box-title">Corrections and submissions</h2><p>If a listing needs a correction, message GRL on <a href="https://ig.me/m/grapevinerockslive" rel="external noopener">Instagram</a> or <a href="https://m.me/GrapevineRocksLive" rel="external noopener">Facebook</a>. Musicians and venues can also <a href="#submit">submit a show</a> for the guide.</p><h2 class="box-title">About GRL</h2><p>Grapevine Rocks Live covers local music and entertainment. The Grapevine Chamber lists the organization under Event and Entertainment Productions.</p><p>' +
+      '<div class="wrap compact about-copy"><section><h2 class="box-title">Meet Jaime</h2><p>Jaime Paxton launched Grapevine Rocks Live in 2026 to help people find live music and discover the venues, musicians and local businesses behind it. <a href="https://www.instagram.com/reel/DcsJi0btzxQ/" rel="external noopener">Watch Jaime introduce GRL</a>.</p></section><section><h2 class="box-title">Find a show</h2><p>Browse the <a href="#guide">music guide</a> by date, artist or venue, then open a listing for its published source. Times and lineups can change, so check with the venue before heading out.</p></section><section><h2 class="box-title">Corrections and submissions</h2><p>If a listing needs a correction, message GRL on <a href="https://ig.me/m/grapevinerockslive" rel="external noopener">Instagram</a> or <a href="https://m.me/GrapevineRocksLive" rel="external noopener">Facebook</a>. Musicians and venues can also <a href="#submit">submit a show</a> for the guide.</p></section><section><h2 class="box-title">About GRL</h2><p>Grapevine Rocks Live covers local music and entertainment. The Grapevine Chamber lists the organization under Event and Entertainment Productions.</p><p>' +
       external(
         "Grapevine Chamber listing",
         "https://business.grapevinechamber.org/list/member/grapevine-rocks-live-15383",
       ) +
-      "</p>" +
+      "</p></section>" +
       (social.profiles.length
-        ? '<h2 class="box-title">GRL on social</h2><p>' +
+        ? '<section><h2 class="box-title">GRL on social</h2><p>' +
           profileLinks() +
-          "</p>"
+          "</p></section>"
         : "") +
-      '<h2 class="box-title">Follow the guide</h2><p><a href="#updates">Add the music calendar</a>, follow GRL on social or <a href="#partners">tell GRL about a venue, business or project</a>.</p></div>'
+      '<section><h2 class="box-title">Follow the guide</h2><p><a href="#updates">Add the music calendar</a>, follow GRL on social or <a href="#partners">tell GRL about a venue, business or project</a>.</p></section></div>'
     );
   }
   function missing() {

@@ -9,13 +9,15 @@
   --grl-orange: var(--orange, #f77f19);
   --grl-green: #14613e;
   --grl-line: color-mix(in srgb, var(--grl-ink) 22%, transparent);
+  font-size: 1.125rem;
+  line-height: 1.55;
 }
 
 .grl-page {
   color: var(--grl-ink);
   font-family: var(--body, "DM Sans", system-ui, sans-serif);
   min-height: 60vh;
-  padding: clamp(3rem, 8vw, 7rem) max(1rem, calc((100vw - 76rem) / 2));
+  padding: clamp(1.75rem, 4vw, 3.25rem) max(1rem, calc((100vw - 76rem) / 2));
 }
 
 .grl-page *,
@@ -56,31 +58,50 @@
 
 .grl-page-head {
   border-bottom: 2px solid var(--grl-ink);
-  margin-bottom: 1.5rem;
-  padding-bottom: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: 1.1rem;
+  padding-bottom: clamp(1rem, 2.5vw, 1.8rem);
 }
 
 .grl-page-head h1 {
-  font-size: clamp(3.25rem, 10vw, 8.5rem);
+  font-size: clamp(3.25rem, 8vw, 6.8rem);
   margin-bottom: 0;
   max-width: 12ch;
   text-transform: uppercase;
 }
 
 .grl-page-intro {
-  font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  font-size: clamp(1.125rem, 1.8vw, 1.35rem);
   line-height: 1.5;
-  margin: 1.25rem 0 0;
+  margin: 0.8rem 0 0;
   max-width: 50rem;
+}
+
+.grl-guide-page .grl-page-head {
+  align-items: end;
+  column-gap: clamp(1.5rem, 4vw, 3.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.75fr);
+}
+
+.grl-guide-page .grl-page-head .grl-eyebrow {
+  grid-column: 1 / -1;
+}
+
+.grl-guide-page .grl-page-head h1 {
+  max-width: none;
+}
+
+.grl-guide-page .grl-page-intro {
+  margin-bottom: 0.3rem;
 }
 
 .grl-eyebrow,
 .grl-event-kicker,
 .grl-venue-card-top {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.77rem;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.065em;
   line-height: 1.3;
   text-transform: uppercase;
 }
@@ -92,7 +113,7 @@
 
 .grl-weekend-source {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -102,10 +123,10 @@
   background: var(--grl-orange);
   border: 2px solid var(--grl-ink);
   display: grid;
-  gap: 1.5rem 2rem;
+  gap: 1rem 1.5rem;
   grid-template-columns: minmax(0, 1fr) auto;
-  margin: 3rem 0 0;
-  padding: clamp(1.2rem, 3vw, 2rem);
+  margin: 2rem 0 0;
+  padding: clamp(1.1rem, 2.5vw, 1.65rem);
 }
 
 .grl-calendar-panel h2 {
@@ -154,9 +175,9 @@
 
 .grl-filters label > span {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.065em;
   text-transform: uppercase;
 }
 
@@ -168,7 +189,7 @@
   border-radius: 0;
   color: var(--grl-ink);
   font: inherit;
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.4;
   min-height: 3rem;
   padding: 0.7rem 0.8rem;
@@ -198,9 +219,10 @@
   color: inherit;
   cursor: pointer;
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.78rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  padding: 0.8rem;
+  min-height: 3rem;
+  padding: 0.7rem 0.8rem;
   text-decoration: underline;
   text-underline-offset: 0.2rem;
   text-transform: uppercase;
@@ -208,8 +230,8 @@
 
 .grl-results-summary {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.83rem;
-  margin: 0 0 0.6rem;
+  font-size: 1.125rem;
+  margin: 0 0 0.75rem;
 }
 
 .grl-event-list,
@@ -250,7 +272,7 @@
 
 .grl-event-date span {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.72rem;
+  font-size: 1rem;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -307,23 +329,27 @@
 }
 
 .grl-source-link {
-  font-size: 0.78rem;
+  font-size: 1rem;
 }
 
 .grl-event-venue a {
   color: var(--grl-red);
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.8rem;
+  font-size: 1.125rem;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .grl-row-link {
+  align-items: center;
   border: 1px solid var(--grl-ink);
+  display: inline-flex;
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.78rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  padding: 0.75rem 0.9rem;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.7rem 0.9rem;
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -338,10 +364,10 @@
   background: var(--grl-pink);
   color: var(--grl-ink);
   display: grid;
-  gap: 2rem;
+  gap: 1.25rem;
   grid-template-columns: 1fr auto;
-  margin-top: 4rem;
-  padding: clamp(1.4rem, 4vw, 3rem);
+  margin-top: 2.5rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
   transform: rotate(-0.35deg);
 }
 
@@ -364,7 +390,7 @@
   cursor: pointer;
   display: inline-flex;
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.8rem;
+  font-size: 1.125rem;
   font-weight: 800;
   justify-content: center;
   min-height: 3.1rem;
@@ -396,7 +422,7 @@
 
 .grl-empty {
   border-bottom: 1px solid var(--grl-line);
-  padding: 3rem 1rem;
+  padding: 1.8rem 1rem;
   text-align: center;
 }
 
@@ -413,7 +439,7 @@
 
 .grl-empty--page {
   border: 2px solid var(--grl-ink);
-  padding: clamp(3rem, 10vw, 8rem) 1.5rem;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
 }
 
 .grl-empty--page p {
@@ -422,7 +448,7 @@
 
 .grl-venue-grid {
   display: grid;
-  gap: 1.2rem;
+  gap: 1rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -431,8 +457,8 @@
   border: 1px solid var(--grl-ink);
   display: flex;
   flex-direction: column;
-  min-height: 25rem;
-  padding: clamp(1.2rem, 3vw, 2rem);
+  min-height: 0;
+  padding: clamp(1.1rem, 2.2vw, 1.55rem);
   position: relative;
 }
 
@@ -450,14 +476,14 @@
 
 .grl-venue-card-top {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: space-between;
-  margin-bottom: 3rem;
+  margin-bottom: 0.65rem;
 }
 
 .grl-venue-card h2 {
   font-size: clamp(2rem, 5vw, 3.7rem);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.65rem;
   text-transform: uppercase;
 }
 
@@ -472,7 +498,7 @@
 .grl-address {
   color: var(--grl-red);
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.82rem;
+  font-size: 1.125rem;
   font-weight: 700;
 }
 
@@ -481,15 +507,16 @@
   flex-wrap: wrap;
   gap: 0.4rem;
   list-style: none;
-  margin: auto 0 1.4rem;
-  padding: 1.5rem 0 0;
+  margin: 0.7rem 0 1rem;
+  padding: 0;
 }
 
 .grl-chip-list li {
   background: #ece2ff;
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.72rem;
-  padding: 0.35rem 0.55rem;
+  font-size: 1rem;
+  line-height: 1.3;
+  padding: 0.4rem 0.6rem;
   text-transform: uppercase;
 }
 
@@ -500,19 +527,19 @@
   display: flex;
   flex-wrap: wrap;
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.76rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  gap: 0.7rem 1.2rem;
-  padding-top: 1rem;
+  gap: 0.6rem 1rem;
+  padding-top: 0.8rem;
   text-transform: uppercase;
 }
 
 .grl-back-link {
   display: inline-block;
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.8rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   text-transform: uppercase;
 }
 
@@ -525,11 +552,11 @@
 }
 
 .grl-section {
-  margin-top: clamp(3rem, 8vw, 6rem);
+  margin-top: clamp(2rem, 4.5vw, 3.5rem);
 }
 
 .grl-section-heading {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .grl-section-heading h2 {
@@ -614,7 +641,7 @@
 
 .grl-show-date-block span {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -630,9 +657,9 @@
 
 .grl-show-grid {
   display: grid;
-  gap: clamp(2rem, 6vw, 5rem);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
   grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
-  margin-top: 3rem;
+  margin-top: 1.5rem;
 }
 
 .grl-show-lede {
@@ -645,13 +672,14 @@
   border: 1px solid var(--grl-ink);
   box-shadow: 5px 5px 0 var(--grl-orange);
   line-height: 1.5;
-  margin: 1.5rem 5px 2rem 0;
+  font-size: 1.125rem;
+  margin: 1.1rem 5px 1.5rem 0;
   padding: 1rem 1.1rem;
 }
 
 .grl-source-note strong {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.78rem;
+  font-size: 1rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -678,25 +706,27 @@
 .grl-show-facts > div {
   border-bottom: 1px solid var(--grl-line);
   display: grid;
-  gap: 1rem;
-  grid-template-columns: 5.5rem 1fr;
-  padding: 0.9rem 0;
+  gap: 0.8rem;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  padding: 0.8rem 0;
 }
 
 .grl-show-facts dt {
   font-family: var(--mono, "IBM Plex Mono", monospace);
-  font-size: 0.74rem;
+  font-size: 1rem;
   font-weight: 800;
   text-transform: uppercase;
 }
 
 .grl-show-facts dd {
+  font-size: 1.125rem;
   line-height: 1.5;
   margin: 0;
 }
 
 .grl-show-facts small {
   color: color-mix(in srgb, var(--grl-ink) 70%, transparent);
+  font-size: 1rem;
 }
 
 .home-guide .grl-event-row--compact {
@@ -704,6 +734,14 @@
 }
 
 @media (max-width: 860px) {
+  .grl-guide-page .grl-page-head {
+    display: block;
+  }
+
+  .grl-guide-page .grl-page-intro {
+    margin-bottom: 0;
+  }
+
   .grl-calendar-panel,
   .grl-guide-cta,
   .grl-show-grid {
@@ -726,16 +764,27 @@
 
 @media (max-width: 600px) {
   .grl-page {
+    font-size: 1.0625rem;
+    padding-block: 1.5rem 2.25rem;
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
+  .home-guide {
+    font-size: 1.0625rem;
+  }
+
   .grl-page-head h1 {
-    font-size: clamp(3rem, 17vw, 5.2rem);
+    font-size: clamp(3rem, 15vw, 4.75rem);
   }
 
   .grl-filters {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grl-filters label:first-child,
+  .grl-filters .grl-text-button {
+    grid-column: 1 / -1;
   }
 
   .grl-event-row {
@@ -762,7 +811,7 @@
     align-items: start;
     flex-direction: column;
     gap: 0.4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.55rem;
   }
 
   .grl-show-poster {
@@ -785,7 +834,7 @@
   }
 
   .grl-show-facts > div {
-    grid-template-columns: 4.7rem 1fr;
+    grid-template-columns: 6rem minmax(0, 1fr);
   }
 
   .grl-calendar-actions,
@@ -796,6 +845,12 @@
 
   .grl-button {
     width: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  .grl-filters {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -850,9 +905,9 @@
 /* Music listings and their credited photography */
 .grl-event-row {
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(.85rem, 2.2vw, 2rem);
+  gap: clamp(.8rem, 1.8vw, 1.4rem);
   min-height: 0;
-  padding: 1.2rem 0;
+  padding: 1rem 0;
 }
 .grl-event-row.with-media {
   grid-template-columns: clamp(12rem, 26vw, 19.5rem) minmax(0, 1fr) auto;
@@ -861,8 +916,8 @@
 .grl-event-row:hover h3 a { text-decoration: underline; text-decoration-thickness: 2px; }
 .grl-event-copy { min-width: 0; }
 .grl-event-copy h3 { font: 900 clamp(2rem, 4vw, 3.4rem)/.98 var(--display); letter-spacing: -.025em; overflow-wrap: anywhere; }
-.grl-listing-time { font: 800 .9rem/1.4 var(--body); }
-.grl-performer { font-size: .95rem; }
+.grl-listing-time { font: 800 1.125rem/1.45 var(--body); }
+.grl-performer { font-size: 1.125rem; }
 .grl-listing-images {
   display: grid;
   grid-auto-columns: minmax(0, 1fr);
@@ -886,38 +941,38 @@
 .grl-listing-images figure a:focus-visible { outline-offset: -3px; }
 .grl-listing-images .grl-room-label {
   position: absolute; bottom: 0; right: 0;
-  padding: .18rem .38rem;
+  padding: .38rem .55rem;
   background: var(--ink); color: var(--paper);
-  font: 700 .67rem/1.35 var(--body); letter-spacing: .03em;
+  font: 700 1rem/1.25 var(--body); letter-spacing: .03em;
 }
 .home-guide {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.2vw, 2.2rem); border: 0;
+  align-items: start; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.2vw, 2.2rem); border: 0;
 }
 .home-guide .grl-event-row {
   display: flex; flex-direction: column; align-items: stretch; gap: 0;
-  border: 0; border-bottom: 2px solid var(--ink); padding: 0 0 1rem;
+  border: 0; border-bottom: 2px solid var(--ink); padding: 0 0 .85rem;
   justify-content: flex-start;
 }
-.home-guide .grl-event-copy { padding: 1rem 0 .65rem; }
+.home-guide .grl-event-copy { padding: .8rem 0 .45rem; }
 .home-guide .grl-event-copy h3 { font-family: var(--display); font-size: clamp(2.15rem, 3.7vw, 3.7rem); line-height: .96; margin: .3rem 0 .55rem; }
 .home-guide .grl-listing-images { align-self: stretch; aspect-ratio: 1.82; }
-.home-guide .grl-row-link { margin-top: auto; align-self: start; }
-.grl-day { margin: 1.7rem 0 3rem; }
+.home-guide .grl-row-link { margin-top: .25rem; align-self: start; }
+.grl-day { margin: 1.25rem 0 2.2rem; }
 .grl-day h2 {
   font: 900 clamp(1.65rem, 3.4vw, 2.6rem)/1 var(--display);
-  margin: 0; padding: .75rem 0; border-bottom: 3px solid var(--ink);
+  margin: 0; padding: .65rem 0; border-bottom: 3px solid var(--ink);
 }
 #grl-guide-results { border: 0; }
-.grl-photo figcaption { padding: .48rem .65rem; color: var(--ink); background: var(--paper); font: 500 .8rem/1.4 var(--body); text-align: left; }
+.grl-photo figcaption { padding: .65rem .75rem; color: var(--ink); background: var(--paper); font: 500 1rem/1.5 var(--body); text-align: left; }
 .grl-photo figcaption a { color: var(--ink); text-decoration-thickness: 1px; }
 .grl-gig-head { color: var(--paper); background: var(--ink); border: 2px solid var(--ink); }
 .grl-gig-head.with-photo, .grl-venue-hero.with-photo { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
-.grl-gig-type { padding: clamp(1.5rem, 4vw, 4.5rem); align-self: center; }
-.grl-gig-date, .grl-gig-time { font: 800 clamp(1rem, 2.3vw, 1.7rem)/1.25 var(--body); }
+.grl-gig-type { padding: clamp(1.35rem, 3vw, 3rem); align-self: center; }
+.grl-gig-date, .grl-gig-time { font: 800 clamp(1.125rem, 2vw, 1.45rem)/1.35 var(--body); }
 .grl-gig-type h1 { font-size: clamp(2.6rem, 6.3vw, 6.4rem); text-transform: uppercase; overflow-wrap: anywhere; margin: .7rem 0 1rem; }
 .grl-gig-time { margin: 0 0 .55rem; }
-.grl-gig-room { color: var(--pink) !important; font-weight: 700; }
-.grl-gig-artist { margin: 0 0 1rem; }
+.grl-gig-room { color: var(--pink) !important; font-size: clamp(1.125rem, 2vw, 1.45rem); font-weight: 700; line-height: 1.35; }
+.grl-gig-artist { font-size: clamp(1.125rem, 2vw, 1.45rem); line-height: 1.35; margin: 0 0 1rem; }
 .grl-gig-head .grl-archive-label { color: var(--paper); }
 .grl-photo { display: flex; flex-direction: column; }
 .grl-performer-photo img, .grl-venue-photo img { aspect-ratio: 4/3; min-height: 0; height: auto; flex: 1 1 0; }
@@ -925,19 +980,19 @@
 .grl-performer-photo img { height: clamp(16rem, 30vw, 30rem); flex: auto; }
 .grl-location-photo { margin: 0 0 1.2rem; border: 1px solid var(--ink); }
 .grl-location-photo img { aspect-ratio: 1.7; height: auto; }
-.grl-show-grid { align-items: start; grid-template-columns: minmax(0,1fr) minmax(0,.9fr); gap: clamp(2rem, 6vw, 6rem); margin-top: 2rem; }
-.grl-venue-hero.with-photo { gap: clamp(1.2rem,3vw,3.5rem); align-items: center; }
+.grl-show-grid { align-items: start; grid-template-columns: minmax(0,1fr) minmax(0,.9fr); gap: clamp(1.5rem, 4vw, 3.5rem); margin-top: 1.5rem; }
+.grl-venue-hero.with-photo { gap: clamp(1rem,2.5vw,2.25rem); align-items: center; }
 .grl-venue-hero.with-photo h1 { font-size: clamp(3rem, 6.6vw, 6.8rem); }
 .grl-venue-photo { display: block; border: 1px solid var(--ink); }
-.grl-directory-image { display: block; aspect-ratio: 2; background: var(--ink); margin-bottom: 1.25rem; border: 1px solid var(--ink); overflow: hidden; }
-.grl-venue-card-top, .grl-venue-card-top:first-child { margin-bottom: .9rem; }
+.grl-directory-image { display: block; aspect-ratio: 2; background: var(--ink); margin-bottom: .9rem; border: 1px solid var(--ink); overflow: hidden; }
+.grl-venue-card-top, .grl-venue-card-top:first-child { margin-bottom: .65rem; }
 .grl-venue-hero .grl-venue-meta { margin-top: 1rem; }
 @media (max-width: 760px) {
   .home-guide { grid-template-columns: 1fr; }
-  .home-guide .grl-event-row { display: grid; align-items: start; grid-template-columns: minmax(0,.95fr) minmax(0,1fr); gap: .45rem 1rem; }
-  .home-guide .grl-event-copy { padding: 0; }
-  .home-guide .grl-listing-images { grid-row: span 2; aspect-ratio: 1.2; }
-  .home-guide .grl-row-link { grid-column: 2; }
+  .home-guide .grl-event-row { display: flex; align-items: stretch; gap: .35rem; }
+  .home-guide .grl-event-copy { padding: .45rem 0; }
+  .home-guide .grl-listing-images { align-self: stretch; aspect-ratio: 1.95; }
+  .home-guide .grl-row-link { align-self: start; }
   .grl-show-grid, .grl-venue-hero.with-photo { grid-template-columns: 1fr; }
   .grl-gig-head.with-photo { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
@@ -945,10 +1000,7 @@
   .grl-event-row.with-media, .grl-event-row { grid-template-columns: minmax(0,1fr) auto; gap: .6rem; }
   .grl-event-row.with-media .grl-listing-images { grid-column: 1/-1; width: 100%; aspect-ratio: 2.35; }
   .grl-event-row .grl-row-link { grid-column: auto; align-self: center; }
-  .home-guide .grl-event-row { display: flex; gap: .35rem; }
-  .home-guide .grl-event-copy { padding: .45rem 0; }
   .home-guide .grl-event-row.with-media .grl-listing-images { aspect-ratio: 1.95; }
-  .home-guide .grl-row-link { align-self: start; }
   .grl-day { margin-block: 1rem 2rem; }
   .grl-gig-head.with-photo { grid-template-columns: 1fr; }
   .grl-gig-type h1 { font-size: clamp(3rem,12vw,4rem); }
@@ -963,11 +1015,11 @@
   .grl-photo, .grl-listing-images, .grl-directory-image, .grl-day .grl-row-link { display: none; }
   .grl-show-grid, .grl-event-row.with-media, .grl-venue-hero.with-photo { display: block; }
 }
-.grl-time-note { display: inline-block; padding-inline: .4em; border: 1px solid currentColor; font-size: .78em; }
+.grl-time-note { display: inline-block; padding: .2rem .45rem; border: 1px solid currentColor; font-size: 1rem; line-height: 1.25; }
 .grl-venue-search { display: grid; grid-template-columns: minmax(8rem, 30rem) auto; align-items: center; gap: .45rem 1rem; margin: 1.5rem 0; }
 .grl-venue-search label { grid-column: 1/-1; font-weight: 700; }
 .grl-venue-search input { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid var(--ink); padding: .7rem; background: var(--paper); color: var(--ink); font: inherit; }
-.grl-venue-search [role=status] { font-size: .87rem; }
+.grl-venue-search [role=status] { font-size: 1rem; }
 @media print { .grl-venue-search { display: none; } }
 .grl-show-grid h2 { font: 900 clamp(1.8rem,3vw,2.8rem)/1.03 var(--display); margin: 0 0 .8rem; }
 .grl-show-grid .grl-show-facts { margin: 0 0 1rem; }
@@ -975,15 +1027,11 @@
 .grl-show-location .grl-card-actions { padding: 0; margin: 0; }
 .grl-show-location h2 a { color: inherit; }
 @media screen and (max-width: 760px) {
-  .grl-time-note { font-size: .875rem; }
-  .grl-show-facts dt { font-size: .85rem; }
-  .grl-listing-images .grl-room-label { font-size: .75rem; }
   .grl-back-link, .grl-gig-room, .grl-show-facts dd a, .grl-photo figcaption a,
-  .grl-card-actions a, .grl-venue-meta a {
+  .grl-card-actions a, .grl-venue-meta a, .grl-row-link, .grl-button, .grl-text-button {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
   }
-  .grl-photo figcaption { padding-block: 0; }
   .grl-show-facts dd a { line-height: 1.3; }
 }
