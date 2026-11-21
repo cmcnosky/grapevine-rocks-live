@@ -27,8 +27,8 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:napolis-dathan-martin-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T153000
 SUMMARY:Dathan Martin
 DESCRIPTION:Dathan Martin at Napoli’s Italian Restaurant.\nEnd time not
@@ -42,13 +42,17 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:hop-sting-bobby-falk-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T180000
 DTEND;TZID=America/Chicago:20261120T210000
 SUMMARY:Bobby Falk Group
-DESCRIPTION:Bobby Falk Group at Hop & Sting Brewing Co.\nSource: GRL week
- end guide — https://www.instagram.com/p/Df6zjpSFMKI/
+DESCRIPTION:Bobby Falk Group at Hop & Sting Brewing Co.\nGRL and pianist 
+ Jeff Furgo list the Bobby Falk Group from 6 to 9 p.m. Bobby Falk lists h
+ is trio from 7 to 10 p.m. Confirm the start time with Hop & Sting.\nSour
+ ce: GRL weekend guide — https://www.instagram.com/p/Df6zjpSFMKI/\nSour
+ ce: Pianist Jeff Furgo’s event — https://thefurgos.com/events/\nSour
+ ce: Bobby Falk’s calendar — https://www.bobbyfalkmusic.com/calendar
 LOCATION:Hop & Sting Brewing Co.\, 906 Jean Street\, Grapevine\, TX 76051
 CATEGORIES:Taps & Tracks
 URL:https://www.instagram.com/p/Df6zjpSFMKI/
@@ -56,8 +60,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:third-rail-dusty-moats-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T190000
 DTEND;TZID=America/Chicago:20261120T210000
 SUMMARY:Dusty Moats
@@ -73,8 +77,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:hotel-vin-corey-breedlove-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T190000
 DTEND;TZID=America/Chicago:20261120T220000
 SUMMARY:Corey Breedlove
@@ -88,8 +92,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:rock-brews-chasing-angels-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T190000
 SUMMARY:Chasing Angels
 DESCRIPTION:Chasing Angels at Rock & Brews Grapevine.\nEnd time not liste
@@ -103,8 +107,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:grapevine-elks-brent-rozell-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T191500
 SUMMARY:Brent Rozell & The Soulmates
 DESCRIPTION:Brent Rozell & The Soulmates at Grapevine Elks Lodge #2483.\n
@@ -118,8 +122,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:ajs-josh-ingram-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T193000
 SUMMARY:Josh Ingram
 DESCRIPTION:Josh Ingram at AJ’s on Main.\nEnd time not listed.\nSource:
@@ -131,8 +135,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:chez-fabien-ford-nelson-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T193000
 DTEND;TZID=America/Chicago:20261120T223000
 SUMMARY:Ford Nelson
@@ -148,8 +152,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:piaf-aautumn-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T193000
 DTEND;TZID=America/Chicago:20261120T223000
 SUMMARY:Aautumn
@@ -165,8 +169,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:vfw-dan-shinedling-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T200000
 SUMMARY:Dan Shinedling
 DESCRIPTION:Dan Shinedling at Airport Cities VFW Post 10454.\nEnd time no
@@ -180,8 +184,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:tolberts-alternatives-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T210000
 DTEND;TZID=America/Chicago:20261120T235900
 SUMMARY:The Alternatives
@@ -198,8 +202,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:willhoites-strangle-love-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T210000
 DTEND;TZID=America/Chicago:20261121T010000
 SUMMARY:Strangle Love
@@ -215,8 +219,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:chill-dj-mike-b-2026-11-20@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261120T220000
 SUMMARY:DJ Mike B
 DESCRIPTION:DJ Mike B at Chill Bar & Grill.\nEnd time not listed.\nSource
@@ -228,8 +232,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:third-rail-halftones-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T190000
 DTEND;TZID=America/Chicago:20261121T210000
 SUMMARY:The Halftones
@@ -245,8 +249,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:bohemian-bull-shannon-morales-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T190000
 DTEND;TZID=America/Chicago:20261121T220000
 SUMMARY:Shannon Morales & The Max
@@ -260,8 +264,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:rock-brews-8-tracks-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T190000
 SUMMARY:The 8 Tracks
 DESCRIPTION:The 8 Tracks at Rock & Brews Grapevine.\nEnd time not listed.
@@ -274,12 +278,15 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:grape-vine-springs-road-trip-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T190000
+DTEND;TZID=America/Chicago:20261121T210000
 SUMMARY:Road Trip
-DESCRIPTION:Road Trip at Grape Vine Springs Winery.\nEnd time not listed.
- \nSource: GRL weekend guide — https://www.instagram.com/p/Df6zjpSFMKI/
+DESCRIPTION:Road Trip plays the winery’s birthday party.\nSource: GRL w
+ eekend guide — https://www.instagram.com/p/Df6zjpSFMKI/\nSource: Winer
+ y birthday party — https://www.grapevinespringswinery.com/events/2026/
+ 11/21/winery-birthday-party-and-live-music-with-road-trip
 LOCATION:Grape Vine Springs Winery\, 409 South Main Street\, Grapevine\, 
  TX 76051
 CATEGORIES:Live music
@@ -288,8 +295,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:ajs-christian-haworth-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T193000
 SUMMARY:Christian Haworth
 DESCRIPTION:Christian Haworth at AJ’s on Main.\nEnd time not listed.\nS
@@ -301,8 +308,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:chez-fabien-sylvester-jones-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T193000
 DTEND;TZID=America/Chicago:20261121T223000
 SUMMARY:Sylvester Jones Jr.
@@ -319,8 +326,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:piaf-aautumn-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T193000
 DTEND;TZID=America/Chicago:20261121T223000
 SUMMARY:Aautumn
@@ -336,8 +343,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:vfw-jd-monson-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T200000
 SUMMARY:JD Monson
 DESCRIPTION:JD Monson at Airport Cities VFW Post 10454.\nEnd time not lis
@@ -351,8 +358,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:tolberts-cherry-bomb-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T210000
 DTEND;TZID=America/Chicago:20261121T235900
 SUMMARY:Cherry Bomb
@@ -369,8 +376,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:willhoites-strangle-love-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T210000
 DTEND;TZID=America/Chicago:20261122T010000
 SUMMARY:Strangle Love
@@ -386,8 +393,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:chill-dj-junior-2026-11-21@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261121T220000
 SUMMARY:DJ Junior in the Mix
 DESCRIPTION:DJ Junior in the Mix at Chill Bar & Grill.\nEnd time not list
@@ -400,8 +407,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:ajs-brendon-preece-2026-11-22@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261122T130000
 SUMMARY:Brendon Preece
 DESCRIPTION:Brendon Preece at AJ’s on Main.\nEnd time not listed.\nSour
@@ -413,15 +420,18 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:tolberts-country-dead-2026-11-22@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261122T143000
 DTEND;TZID=America/Chicago:20261122T173000
 SUMMARY:The Country Dead
 DESCRIPTION:Tolbert’s bills The Country Dead as Grateful Dead gone coun
- try.\nSource: GRL weekend guide — https://www.instagram.com/p/Df6zjpSF
- MKI/\nSource: Tolbert’s calendar — https://tolbertsrestaurant.com/ca
- lendar/
+ try.\nTolbert’s calendar lists 2:30–5:30 p.m. Its concert poster giv
+ es a 3 p.m. start and free admission. Confirm the start time with Tolber
+ t’s.\nSource: GRL weekend guide — https://www.instagram.com/p/Df6zjp
+ SFMKI/\nSource: Tolbert’s calendar — https://tolbertsrestaurant.com/
+ calendar/\nSource: Tolbert’s concert poster — https://tolbertscms.co
+ m/wp-content/uploads/2026/11/TCD.jpg
 LOCATION:Tolbert’s Restaurant & Chili Parlor\, 423 South Main Street\, 
  Grapevine\, TX 76051
 CATEGORIES:Grateful Dead • Country
@@ -430,8 +440,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:bohemian-bull-blues-jam-2026-11-22@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261122T170000
 DTEND;TZID=America/Chicago:20261122T200000
 SUMMARY:Blues at the Bull
@@ -445,8 +455,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:tolberts-jordan-whitmore-2026-11-22@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261122T190000
 DTEND;TZID=America/Chicago:20261122T210000
 SUMMARY:Jordan Whitmore
@@ -462,8 +472,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:willhoites-guy-patrick-2026-11-22@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261122T190000
 SUMMARY:Guy Patrick
 DESCRIPTION:Guy Patrick at Willhoite’s Restaurant.\nEnd time not listed
@@ -477,8 +487,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:chill-sunday-karaoke-2026-11-22@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261122T220000
 SUMMARY:Sunday Karaoke
 DESCRIPTION:Sunday Karaoke at Chill Bar & Grill.\nEnd time not listed.\nS
@@ -490,8 +500,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:tolberts-andrea-venezio-2026-11-23@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261123T190000
 DTEND;TZID=America/Chicago:20261123T213000
 SUMMARY:Andrea Venezio
@@ -505,8 +515,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:tolberts-chaz-marie-band-2026-11-24@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261124T193000
 DTEND;TZID=America/Chicago:20261124T220000
 SUMMARY:Chaz Marie Band
@@ -521,8 +531,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:tolberts-miller-jam-2026-11-25@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261125T200000
 DTEND;TZID=America/Chicago:20261125T233000
 SUMMARY:The Miller Jam
@@ -536,8 +546,8 @@ TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:chez-fabien-michael-2026-11-26@cmcnosky.github.io
-DTSTAMP:20261120T220155Z
-SEQUENCE:1
+DTSTAMP:20261121T002130Z
+SEQUENCE:2
 DTSTART;TZID=America/Chicago:20261126T193000
 DTEND;TZID=America/Chicago:20261126T213000
 SUMMARY:Michael

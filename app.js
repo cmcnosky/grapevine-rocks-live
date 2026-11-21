@@ -253,7 +253,7 @@
       button("Explore the music guide", "#guide") +
       '<a class="text-link" href="#tv">Explore GRL TV</a></div></div><figure class="poster"><img src="assets/hero.webp" fetchpriority="high" width="1350" height="900" alt="An illustrated guitarist in a fringed jacket under a hot-pink and orange stage sun."><figcaption><span>GRAPEVINE ROCKS LIVE</span><span><span class="poster-star" aria-hidden="true">★</span> TEXAS</span></figcaption></figure></div></section>' +
       '<div class="music-strip"><div class="wrap" aria-label="Music covered">Rock <i aria-hidden="true">✦</i> Country <i aria-hidden="true">✦</i> Blues <i aria-hidden="true">✦</i> Americana <i aria-hidden="true">✦</i> Pop <i aria-hidden="true">✦</i> Live in Grapevine</div></div>' +
-      '<section class="band"><div class="wrap"><div class="top-line"><div><p class="kicker">Published venue listings</p><h2 class="display">On the bill</h2></div><a class="text-link" href="#guide">See the full guide</a></div><div class="home-guide">' +
+      '<section class="band"><div class="wrap"><div class="top-line"><div><h2 class="display">On the bill</h2></div><a class="text-link" href="#guide">See the full guide</a></div><div class="home-guide">' +
       window.GRLGuide.homeRows() +
       '</div><p class="home-original">Read the original <a href="https://www.instagram.com/p/Df6zjpSFMKI/">GRL weekend guide on Instagram</a> or explore <a href="#events">community events</a>.</p></div></section>' +
       '<section class="band tv-band"><div class="wrap"><div class="top-line"><div><p class="kicker">Original programming</p><h2 class="display">GRL TV</h2></div><a class="text-link" href="#tv">Browse all series</a></div><div class="card-grid">' +

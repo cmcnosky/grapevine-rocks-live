@@ -762,6 +762,7 @@
     full = false,
     help = "",
     maxLength = 500,
+    parent = elements.editorFields,
   }) {
     const wrapper = makeElement("label", full ? "full-field" : "");
     const labelText = makeElement("span", "", label);
@@ -779,7 +780,7 @@
     if (maxLength) control.maxLength = maxLength;
     wrapper.append(control);
     if (help) wrapper.append(makeElement("span", "field-help", help));
-    elements.editorFields.append(wrapper);
+    parent.append(wrapper);
     return control;
   }
 
@@ -896,6 +897,31 @@
     fieldset.append(rows, add);
     elements.editorFields.append(fieldset);
     renderSourceRows();
+  }
+
+  function addPhotoFields(record, type) {
+    const box = makeElement("details", "photo-fields full-field");
+    box.append(makeElement("summary", "", type === "show" ? "Performer photo" : "Venue photo"));
+    box.append(makeElement("p", "field-help", "Use a photo you have permission to publish. Clear all four fields to use the guide’s usual photo."));
+    const photo = record.photo || {};
+    for (const [key, label, limit] of [
+      ["src", "Image URL", 2000], ["alt", "Image description", 400],
+      ["credit", "Photo credit", 200], ["source", "Credit link", 2000],
+    ]) {
+      addField({ name: "photo-" + key, label, value: photo[key], maxLength: limit, parent: box });
+    }
+    elements.editorFields.append(box);
+  }
+
+  function readPhoto(data) {
+    const entries = ["src", "alt", "credit", "source"].map(key =>
+      [key, String(data.get("photo-" + key) || "").trim()]);
+    if (entries.every(([, value]) => !value)) return null;
+    const photo = Object.fromEntries(entries);
+    if (entries.some(([, value]) => !value)) throw new Error("Complete all four photo fields, or clear all four to use the guide’s usual photo.");
+    if (![photo.src, photo.source].every(value => isHttpUrl(value) && /^https:\/\//i.test(value)))
+      throw new Error("The image URL and credit link must both begin with https://.");
+    return photo;
   }
 
   function openEditor(type, id = "") {
@@ -1076,6 +1102,7 @@
         help: "Enter one feature per line.",
       });
     }
+    addPhotoFields(record, type);
     state.editor.initialState = editorState();
     elements.editorDialog.showModal();
     elements.editorFields
@@ -1134,6 +1161,9 @@
     try {
       const type = state.editor.type;
       const updated = clone(state.editor.original);
+      const photo = readPhoto(data);
+      if (photo) updated.photo = photo;
+      else delete updated.photo;
       updated.id = state.editor.original.id;
       if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(updated.id))
         throw new Error("The record ID must be lowercase kebab-case.");

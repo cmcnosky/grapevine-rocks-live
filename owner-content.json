@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 1,
+  "revision": 2,
   "edition": {
     "startDate": "2026-11-20",
     "endDate": "2026-11-26",
@@ -227,11 +227,19 @@
       "genres": "Taps & Tracks",
       "cover": "Not listed",
       "summary": "",
-      "sourceStatus": "GRL guide",
+      "sourceStatus": "Times differ — recheck",
       "sources": [
         {
           "label": "GRL weekend guide",
           "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Pianist Jeff Furgo’s event",
+          "url": "https://thefurgos.com/events/"
+        },
+        {
+          "label": "Bobby Falk’s calendar",
+          "url": "https://www.bobbyfalkmusic.com/calendar"
         }
       ],
       "verifiedAt": "2026-11-20",
@@ -240,7 +248,8 @@
       "artist": "Bobby Falk Group",
       "venueId": "hop-and-sting",
       "date": "2026-11-20",
-      "time": "18:00"
+      "time": "18:00",
+      "sourceNote": "GRL and pianist Jeff Furgo list the Bobby Falk Group from 6 to 9 p.m. Bobby Falk lists his trio from 7 to 10 p.m. Confirm the start time with Hop & Sting."
     },
     {
       "endTime": "21:00",
@@ -547,15 +556,19 @@
       "time": "19:00"
     },
     {
-      "endTime": "",
+      "endTime": "21:00",
       "genres": "Live music",
       "cover": "Not listed",
-      "summary": "",
-      "sourceStatus": "GRL guide",
+      "summary": "Road Trip plays the winery’s birthday party.",
+      "sourceStatus": "GRL + venue",
       "sources": [
         {
           "label": "GRL weekend guide",
           "url": "https://www.instagram.com/p/Df6zjpSFMKI/"
+        },
+        {
+          "label": "Winery birthday party",
+          "url": "https://www.grapevinespringswinery.com/events/2026/11/21/winery-birthday-party-and-live-music-with-road-trip"
         }
       ],
       "verifiedAt": "2026-11-20",
@@ -745,9 +758,9 @@
     {
       "endTime": "17:30",
       "genres": "Grateful Dead • Country",
-      "cover": "Not listed",
+      "cover": "Free",
       "summary": "Tolbert’s bills The Country Dead as Grateful Dead gone country.",
-      "sourceStatus": "GRL + venue",
+      "sourceStatus": "Times differ — recheck",
       "sources": [
         {
           "label": "GRL weekend guide",
@@ -756,6 +769,10 @@
         {
           "label": "Tolbert’s calendar",
           "url": "https://tolbertsrestaurant.com/calendar/"
+        },
+        {
+          "label": "Tolbert’s concert poster",
+          "url": "https://tolbertscms.com/wp-content/uploads/2026/11/TCD.jpg"
         }
       ],
       "verifiedAt": "2026-11-20",
@@ -764,7 +781,8 @@
       "artist": "The Country Dead",
       "venueId": "tolberts",
       "date": "2026-11-22",
-      "time": "14:30"
+      "time": "14:30",
+      "sourceNote": "Tolbert’s calendar lists 2:30–5:30 p.m. Its concert poster gives a 3 p.m. start and free admission. Confirm the start time with Tolbert’s."
     },
     {
       "endTime": "20:00",

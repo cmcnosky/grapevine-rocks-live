@@ -207,6 +207,13 @@
         time: "18:00",
         endTime: "21:00",
         genres: "Taps & Tracks",
+        sourceStatus: "Times differ — recheck",
+        sourceNote: "GRL and pianist Jeff Furgo list the Bobby Falk Group from 6 to 9 p.m. Bobby Falk lists his trio from 7 to 10 p.m. Confirm the start time with Hop & Sting.",
+        sources: [
+          GRL_WEEKEND_SOURCE,
+          { label: "Pianist Jeff Furgo’s event", url: "https://thefurgos.com/events/" },
+          { label: "Bobby Falk’s calendar", url: "https://www.bobbyfalkmusic.com/calendar" },
+        ],
       }),
       publishedEvent({
         id: "third-rail-dusty-moats-2026-11-20",
@@ -370,6 +377,12 @@
         venueId: "grape-vine-springs",
         date: "2026-11-21",
         time: "19:00",
+        endTime: "21:00",
+        summary: "Road Trip plays the winery’s birthday party.",
+        sources: [
+          GRL_WEEKEND_SOURCE,
+          { label: "Winery birthday party", url: "https://www.grapevinespringswinery.com/events/2026/11/21/winery-birthday-party-and-live-music-with-road-trip" },
+        ],
       }),
       publishedEvent({
         id: "ajs-christian-haworth-2026-11-21",
@@ -467,10 +480,12 @@
         date: "2026-11-22",
         time: "14:30",
         endTime: "17:30",
+        cover: "Free",
         genres: "Grateful Dead • Country",
-        summary:
-          "Tolbert’s bills The Country Dead as Grateful Dead gone country.",
-        sources: [GRL_WEEKEND_SOURCE, TOLBERTS_SOURCE],
+        summary: "Tolbert’s bills The Country Dead as Grateful Dead gone country.",
+        sourceStatus: "Times differ — recheck",
+        sourceNote: "Tolbert’s calendar lists 2:30–5:30 p.m. Its concert poster gives a 3 p.m. start and free admission. Confirm the start time with Tolbert’s.",
+        sources: [GRL_WEEKEND_SOURCE, TOLBERTS_SOURCE, { label: "Tolbert’s concert poster", url: "https://tolbertscms.com/wp-content/uploads/2026/11/TCD.jpg" }],
       }),
       publishedEvent({
         id: "bohemian-bull-blues-jam-2026-11-22",
@@ -578,15 +593,6 @@
   let catalogSource = "embedded";
 
   const handledRoutes = new Set(["guide", "venues", "venue", "show"]);
-  const sourceBadges = {
-    "GRL guide": "GRL",
-    "GRL + venue": "GRL + venue",
-    "Venue-published": "Venue",
-    "Times differ — recheck": "Time check",
-    "Details differ — recheck": "Details check",
-    "GRL guide — recheck": "Recheck",
-  };
-
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
   }
@@ -916,17 +922,6 @@
     }).format(parsed);
   }
 
-  function dayNumber(date) {
-    return Number(date.slice(8, 10));
-  }
-
-  function monthShort(date) {
-    return new Intl.DateTimeFormat("en-US", {
-      timeZone: "UTC",
-      month: "short",
-    }).format(new Date(date + "T12:00:00Z"));
-  }
-
   function chicagoDateKey(now) {
     const parts = new Intl.DateTimeFormat("en-US", {
       timeZone: CALENDAR_TIMEZONE,
@@ -979,87 +974,81 @@
       });
   }
 
-  function statusLabel(event) {
-    return sourceBadges[event.sourceStatus] || "Source";
-  }
-
-  function listingStatus(event, detail) {
-    const sources = eventSources(event);
-    const needsCheck = /recheck|differ/i.test(event.sourceStatus || "");
-    const badge =
-      '<span class="' +
-      (needsCheck ? "grl-check-label" : "grl-source-label") +
-      '">' +
-      escapeHTML(statusLabel(event)) +
-      "</span>";
-    if (detail || !sources.length) return badge;
-    if (sources.length > 1) {
-      return (
-        badge +
-        '<a class="grl-source-link" href="#show/' +
-        encodeURIComponent(event.id) +
-        '">' +
-        sources.length +
-        " sources</a>"
-      );
+  function listingPhoto(kind, record) {
+    if (!record) return null;
+    const custom = record.photo;
+    if (custom && typeof custom === "object" && typeof custom.src === "string" &&
+        /^https:\/\//i.test(custom.src) && safeURL(custom.src) &&
+        typeof custom.source === "string" && /^https:\/\//i.test(custom.source) && safeURL(custom.source) && custom.credit && custom.alt) {
+      return { src: safeURL(custom.src), source: safeURL(custom.source),
+        credit: String(custom.credit), alt: String(custom.alt) };
     }
-    return (
-      badge +
-      '<a class="grl-source-link" href="' +
-      escapeHTML(sources[0].url) +
-      '" target="_blank" rel="noreferrer">Source</a>'
-    );
+    const collection = window.GRLPhotos?.[kind];
+    const key = kind === "artists" ? record.artist : record.id;
+    return collection && Object.hasOwn(collection, key) ? collection[key] : null;
   }
 
-  function eventRow(event, options) {
+  function photoImage(photo, small) {
+    const position = /^\d{1,3}% \d{1,3}%$/.test(photo.position || "")
+      ? ' style="object-position:' + photo.position + '"' : "";
+    const src = small && photo.thumb ? photo.thumb : photo.src;
+    const width = Number.isInteger(photo.width) && photo.width > 0 ? photo.width : 800;
+    const height = Number.isInteger(photo.height) && photo.height > 0 ? photo.height : 550;
+    return '<img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="' +
+      escapeHTML(src) + '" alt="' + escapeHTML(photo.alt) + '" width="' + width +
+      '" height="' + height + '"' + position + '>';
+  }
+
+  function creditedPhoto(photo, className) {
+    if (!photo) return "";
+    return '<figure class="grl-photo ' + className + '">' + photoImage(photo, false) +
+      '<figcaption>' + (photo.caption ? escapeHTML(photo.caption) + ' ' : '') + '<a href="' + escapeHTML(safeURL(photo.source)) +
+      '" target="_blank" rel="noreferrer">' + escapeHTML(photo.credit) + '</a>' +
+      ' · <a href="' + escapeHTML(photo.src) + '" target="_blank" rel="noreferrer">Full photo</a>' +
+      (photo.license && photo.licenseUrl ? ' · <a href="' + escapeHTML(safeURL(photo.licenseUrl)) + '" target="_blank" rel="noreferrer">' + escapeHTML(photo.license) + '</a>' : '') + '</figcaption></figure>';
+  }
+
+  function listingImages(artist, room, event, venue) {
+    if (!artist && !room) return "";
+    return '<div class="grl-listing-images' + (artist && room ? ' paired' : '') + '">' +
+      (artist ? '<figure class="artist-shot"><a href="#show/' + encodeURIComponent(event.id) +
+        '" aria-label="Show details for ' + escapeHTML(event.title) + '">' + photoImage(artist, true) + '</a></figure>' : '') +
+      (room ? '<figure class="venue-shot"><a href="#venue/' + encodeURIComponent(venue.id) +
+        '" aria-label="Venue: ' + escapeHTML(venue.name) + '">' + photoImage(room, true) +
+        '<span class="grl-room-label">Venue</span></a></figure>' : '') + '</div>';
+  }
+
+  function eventRow(event, options = {}) {
     const venue = getVenue(event.venueId);
-    const compact = options && options.compact ? " grl-event-row--compact" : "";
-    const headingTag = options && options.headingLevel === 2 ? "h2" : "h3";
-    const artistLine =
-      event.artist && event.artist !== event.title
-        ? "<strong>" + escapeHTML(event.artist) + "</strong> · "
-        : "";
-    const past =
-      event.date < chicagoDateKey()
-        ? '<span class="grl-archive-label">Past</span>'
-        : "";
-    return [
-      '<article class="grl-event-row',
-      compact,
-      '" data-event-id="',
-      escapeHTML(event.id),
-      '">',
-      '<div class="grl-event-date" aria-label="',
-      escapeHTML(formatDate(event.date, true)),
-      '"><span>',
-      escapeHTML(formatDate(event.date).split(",")[0]),
-      "</span><strong>",
-      escapeHTML(dayNumber(event.date)),
-      "</strong></div>",
-      '<div class="grl-event-copy"><div class="grl-event-kicker">',
-      past,
-      listingStatus(event, false),
-      "<span>",
-      escapeHTML(event.genres),
-      "</span></div><" + headingTag + "><a href=\"#show/",
-      encodeURIComponent(event.id),
-      '">',
-      escapeHTML(event.title),
-      "</a></" + headingTag + "><p>",
-      artistLine,
-      escapeHTML(formatTime(event.time)),
-      event.endTime ? "–" + escapeHTML(formatTime(event.endTime)) : "",
-      '</p><p class="grl-event-venue"><a href="#venue/',
-      encodeURIComponent(event.venueId),
-      '">',
-      escapeHTML(venue ? venue.name : "Venue TBA"),
-      "</a></p></div>",
-      '<a class="grl-row-link" href="#show/',
-      encodeURIComponent(event.id),
-      '" aria-label="Open ',
-      escapeHTML(event.title),
-      ' details">Details</a></article>',
-    ].join("");
+    const href = "#show/" + encodeURIComponent(event.id);
+    const media = listingImages(listingPhoto("artists", event), options.atVenue ? null : listingPhoto("venues", venue), event, venue);
+    const time = formatTime(event.time) + (event.endTime ? "–" + formatTime(event.endTime) : "");
+    const date = options.grouped ? "" : formatDate(event.date) + " · ";
+    const past = event.date < chicagoDateKey() ? '<span class="grl-archive-label">Past</span> ' : "";
+    const sub = event.artist && event.artist !== event.title ? '<p class="grl-performer">' + escapeHTML(event.artist) + '</p>' : "";
+    const venueName = escapeHTML(venue ? venue.name : "Venue TBA");
+    return '<article class="grl-event-row' + (options.compact ? ' grl-event-row--compact' : '') +
+      (media ? ' with-media' : '') + '" data-event-id="' + escapeHTML(event.id) + '">' + media +
+      '<div class="grl-event-copy"><p class="grl-listing-time">' + past + escapeHTML(date + time) +
+      (event.sourceNote ? ' <span class="grl-time-note">' + (/times differ/i.test(event.sourceStatus) ? 'Times differ' : 'Check details') + '</span>' : '') + '</p><h3><a href="' + href + '">' + escapeHTML(event.title) + '</a></h3>' + sub +
+      (options.atVenue ? '' : '<p class="grl-event-venue"><a href="#venue/' + encodeURIComponent(event.venueId) + '">' + venueName + '</a></p>') +
+      '</div><a class="grl-row-link" href="' + href + '" aria-label="Open ' +
+      escapeHTML(event.title) + ' details">Details</a></article>';
+  }
+
+  function daySections(events) {
+    const days = new Map();
+    for (const event of events) {
+      if (!days.has(event.date)) days.set(event.date, []);
+      days.get(event.date).push(event);
+    }
+    return Array.from(days, ([date, listings]) =>
+      '<section class="grl-day" aria-labelledby="day-' + date +
+      '"><h2 id="day-' + date + '">' + escapeHTML(new Intl.DateTimeFormat("en-US", {
+        weekday: "long", month: "long", day: "numeric", timeZone: CALENDAR_TIMEZONE
+      }).format(new Date(date + "T12:00:00Z"))) + '</h2>' +
+      listings.map(event => eventRow(event, { grouped: true })).join("") + '</section>'
+    ).join("");
   }
 
   function emptyState(title, copy, headingLevel) {
@@ -1164,10 +1153,15 @@
       '" download data-grl-calendar-download>Download .ics</a><a class="grl-button grl-button--outline" data-grl-calendar-subscribe href="',
       escapeHTML(calendarSubscribeURL()),
       '">Subscribe</a></div></section>',
-      '<aside class="grl-guide-cta"><div><p class="grl-eyebrow">The GRL newsletter</p>',
-      "<h2>Get the next music guide in your inbox.</h2></div>",
-      '<a class="grl-button grl-button--cream" href="#newsletter">Join the list</a></aside></section>',
+      '</section>',
     ].join("");
+  }
+
+  let savedFilters = { query: "", date: "", venue: "" };
+
+  function searchableText(value) {
+    return value.normalize("NFKD").replace(/\p{M}/gu, "").toLocaleLowerCase()
+      .replace(/[’']/g, "").replace(/&/g, " and ").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
   }
 
   function bindGuide() {
@@ -1175,25 +1169,22 @@
     const results = document.querySelector("#grl-guide-results");
     const summary = document.querySelector("#grl-results-summary");
     if (!form || !results || !summary) return;
+    const queryInput = form.querySelector("#grl-filter-query");
+    const dateInput = form.querySelector("#grl-filter-date");
+    const venueInput = form.querySelector("#grl-filter-venue");
+    queryInput.value = savedFilters.query;
+    dateInput.value = Array.from(dateInput.options).some(option => option.value === savedFilters.date) ? savedFilters.date : "";
+    venueInput.value = Array.from(venueInput.options).some(option => option.value === savedFilters.venue) ? savedFilters.venue : "";
     const draw = function () {
-      const query = form
-        .querySelector("#grl-filter-query")
-        .value.trim()
-        .toLocaleLowerCase();
+      const words = searchableText(queryInput.value).split(/\s+/);
       const date = form.querySelector("#grl-filter-date").value;
       const venueId = form.querySelector("#grl-filter-venue").value;
+      savedFilters = { query: queryInput.value, date, venue: venueId };
       const matches = publicEvents().filter(function (event) {
         const venue = getVenue(event.venueId);
-        const searchText = [
-          event.artist,
-          event.title,
-          event.genres,
-          venue ? venue.name : "",
-        ]
-          .join(" ")
-          .toLocaleLowerCase();
+        const searchText = searchableText([event.artist, event.title, event.genres, venue?.name || ""].join(" "));
         return (
-          (!query || searchText.includes(query)) &&
+          words.every(word => searchText.includes(word)) &&
           (!date || event.date === date) &&
           (!venueId || event.venueId === venueId)
         );
@@ -1204,19 +1195,16 @@
         " " +
         (matches.length === 1 ? "listing" : "listings");
       results.innerHTML = matches.length
-        ? matches
-            .map(function (event) {
-              return eventRow(event, { headingLevel: 2 });
-            })
-            .join("")
+        ? daySections(matches)
         : emptyState(
             "No listings match",
             "Clear a filter or choose another date or venue.",
             2,
           );
     };
-    form.addEventListener("input", draw);
-    form.addEventListener("change", draw);
+    queryInput.addEventListener("input", draw);
+    dateInput.addEventListener("change", draw);
+    venueInput.addEventListener("change", draw);
     form.addEventListener("reset", function () {
       window.setTimeout(draw, 0);
     });
@@ -1228,7 +1216,9 @@
       return event.venueId === venue.id;
     }).length;
     return [
-      '<article class="grl-venue-card"><div class="grl-venue-card-top">',
+      '<article class="grl-venue-card">',
+      listingPhoto("venues", venue) ? '<a class="grl-directory-image" href="#venue/' + encodeURIComponent(venue.id) + '" aria-label="View ' + escapeHTML(venue.name) + '">' + photoImage(listingPhoto("venues", venue), true) + '</a>' : "",
+      '<div class="grl-venue-card-top">',
       "<span>Grapevine venue</span><span>",
       count ? count + (count === 1 ? " listing" : " listings") : "Venue profile",
       "</span></div><h2><a href=\"#venue/",
@@ -1257,18 +1247,43 @@
     ].join("");
   }
 
+  let venueQuery = "";
+
+  function directoryVenues(query = "") {
+    const words = searchableText(query).split(/\s+/);
+    return catalog.venues.filter(venue => {
+      const searchable = searchableText([venue.name, venue.address, ...venue.features, venue.description].join(" "));
+      return words.every(word => searchable.includes(word));
+    }).sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  function bindVenues() {
+    const input = document.querySelector("#venue-search");
+    input.value = venueQuery;
+    const draw = () => {
+      venueQuery = input.value;
+      const venues = directoryVenues(venueQuery);
+      document.querySelector("#venue-search-count").textContent =
+        venues.length + (venues.length === 1 ? " venue" : " venues");
+      document.querySelector("#venue-search-results").innerHTML = venues.length
+        ? venues.map(venueCard).join("")
+        : emptyState("No matching venues", "Try another venue name, street or feature.", 2);
+    };
+    input.addEventListener("input", draw);
+    draw();
+  }
+
   function venuesView() {
-    const venues = catalog.venues.slice().sort(function (a, b) {
-      return a.name.localeCompare(b.name);
-    });
+    const venues = catalog.venues;
     return [
       '<section class="grl-page" aria-labelledby="venues-title"><header class="grl-page-head">',
       '<p class="grl-eyebrow">',
       venues.length,
-      ' Grapevine venues</p><h1 id="venues-title">Find the room that fits the night.</h1>',
-      '<p class="grl-page-intro">Explore the restaurants, bars, wineries, taprooms and community rooms in this edition. Every profile includes its official site and directions.</p>',
-      '</header><div class="grl-venue-grid">',
-      venues.map(venueCard).join(""),
+      ' Grapevine venues</p><h1 id="venues-title">Venue guide.</h1>',
+      '<p class="grl-page-intro">Explore Grapevine’s music venues, find the address and see who’s playing.</p>',
+      '</header><div class="grl-venue-search"><label for="venue-search">Search venues</label>',
+      '<input id="venue-search" type="search" placeholder="Name, street or feature" autocomplete="off">',
+      '<span id="venue-search-count" role="status"></span></div><div class="grl-venue-grid" id="venue-search-results">',
       "</div></section>",
     ].join("");
   }
@@ -1289,7 +1304,7 @@
     const edition = editionState();
     return [
       '<section class="grl-page" aria-labelledby="venue-title"><a class="grl-back-link" href="#venues">Back to all venues</a>',
-      '<header class="grl-page-head grl-venue-hero"><p class="grl-eyebrow">Venue guide</p>',
+      '<header class="grl-page-head grl-venue-hero' + (listingPhoto("venues", venue) ? ' with-photo' : '') + '"><div><p class="grl-eyebrow">Venue guide</p>',
       '<h1 id="venue-title">',
       escapeHTML(venue.name),
       '</h1><p class="grl-page-intro">',
@@ -1302,7 +1317,9 @@
       escapeHTML(directionsURL(venue.address)),
       '" target="_blank" rel="noreferrer" aria-label="Get directions to ',
       escapeHTML(venue.name),
-      '">Directions</a></div></header>',
+      '">Directions</a></div></div>',
+      creditedPhoto(listingPhoto("venues", venue), "grl-venue-photo"),
+      '</header>',
       '<section class="grl-section" aria-labelledby="venue-shows-title"><div class="grl-section-heading">',
       '<p class="grl-eyebrow">',
       escapeHTML(edition.label),
@@ -1313,7 +1330,7 @@
       events.length
         ? events
             .map(function (event) {
-              return eventRow(event);
+              return eventRow(event, { atVenue: true });
             })
             .join("")
         : emptyState(
@@ -1338,7 +1355,7 @@
     }
     const venue = getVenue(event.venueId);
     const sources = eventSources(event);
-    const lede = event.summary || defaultSummary(event, venue);
+
     const past =
       event.date < chicagoDateKey()
         ? '<span class="grl-archive-label">Past</span>'
@@ -1357,80 +1374,32 @@
     return [
       '<section class="grl-page grl-show-page" aria-labelledby="show-title">',
       '<a class="grl-back-link" href="#guide">Back to the music guide</a>',
-      '<div class="grl-show-poster"><div class="grl-show-date-block"><span>',
-      escapeHTML(formatDate(event.date).split(",")[0]),
-      "</span><strong>",
-      escapeHTML(dayNumber(event.date)),
-      "</strong><span>",
-      escapeHTML(monthShort(event.date)),
-      '</span></div><div><p class="grl-eyebrow">',
-      past,
-      listingStatus(event, true),
-      "<span>",
-      escapeHTML(event.genres),
-      '</span></p><h1 id="show-title">',
-      escapeHTML(event.title),
-      "</h1>",
-      event.artist !== event.title
-        ? '<p class="grl-show-artist">' +
-          escapeHTML(event.artist) +
-          "</p>"
-        : "",
-      "</div></div>",
-      '<div class="grl-show-grid"><div><p class="grl-show-lede">',
-      escapeHTML(lede),
-      "</p>",
-      event.sourceNote
-        ? '<aside class="grl-source-note"><strong>Check before you go.</strong><p>' +
-          escapeHTML(event.sourceNote) +
-          "</p></aside>"
-        : '<p class="grl-source-freshness">' +
-          (event.verifiedAt
-            ? "Sources checked " +
-              escapeHTML(formatDate(event.verifiedAt, true)) +
-              ". "
-            : "") +
-          "Schedules can change.</p>",
-      '<div class="grl-show-actions"><button class="grl-button" type="button" id="grl-download-show">Add to calendar (.ics)</button>',
-      venue
-        ? '<a class="grl-button grl-button--outline" href="' +
-          escapeHTML(safeURL(venue.url)) +
-          '" target="_blank" rel="noreferrer">Venue site</a>'
-        : "",
-      "</div></div>",
-      '<dl class="grl-show-facts"><div><dt>Date</dt><dd>',
-      escapeHTML(formatDate(event.date, true)),
-      "</dd></div><div><dt>Time</dt><dd>",
-      escapeHTML(formatTime(event.time)),
-      event.endTime ? "–" + escapeHTML(formatTime(event.endTime)) : "",
-      '</dd></div><div><dt>Venue</dt><dd><a href="#venue/',
-      encodeURIComponent(event.venueId),
-      '">',
-      escapeHTML(venue ? venue.name : "Venue TBA"),
-      "</a>",
-      venue
-        ? '<br><small>' +
-          escapeHTML(venue.address) +
-          '</small><br><a href="' +
-          escapeHTML(directionsURL(venue.address)) +
-          '" target="_blank" rel="noreferrer" aria-label="Get directions to ' +
-          escapeHTML(venue.name) +
-          '">Directions</a>'
-        : "",
-      "</dd></div><div><dt>Admission</dt><dd>",
-      escapeHTML(event.cover),
-      "</dd></div>",
-      sources.length
-        ? "<div><dt>Sources</dt><dd>" +
-          sourceList +
-          (event.verifiedAt
-            ? "<br><small>Checked " +
-              escapeHTML(formatDate(event.verifiedAt, true)) +
-              "</small>"
-            : "") +
-          "</dd></div>"
-        : "",
-      "</dl></div></section>",
+      '<header class="grl-gig-head' + (listingPhoto("artists", event) ? ' with-photo' : '') + '"><div class="grl-gig-type">',
+      '<p class="grl-gig-date">', past, escapeHTML(formatDate(event.date, true)), '</p>',
+      '<h1 id="show-title">', escapeHTML(event.title), '</h1>',
+      event.artist !== event.title ? '<p class="grl-gig-artist">' + escapeHTML(event.artist) + '</p>' : '',
+      '<p class="grl-gig-time">', escapeHTML(formatTime(event.time)),
+      event.endTime ? '–' + escapeHTML(formatTime(event.endTime)) : '', '</p>',
+      venue ? '<a class="grl-gig-room" href="#venue/' + encodeURIComponent(venue.id) + '">' + escapeHTML(venue.name) + '</a>' : '',
+      '</div>', creditedPhoto(listingPhoto("artists", event), "grl-performer-photo"), '</header>',
+      '<div class="grl-show-grid"><section class="grl-show-info"><h2>Show details</h2>',
+      event.summary ? '<p class="grl-show-lede">' + escapeHTML(event.summary) + '</p>' : '',
+      event.sourceNote ? '<aside class="grl-source-note"><strong>Check before you go.</strong><p>' +
+        escapeHTML(event.sourceNote) + '</p></aside>' : '',
+      '<dl class="grl-show-facts">',
+      event.genres ? '<div><dt>Program</dt><dd>' + escapeHTML(event.genres) + '</dd></div>' : '',
+      '<div><dt>Admission</dt><dd>', escapeHTML(event.cover), '</dd></div>',
+      sources.length ? '<div><dt>Sources</dt><dd>' + sourceList +
+        (event.verifiedAt ? '<br><small>Checked ' + escapeHTML(formatDate(event.verifiedAt, true)) + '</small>' : '') +
+        '</dd></div>' : '', '</dl>',
+      '<div class="grl-show-actions"><button class="grl-button" type="button" id="grl-download-show">Add to calendar (.ics)</button></div></section>',
+      venue ? '<section class="grl-show-location"><h2><a href="#venue/' + encodeURIComponent(venue.id) +
+        '">' + escapeHTML(venue.name) + '</a></h2>' + creditedPhoto(listingPhoto("venues", venue), "grl-location-photo") +
+        '<p class="grl-location-address">' + escapeHTML(venue.address) + '</p><div class="grl-card-actions">' +
+        '<a href="' + escapeHTML(directionsURL(venue.address)) + '" target="_blank" rel="noreferrer" aria-label="Get directions to ' +
+        escapeHTML(venue.name) + '">Directions</a><a href="' + escapeHTML(safeURL(venue.url)) +
+        '" target="_blank" rel="noreferrer">Venue site</a></div></section>' : '',
+      '</div></section>',
     ].join("");
   }
 
@@ -1669,6 +1638,7 @@
     if (route === "venue") main.innerHTML = venueView(decodedId);
     if (route === "show") main.innerHTML = showView(decodedId);
     if (route === "guide") bindGuide();
+    if (route === "venues") bindVenues();
     if (route === "show") bindShow(decodedId);
     document.title =
       (main.querySelector("h1")?.textContent || "Music guide") +
@@ -1691,6 +1661,22 @@
   const catalogReady = loadOwnerCatalog();
 
   if (typeof document !== "undefined") {
+    document.addEventListener("error", function (event) {
+      if (event.target.tagName !== "IMG") return;
+      const holder = event.target.closest(".grl-photo, .grl-listing-images figure, .grl-directory-image");
+      if (!holder) return;
+      const parent = holder.parentElement;
+      holder.remove();
+      if (parent.classList.contains("grl-listing-images")) {
+        parent.classList.remove("paired");
+        if (!parent.children.length) {
+          parent.closest(".grl-event-row")?.classList.remove("with-media");
+          parent.remove();
+        }
+      } else {
+        parent.classList.remove("with-photo");
+      }
+    }, true);
     document.addEventListener("click", function (event) {
       const trigger = event.target.closest("[data-grl-calendar-download]");
       if (!trigger) return;
