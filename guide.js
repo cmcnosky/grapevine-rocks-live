@@ -1018,7 +1018,8 @@
     return '<img loading="' + (surface === "detail" ? "eager" : "lazy") +
       '" decoding="async" referrerpolicy="no-referrer" src="' +
       escapeHTML(hasSmallerFile ? photo.thumb : photo.src) + '" alt="' + escapeHTML(photo.alt) +
-      '"' + dimensions + candidates + fitClass + customFocus + '>';
+      '" data-photo-grade="' + escapeHTML(photo.grade || "daylight") + '"' +
+      dimensions + candidates + fitClass + customFocus + '>';
   }
 
   function creditedPhoto(photo, className, surface = "detail") {

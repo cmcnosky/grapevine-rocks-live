@@ -733,6 +733,7 @@
     }
     image.src = hasSmallerFile ? src : localPhotoSource(photo.src);
     image.alt = String(photo.alt || "");
+    image.dataset.photoGrade = photo.grade || "daylight";
     image.loading = "lazy";
     image.decoding = "async";
     image.referrerPolicy = "no-referrer";
