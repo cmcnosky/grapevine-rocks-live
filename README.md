@@ -4,7 +4,11 @@ The Grapevine live music guide is published on [GitHub Pages](https://cmcnosky.g
 
 ## Editing the guide
 
-Select **Log in** in the website footer or open the [login page](https://cmcnosky.github.io/grapevine-rocks-live/login/), then enter your username and password. The editor manages shows, venues and the guide edition. The show and venue forms also accept a photo URL, description, credit and source link. Clearing those four fields restores the standard guide photo when available. Save each edit, then select **Publish changes**. Publication creates a numbered revision in the hosted database. Editors working from an older revision must reload before publishing their changes.
+Select **Log in** in the website footer or open the [login page](https://cmcnosky.github.io/grapevine-rocks-live/login/), then sign in with the account details supplied privately. **Overview** summarizes the current edition, shows the schedule for a selected date and collects the publication controls. **Shows** can be searched, filtered by date or venue and sorted by date, artist or venue. **Venues** can be searched, sorted and opened with their scheduled shows. **Edition** controls the public guide’s date range and label.
+
+Use **Edit** to change a record, **Duplicate** to create a separate repeat booking from an existing show or **Add show** and **Add venue** to create records. A show or venue form can also use an HTTPS photo URL with a description, credit and source link. Complete all four photo fields, or clear all four to restore the standard guide photo when one is available.
+
+Saving a form stages an unpublished change in that browser tab. Record badges distinguish published, edited and new entries, and **View live** appears only for records that already exist on the public site. Review the pending changes from **Overview**, then select **Publish changes** to update the shared guide. Publication creates a numbered revision in the hosted database. If another editor publishes first, reload the current revision before publishing again.
 
 ## Public data and calendars
 

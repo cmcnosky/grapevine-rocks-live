@@ -7,7 +7,7 @@
     <meta name="referrer" content="no-referrer" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://grapevine-rocks-live-publishing.cmcnosky.chatgpt.site; object-src 'none'; base-uri 'none'; form-action 'none'"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https:; connect-src 'self' https://grapevine-rocks-live-publishing.cmcnosky.chatgpt.site; object-src 'none'; base-uri 'none'; form-action 'none'"
     />
     <meta name="theme-color" content="#191719" />
     <title>Log in | Grapevine Rocks Live</title>
@@ -20,8 +20,12 @@
       crossorigin
     />
     <link rel="stylesheet" href="../owner/owner.css?v=3" />
+    <link rel="stylesheet" href="../owner/desk.css?v=7a587881f0">
+    <link rel="stylesheet" href="../owner/library.css?v=e2ea8f2d6c">
+    <link rel="stylesheet" href="../owner/forms.css?v=cce0c9fac2">
+    <script defer src="../listing-photos.js?v=574ec9b52b"></script>
     <script defer src="../owner/owner-config.js"></script>
-    <script defer src="../owner/owner.js?v=3"></script>
+    <script defer src="../owner/owner.js?v=d8c00c1da4"></script>
   </head>
   <body>
     <a class="skip-link" href="#owner-main">Skip to content</a>
@@ -92,16 +96,23 @@
         aria-labelledby="workspace-title"
         hidden
       >
-        <header class="app-header">
-          <div>
-            <p class="app-name">Grapevine Rocks Live</p>
-            <h1 id="workspace-title">Content manager</h1>
+        <header class="desk-mast">
+          <div class="desk-mast-inner">
+            <a class="desk-brand" href="../" target="_blank" rel="noopener"><b>GRL</b> <span>Grapevine<br>Rocks Live</span></a>
+            <div class="desk-mast-links">
+              <a href="../#guide" target="_blank" rel="noopener">View live guide <span aria-hidden="true">↗</span></a>
+              <button id="sign-out" type="button">Sign out</button>
+            </div>
           </div>
-          <button id="sign-out" class="secondary-button" type="button">
-            Sign out
-          </button>
         </header>
-
+        <div class="desk-body">
+          <div class="desk-title">
+            <h1 id="workspace-title">Content manager</h1>
+            <div class="publish-controls">
+              <span id="change-state" class="change-state">Up to date</span>
+              <button id="publish" class="primary-button" type="button" disabled>Publish changes</button>
+            </div>
+          </div>
         <div
           id="workspace-status"
           class="status-bar"
@@ -144,98 +155,162 @@
           </div>
         </section>
 
-        <div class="workspace-toolbar">
-          <div class="tabs" role="tablist" aria-label="Catalog sections">
-            <button
-              id="shows-tab"
-              role="tab"
-              aria-selected="true"
-              aria-controls="shows-panel"
-              tabindex="0"
-              type="button"
-            >
-              Shows
-            </button>
-            <button
-              id="venues-tab"
-              role="tab"
-              aria-selected="false"
-              aria-controls="venues-panel"
-              tabindex="-1"
-              type="button"
-            >
-              Venues
-            </button>
-            <button
-              id="edition-tab"
-              role="tab"
-              aria-selected="false"
-              aria-controls="edition-panel"
-              tabindex="-1"
-              type="button"
-            >
-              Edition
-            </button>
-          </div>
-          <div class="publish-controls">
-            <span id="change-state" class="change-state"
-              >No unpublished changes</span
-            >
-            <button id="publish" class="primary-button" type="button" disabled>
-              Publish changes
-            </button>
-          </div>
+        <div class="tabs desk-tabs" role="tablist" aria-label="Guide sections">
+          <button id="overview-tab" role="tab" aria-selected="true" aria-controls="overview-panel" tabindex="0" type="button">Overview</button>
+          <button id="shows-tab" role="tab" aria-selected="false" aria-controls="shows-panel" tabindex="-1" type="button">Shows</button>
+          <button id="venues-tab" role="tab" aria-selected="false" aria-controls="venues-panel" tabindex="-1" type="button">Venues</button>
+          <button id="edition-tab" role="tab" aria-selected="false" aria-controls="edition-panel" tabindex="-1" type="button">Edition</button>
         </div>
-
-        <section id="shows-panel" role="tabpanel" aria-labelledby="shows-tab">
-          <div class="section-heading">
+        <section id="overview-panel" role="tabpanel" aria-labelledby="overview-tab">
+          <div class="edition-poster">
+            <div class="edition-poster-copy">
+              <p class="desk-eyebrow">Guide edition</p>
+              <h2 id="desk-edition"></h2>
+              <div class="edition-numbers">
+                <button type="button" data-desk-tab="shows"><strong id="desk-shows">0</strong> Shows</button>
+                <button type="button" data-desk-tab="venues"><strong id="desk-venues">0</strong> Venues</button>
+              </div>
+              <button class="desk-edition-action" type="button" data-desk-tab="edition">Edit guide edition</button>
+            </div>
+            <div class="desk-art" aria-hidden="true"><img src="../assets/hero.webp" alt="" width="1350" height="900" decoding="async"></div>
+          </div>
+          <div class="desk-columns">
+            <aside class="desk-side" aria-label="Editing and publication">
+              <section class="desk-add">
+                <h2>Add a listing</h2>
+                <div class="desk-actions">
+                  <button id="desk-add-show" class="primary-button" type="button">Add show</button>
+                  <button id="desk-add-venue" class="secondary-button" type="button">Add venue</button>
+                </div>
+              </section>
+              <section class="desk-review">
+                <h2>Publishing</h2>
+                <p id="desk-review-status"></p>
+                <button id="desk-review-changes" class="secondary-button" type="button">Review changes</button>
+                <details class="desk-tools"><summary>More tools</summary>
+                  <button id="desk-export" class="desk-link" type="button">Download catalog</button>
+                  <button id="desk-refresh" class="desk-link" type="button">Reload published catalog</button>
+                  <button id="desk-discard" class="desk-link" type="button">Discard unpublished changes</button>
+                </details>
+              </section>
+            </aside>
+            <section class="desk-agenda">
+              <div class="desk-section-head"><h2>Show schedule</h2><button type="button" class="desk-link" data-desk-tab="shows">All shows</button></div>
+              <label class="agenda-date">Show date <select id="desk-agenda-date"></select></label>
+              <ul id="desk-agenda-list"></ul>
+            </section>
+          </div>
+        </section>
+        <section
+          id="shows-panel"
+          class="library-panel"
+          role="tabpanel"
+          aria-labelledby="shows-tab"
+        >
+          <div class="library-heading">
             <div>
+              <p class="library-eyebrow">Music calendar</p>
               <h2>Shows</h2>
-              <p id="shows-count" class="record-count"></p>
+              <p id="shows-count" class="record-count" aria-live="polite"></p>
             </div>
             <button id="add-show" class="primary-button" type="button">
               Add show
             </button>
           </div>
-          <label class="search-field" for="show-search">
-            <span>Search shows</span>
-            <input
-              id="show-search"
-              type="search"
-              placeholder="Artist, venue or date"
-            />
-          </label>
-          <div id="shows-list" class="record-list" aria-live="polite"></div>
+
+          <div class="library-tools" aria-label="Show controls">
+            <label class="library-search" for="show-search">
+              <span>Search</span>
+              <input
+                id="show-search"
+                type="search"
+                placeholder="Artist, show or venue"
+                autocomplete="off"
+              />
+            </label>
+            <label for="show-date-filter">
+              <span>Date</span>
+              <select id="show-date-filter">
+                <option value="">All dates</option>
+              </select>
+            </label>
+            <label for="show-venue-filter">
+              <span>Venue</span>
+              <select id="show-venue-filter">
+                <option value="">All venues</option>
+              </select>
+            </label>
+            <label for="show-sort">
+              <span>Sort</span>
+              <select id="show-sort">
+                <option value="soonest">Soonest first</option>
+                <option value="latest">Latest first</option>
+                <option value="artist">Artist A–Z</option>
+                <option value="venue">Venue A–Z</option>
+              </select>
+            </label>
+            <button
+              id="show-filters-clear"
+              class="secondary-button library-clear"
+              type="button"
+              hidden
+            >
+              Clear filters
+            </button>
+          </div>
+          <div id="shows-list" class="library-grid" aria-live="polite"></div>
         </section>
 
         <section
           id="venues-panel"
+          class="library-panel"
           role="tabpanel"
           aria-labelledby="venues-tab"
           hidden
         >
-          <div class="section-heading">
+          <div class="library-heading">
             <div>
+              <p class="library-eyebrow">Places to play</p>
               <h2>Venues</h2>
-              <p id="venues-count" class="record-count"></p>
+              <p id="venues-count" class="record-count" aria-live="polite"></p>
             </div>
             <button id="add-venue" class="primary-button" type="button">
               Add venue
             </button>
           </div>
-          <label class="search-field" for="venue-search">
-            <span>Search venues</span>
-            <input
-              id="venue-search"
-              type="search"
-              placeholder="Name or address"
-            />
-          </label>
-          <div id="venues-list" class="record-list" aria-live="polite"></div>
+          <div class="library-tools venue-tools" aria-label="Venue controls">
+            <label class="library-search" for="venue-search">
+              <span>Search</span>
+              <input
+                id="venue-search"
+                type="search"
+                placeholder="Name, address or feature"
+                autocomplete="off"
+              />
+            </label>
+            <label for="venue-sort">
+              <span>Sort</span>
+              <select id="venue-sort">
+                <option value="name">Name A–Z</option>
+                <option value="shows">Most shows</option>
+                <option value="address">Address A–Z</option>
+              </select>
+            </label>
+            <button
+              id="venue-filters-clear"
+              class="secondary-button library-clear"
+              type="button"
+              hidden
+            >
+              Clear search
+            </button>
+          </div>
+          <div id="venues-list" class="library-grid" aria-live="polite"></div>
         </section>
 
         <section
           id="edition-panel"
+          class="edition-panel"
           role="tabpanel"
           aria-labelledby="edition-tab"
           hidden
@@ -244,51 +319,74 @@
             <div>
               <h2>Guide edition</h2>
               <p class="record-count">
-                Set the date range and label used by the published guide.
+                Set the guide status dates and the date line visitors see.
               </p>
             </div>
           </div>
-          <form id="edition-form" class="edition-form" novalidate>
-            <label for="edition-start"
-              ><span>Start date</span
-              ><input id="edition-start" name="startDate" type="date" required
-            /></label>
-            <label for="edition-end"
-              ><span>End date</span
-              ><input id="edition-end" name="endDate" type="date" required
-            /></label>
-            <label class="full-field" for="edition-label"
-              ><span>Edition label</span
-              ><input
-                id="edition-label"
-                name="label"
-                type="text"
-                maxlength="160"
-                required
-            /></label>
-            <label class="full-field" for="edition-checked"
-              ><span>Source checked date</span
-              ><input
-                id="edition-checked"
-                name="sourceCheckedDate"
-                type="date"
-                required
-            /></label>
-            <div
-              id="edition-error"
-              class="form-message error-message full-field"
-              role="alert"
-              tabindex="-1"
-              hidden
-            ></div>
-            <div class="edition-actions full-field">
-              <button class="primary-button" type="submit">Save edition</button>
-            </div>
-          </form>
+          <div class="edition-layout">
+            <aside class="edition-explainer" aria-labelledby="edition-explainer-title">
+              <p class="editor-kicker">Published guide</p>
+              <h3 id="edition-explainer-title">Set the guide edition</h3>
+              <p>
+                The start and end dates determine whether this edition is current,
+                upcoming or archived. The edition label is the visible date line.
+              </p>
+              <p>Saving stages the update. Nothing changes publicly until you publish.</p>
+            </aside>
+            <form id="edition-form" class="edition-form" novalidate>
+              <div class="edition-date-fields">
+                <label for="edition-start"
+                  ><span>Start date</span
+                  ><input id="edition-start" name="startDate" type="date" required
+                /></label>
+                <label for="edition-end"
+                  ><span>End date</span
+                  ><input id="edition-end" name="endDate" type="date" required
+                /></label>
+              </div>
+              <label class="full-field" for="edition-label"
+                ><span>Edition label</span
+                ><input
+                  id="edition-label"
+                  name="label"
+                  type="text"
+                  maxlength="160"
+                  placeholder="November 20–26, 2026"
+                  required
+                /><span class="field-help">Shown to visitors as the guide’s date line.</span></label>
+              <label class="full-field" for="edition-checked"
+                ><span>Sources checked through</span
+                ><input
+                  id="edition-checked"
+                  name="sourceCheckedDate"
+                  type="date"
+                  required
+                /><span class="field-help">Records the latest source review.</span></label>
+              <div
+                id="edition-error"
+                class="form-message error-message full-field"
+                role="alert"
+                tabindex="-1"
+                hidden
+              ></div>
+              <div class="edition-actions full-field">
+                <span>Save this section, then publish from the top of the page.</span>
+                <button class="primary-button" type="submit">Save edition</button>
+              </div>
+            </form>
+          </div>
         </section>
+        </div>
       </section>
     </main>
 
+    <dialog id="review-dialog" class="modal desk-review-dialog" aria-labelledby="review-title">
+      <form method="dialog">
+        <div class="desk-section-head"><h2 id="review-title">Unpublished changes</h2><button class="secondary-button" value="close" autofocus>Close</button></div>
+        <ul id="desk-change-list"></ul>
+        <button id="desk-review-publish" class="primary-button" type="button">Publish changes</button>
+      </form>
+    </dialog>
     <dialog
       id="editor-dialog"
       class="modal editor-modal"
@@ -296,7 +394,10 @@
     >
       <form id="editor-form" method="dialog" novalidate>
         <div class="modal-header">
-          <h2 id="editor-title"></h2>
+          <div>
+            <p id="editor-kicker" class="editor-kicker"></p>
+            <h2 id="editor-title"></h2>
+          </div>
           <button
             id="editor-close"
             class="icon-button"
@@ -313,8 +414,14 @@
           tabindex="-1"
           hidden
         ></div>
+        <nav
+          id="editor-shortcuts"
+          class="editor-shortcuts"
+          aria-label="Form sections"
+        ></nav>
         <div id="editor-fields" class="editor-fields"></div>
         <div class="modal-actions">
+          <p id="editor-action-note">Save stages this record for publication.</p>
           <button id="editor-cancel" class="secondary-button" type="button">
             Cancel
           </button>

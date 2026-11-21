@@ -389,6 +389,7 @@ main:focus {
 }
 .series-card img {
   width: 100%;
+  height: auto;
   aspect-ratio: 1.82;
   object-fit: cover;
 }
@@ -598,8 +599,9 @@ main:focus {
 }
 .series-layout > img {
   width: 100%;
-  max-height: 420px;
-  object-fit: cover;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
   border: 2px solid var(--ink);
 }
 .series-layout p {
@@ -762,7 +764,7 @@ main:focus {
     padding: 1.5rem 0 1.1rem;
   }
   .series-layout > img {
-    max-height: 245px;
+    max-height: none;
   }
   .big-title {
     font-size: clamp(3.1rem, 13vw, 5.6rem);

@@ -36,17 +36,26 @@
     addShow: document.querySelector("#add-show"),
     addVenue: document.querySelector("#add-venue"),
     showSearch: document.querySelector("#show-search"),
+    showDateFilter: document.querySelector("#show-date-filter"),
+    showVenueFilter: document.querySelector("#show-venue-filter"),
+    showSort: document.querySelector("#show-sort"),
+    showFiltersClear: document.querySelector("#show-filters-clear"),
     venueSearch: document.querySelector("#venue-search"),
+    venueSort: document.querySelector("#venue-sort"),
+    venueFiltersClear: document.querySelector("#venue-filters-clear"),
     showsCount: document.querySelector("#shows-count"),
     venuesCount: document.querySelector("#venues-count"),
     showsList: document.querySelector("#shows-list"),
     venuesList: document.querySelector("#venues-list"),
     editorDialog: document.querySelector("#editor-dialog"),
     editorForm: document.querySelector("#editor-form"),
+    editorKicker: document.querySelector("#editor-kicker"),
     editorTitle: document.querySelector("#editor-title"),
+    editorShortcuts: document.querySelector("#editor-shortcuts"),
     editorFields: document.querySelector("#editor-fields"),
     editorError: document.querySelector("#editor-error"),
     editorSave: document.querySelector("#editor-save"),
+    editorActionNote: document.querySelector("#editor-action-note"),
     editorCancel: document.querySelector("#editor-cancel"),
     editorClose: document.querySelector("#editor-close"),
     confirmDialog: document.querySelector("#confirm-dialog"),
@@ -62,7 +71,7 @@
     catalog: null,
     publishedCatalog: null,
     showKey: "events",
-    activeTab: "shows",
+    activeTab: "overview",
     conflict: false,
     conflictDraft: null,
     pendingReauth: null,
@@ -207,6 +216,8 @@
     elements.signOut.disabled = busy;
     elements.publish.disabled = busy || !hasChanges() || state.conflict;
     elements.reloadLatest.disabled = busy;
+    elements.workspace.querySelectorAll('.desk-tabs, [role="tabpanel"]').forEach(panel => { panel.inert = busy; });
+    if (state.catalog) updatePublishingTools();
     if (label) setStatus(label);
   }
 
@@ -391,36 +402,70 @@
     elements.editionError.hidden = true;
   }
 
+  function setEditionError(message, target = null) {
+    elements.editionError.textContent = message;
+    elements.editionError.hidden = !message;
+    if (!message) return;
+    target?.setAttribute("aria-invalid", "true");
+    window.requestAnimationFrame(() => (target || elements.editionError).focus());
+  }
+
   function applyEdition(event, quiet = false) {
     event?.preventDefault();
-    elements.editionError.textContent = "";
-    elements.editionError.hidden = true;
+    setEditionError("");
+    let firstInvalid = null;
     for (const field of elements.editionForm.querySelectorAll("[required]")) {
       field.setCustomValidity("");
-      if (!String(field.value).trim())
+      field.removeAttribute("aria-invalid");
+      if (!String(field.value).trim()) {
         field.setCustomValidity("Please complete this field.");
+        firstInvalid ||= field;
+      }
     }
-    if (!elements.editionForm.reportValidity()) return false;
+    firstInvalid ||= [...elements.editionForm.elements].find(
+      (field) => typeof field.checkValidity === "function" && !field.checkValidity(),
+    );
+    if (firstInvalid) {
+      const label = firstInvalid.closest("label")?.querySelector("span")?.textContent || "field";
+      setEditionError(
+        firstInvalid.validity.valueMissing
+          ? "Complete the required field: " + label + "."
+          : label + ": " + (firstInvalid.validationMessage || "Enter a valid value."),
+        firstInvalid,
+      );
+      firstInvalid.reportValidity();
+      return false;
+    }
     const values = editionFormValues();
     if (
       !isDate(values.startDate) ||
       !isDate(values.endDate) ||
       !isDate(values.sourceCheckedDate)
     ) {
-      elements.editionError.textContent = "Enter valid edition dates.";
-      elements.editionError.hidden = false;
-      elements.editionError.focus();
+      const target = !isDate(values.startDate)
+        ? elements.editionStart
+        : !isDate(values.endDate)
+          ? elements.editionEnd
+          : elements.editionChecked;
+      setEditionError("Enter valid edition dates.", target);
       return false;
     }
     if (values.endDate < values.startDate) {
       elements.editionEnd.setCustomValidity(
         "End date must be on or after the start date.",
       );
+      setEditionError("End date must be on or after the start date.", elements.editionEnd);
       elements.editionEnd.reportValidity();
       return false;
     }
+    if (!editionFormChanged()) {
+      updateChangeState();
+      if (!quiet) setStatus("No edition changes to save.");
+      return true;
+    }
     state.catalog.edition = { ...state.catalog.edition, ...values };
     updateChangeState();
+    renderOverview();
     if (!quiet) setStatus("Edition saved. Publish changes when ready.");
     return true;
   }
@@ -429,9 +474,10 @@
     const dirty = hasChanges();
     elements.changeState.textContent = dirty
       ? "Unpublished changes"
-      : "No unpublished changes";
+      : "Up to date";
     elements.changeState.classList.toggle("unsaved", dirty);
     elements.publish.disabled = state.busy || !dirty || state.conflict;
+    updatePublishingTools();
   }
 
   function showWorkspace() {
@@ -477,6 +523,8 @@
   function restoreAfterReauthentication(payload) {
     const pending = state.pendingReauth;
     if (!pending) {
+      selectTab("overview");
+      desk("desk-agenda-date").replaceChildren();
       useCatalog(payload);
       return "loaded";
     }
@@ -550,15 +598,15 @@
         setWorkspaceAlert(
           "The catalog changed while your session was inactive. Your unpublished copy has not been overwritten.",
         );
-      [elements.showsTab, elements.venuesTab, elements.editionTab]
-        .find((tab) => tab.getAttribute("aria-selected") === "true")
-        ?.focus();
     } catch (error) {
       state.token = "";
       setLoginError(errorMessage(error, "login"));
     } finally {
       setBusy(false);
       elements.signIn.textContent = "Log in";
+      if (!elements.workspace.hidden && elements.workspaceAlert.hidden) {
+        elements.workspace.querySelector('[role="tab"][aria-selected="true"]')?.focus({ preventScroll: true });
+      }
     }
   }
 
@@ -603,99 +651,474 @@
     return button;
   }
 
+  function publishedRecord(type, id) {
+    const collection =
+      type === "show"
+        ? state.publishedCatalog?.events || state.publishedCatalog?.shows || []
+        : state.publishedCatalog?.venues || [];
+    return collection.find((record) => record.id === id) || null;
+  }
+
+  function recordState(type, record) {
+    const published = publishedRecord(type, record.id);
+    if (!published) return { label: "New", className: "new" };
+    if (JSON.stringify(record) !== JSON.stringify(published))
+      return { label: "Edited", className: "edited" };
+    return { label: "Published", className: "published" };
+  }
+
+  function recordStatus(type, record) {
+    const status = recordState(type, record);
+    return makeElement(
+      "span",
+      "record-status record-status--" + status.className,
+      status.label,
+    );
+  }
+
+  function publicRecordLink(type, id, label, recordLabel) {
+    const link = makeElement("a", "library-action", label);
+    link.href = "../#" + type + "/" + encodeURIComponent(id);
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.setAttribute("aria-label", label + " for " + recordLabel);
+    return link;
+  }
+
+  function libraryAction(label, action, id, recordLabel, danger = false) {
+    const button = actionButton(label, action, id, danger);
+    button.className =
+      "library-action" + (danger ? " library-action--danger" : "");
+    button.setAttribute("aria-label", label + " " + recordLabel);
+    return button;
+  }
+
+  function localPhotoSource(value) {
+    const src = String(value || "").trim();
+    if (src.startsWith("assets/")) return "../" + src;
+    if (src.startsWith("../assets/") || src.startsWith("/")) return src;
+    if (/^https:\/\//i.test(src)) return src;
+    return "";
+  }
+
+  function libraryMedia(type, record) {
+    const media = makeElement("div", "library-card-media");
+    const fallback = () => {
+      const label = String(
+        type === "show" ? record.artist || record.title : record.name,
+      ).trim();
+      const mark = makeElement(
+        "span",
+        "library-card-monogram",
+        (label.match(/[\p{L}\p{N}]/u)?.[0] || "G").toLocaleUpperCase(),
+      );
+      mark.setAttribute("aria-hidden", "true");
+      media.replaceChildren(mark);
+      media.classList.add("library-card-media--fallback");
+    };
+    const photo =
+      typeof lookupPortalPhoto === "function"
+        ? lookupPortalPhoto(type, record)
+        : null;
+    const src = localPhotoSource(photo?.thumb || photo?.src);
+    if (!src) {
+      fallback();
+      return media;
+    }
+    const image = document.createElement("img");
+    image.src = src;
+    image.alt = String(photo.alt || "");
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.referrerPolicy = "no-referrer";
+    image.width = 360;
+    image.height = 220;
+    const framing =
+      photo.framing?.[type === "show" ? "listing" : "directory"] || {};
+    if (["cover", "contain"].includes(framing.fit))
+      image.style.objectFit = framing.fit;
+    const position = framing.position || photo.position;
+    if (position) image.style.objectPosition = position;
+    image.addEventListener("error", fallback, { once: true });
+    media.append(image);
+    return media;
+  }
+
+  function reconcileFilterOptions(select, entries, firstLabel) {
+    const selected = select.value;
+    const options = [new Option(firstLabel, "")];
+    for (const [value, label] of entries) options.push(new Option(label, value));
+    select.replaceChildren(...options);
+    select.value = entries.some(([value]) => value === selected) ? selected : "";
+  }
+
+  function syncShowFilters() {
+    const dates = [...new Set(shows().map((show) => show.date).filter(isDate))]
+      .sort()
+      .map((date) => [date, formatDate(date)]);
+    const places = [...venues()]
+      .sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")))
+      .map((venue) => [venue.id, venue.name || "Unnamed venue"]);
+    reconcileFilterOptions(elements.showDateFilter, dates, "All dates");
+    reconcileFilterOptions(elements.showVenueFilter, places, "All venues");
+  }
+
+  function showSortValue(show, mode) {
+    if (mode === "artist")
+      return [show.artist || show.title || "", show.date || "", show.time || ""];
+    if (mode === "venue")
+      return [venueName(show.venueId), show.date || "", show.time || ""];
+    return [show.date || "", show.time || "", show.title || ""];
+  }
+
+  function compareShowRecords(a, b, mode) {
+    const comparison = showSortValue(a, mode)
+      .join("|")
+      .localeCompare(showSortValue(b, mode).join("|"));
+    return mode === "latest" ? -comparison : comparison;
+  }
+
+  function showTimeLabel(show) {
+    const start = formatTime(show.time);
+    const end = formatTime(show.endTime);
+    return end ? start + "–" + end : start;
+  }
+
+  function appendShowCard(show) {
+    const label = show.title || "Untitled show";
+    const card = makeElement("article", "library-card library-card--show");
+    card.dataset.recordId = show.id;
+    const media = libraryMedia("show", show);
+    const body = makeElement("div", "library-card-body");
+    const headingId = "show-card-" + show.id;
+    const top = makeElement("div", "library-card-topline");
+    const date = makeElement("time", "library-date", formatDate(show.date));
+    date.dateTime = show.date || "";
+    top.append(date, recordStatus("show", show));
+    const heading = makeElement("h3", "", label);
+    heading.id = headingId;
+    card.setAttribute("aria-labelledby", headingId);
+    body.append(top, heading);
+    if (show.artist && show.artist !== show.title)
+      body.append(makeElement("p", "library-card-byline", show.artist));
+    const details = makeElement("div", "library-card-details");
+    details.append(
+      makeElement("span", "", showTimeLabel(show) || "Time not set"),
+      makeElement("span", "", venueName(show.venueId)),
+    );
+    body.append(details);
+    const facts = makeElement("div", "library-card-facts");
+    if (show.genres) facts.append(makeElement("span", "", show.genres));
+    if (show.sourceStatus)
+      facts.append(makeElement("span", "", show.sourceStatus));
+    const sourceCount = Array.isArray(show.sources) ? show.sources.length : 0;
+    facts.append(
+      makeElement(
+        "span",
+        "",
+        sourceCount + (sourceCount === 1 ? " source" : " sources"),
+      ),
+    );
+    body.append(facts);
+    const actions = makeElement("div", "library-card-actions");
+    actions.append(
+      libraryAction("Edit", "edit-show", show.id, label),
+      libraryAction("Duplicate", "duplicate-show", show.id, label),
+    );
+    if (publishedRecord("show", show.id))
+      actions.append(publicRecordLink("show", show.id, "View live", label));
+    actions.append(
+      libraryAction("Remove", "remove-show", show.id, label, true),
+    );
+    card.append(media, body, actions);
+    elements.showsList.append(card);
+  }
+
   function renderShows() {
     const query = elements.showSearch.value.trim().toLocaleLowerCase();
-    const sorted = [...shows()].sort((a, b) =>
-      [a.date || "", a.time || "", a.title || ""]
-        .join("|")
-        .localeCompare([b.date || "", b.time || "", b.title || ""].join("|")),
+    const date = elements.showDateFilter.value;
+    const venueId = elements.showVenueFilter.value;
+    const mode = elements.showSort.value;
+    const sorted = [...shows()].sort((a, b) => compareShowRecords(a, b, mode));
+    const filtered = sorted.filter(
+      (show) =>
+        (!date || show.date === date) &&
+        (!venueId || show.venueId === venueId) &&
+        [
+          show.title,
+          show.artist,
+          show.date,
+          show.time,
+          show.genres,
+          venueName(show.venueId),
+        ]
+          .join(" ")
+          .toLocaleLowerCase()
+          .includes(query),
     );
-    const filtered = sorted.filter((show) =>
-      [show.title, show.artist, show.date, show.time, venueName(show.venueId)]
-        .join(" ")
-        .toLocaleLowerCase()
-        .includes(query),
+    const filtering = Boolean(query || date || venueId);
+    elements.showsCount.textContent = filtering
+      ? "Showing " + filtered.length + " of " + sorted.length + " shows"
+      : sorted.length + (sorted.length === 1 ? " show" : " shows") + " in the guide";
+    elements.showFiltersClear.hidden = !(
+      filtering || elements.showSort.value !== "soonest"
     );
-    elements.showsCount.textContent = query
-      ? filtered.length + " of " + sorted.length + " shows"
-      : sorted.length + (sorted.length === 1 ? " show" : " shows");
     elements.showsList.replaceChildren();
     if (!filtered.length) {
-      elements.showsList.append(
+      const empty = makeElement("div", "library-empty");
+      empty.append(
+        makeElement("h3", "", filtering ? "No matching shows" : "No shows yet"),
         makeElement(
           "p",
-          "empty-state",
-          query ? "No shows match this search." : "No shows have been added.",
+          "",
+          filtering
+            ? "Try another search or clear the filters."
+            : "Add the first show to start this edition.",
         ),
       );
+      if (filtering)
+        empty.append(
+          libraryAction("Clear filters", "clear-show-filters", "", "shows"),
+        );
+      elements.showsList.append(empty);
       return;
     }
-    for (const show of filtered) {
-      const card = makeElement("article", "record-card");
-      const main = makeElement("div", "record-main");
-      main.append(makeElement("h3", "", show.title || "Untitled show"));
-      const details = [
-        formatDate(show.date),
-        formatTime(show.time),
-        venueName(show.venueId),
-      ].filter(Boolean);
-      main.append(makeElement("p", "", details.join(" · ")));
-      const actions = makeElement("div", "record-actions");
-      actions.append(
-        actionButton("Edit", "edit-show", show.id),
-        actionButton("Remove", "remove-show", show.id, true),
-      );
-      card.append(main, actions);
-      elements.showsList.append(card);
+    for (const show of filtered) appendShowCard(show);
+  }
+
+  function venueShowCount(venueId) {
+    return shows().filter((show) => show.venueId === venueId).length;
+  }
+
+  function appendVenueCard(venue) {
+    const label = venue.name || "Unnamed venue";
+    const count = venueShowCount(venue.id);
+    const card = makeElement("article", "library-card library-card--venue");
+    card.dataset.recordId = venue.id;
+    const media = libraryMedia("venue", venue);
+    const body = makeElement("div", "library-card-body");
+    const headingId = "venue-card-" + venue.id;
+    const top = makeElement("div", "library-card-topline");
+    top.append(
+      makeElement(
+        "span",
+        "library-card-count",
+        count + (count === 1 ? " scheduled show" : " scheduled shows"),
+      ),
+      recordStatus("venue", venue),
+    );
+    const heading = makeElement("h3", "", label);
+    heading.id = headingId;
+    card.setAttribute("aria-labelledby", headingId);
+    body.append(top, heading);
+    if (venue.address)
+      body.append(makeElement("p", "library-card-address", venue.address));
+    if (venue.description)
+      body.append(makeElement("p", "library-card-summary", venue.description));
+    if (Array.isArray(venue.features) && venue.features.length) {
+      const features = makeElement("ul", "library-feature-list");
+      for (const feature of venue.features.slice(0, 4))
+        features.append(makeElement("li", "", feature));
+      body.append(features);
     }
+    const actions = makeElement("div", "library-card-actions");
+    actions.append(libraryAction("Edit", "edit-venue", venue.id, label));
+    if (publishedRecord("venue", venue.id))
+      actions.append(publicRecordLink("venue", venue.id, "View live", label));
+    if (count)
+      actions.append(
+        libraryAction("View shows", "filter-shows", venue.id, label),
+      );
+    if (isHttpUrl(venue.url)) {
+      const website = makeElement("a", "library-action", "Website");
+      website.href = venue.url;
+      website.target = "_blank";
+      website.rel = "noopener noreferrer";
+      website.setAttribute("aria-label", "Open website for " + label);
+      actions.append(website);
+    }
+    actions.append(
+      libraryAction("Remove", "remove-venue", venue.id, label, true),
+    );
+    card.append(media, body, actions);
+    elements.venuesList.append(card);
   }
 
   function renderVenues() {
     const query = elements.venueSearch.value.trim().toLocaleLowerCase();
-    const sorted = [...venues()].sort((a, b) =>
-      String(a.name || "").localeCompare(String(b.name || "")),
-    );
+    const mode = elements.venueSort.value;
+    const sorted = [...venues()].sort((a, b) => {
+      if (mode === "shows") {
+        const difference = venueShowCount(b.id) - venueShowCount(a.id);
+        if (difference) return difference;
+      }
+      const first = mode === "address" ? a.address : a.name;
+      const second = mode === "address" ? b.address : b.name;
+      return String(first || "").localeCompare(String(second || ""));
+    });
     const filtered = sorted.filter((venue) =>
-      [venue.name, venue.address].join(" ").toLocaleLowerCase().includes(query),
+      [venue.name, venue.address, ...(venue.features || [])]
+        .join(" ")
+        .toLocaleLowerCase()
+        .includes(query),
     );
     elements.venuesCount.textContent = query
-      ? filtered.length + " of " + sorted.length + " venues"
-      : sorted.length + (sorted.length === 1 ? " venue" : " venues");
+      ? "Showing " + filtered.length + " of " + sorted.length + " venues"
+      : sorted.length + (sorted.length === 1 ? " venue" : " venues") + " in the guide";
+    elements.venueFiltersClear.hidden = !(
+      query || elements.venueSort.value !== "name"
+    );
     elements.venuesList.replaceChildren();
     if (!filtered.length) {
-      elements.venuesList.append(
+      const empty = makeElement("div", "library-empty");
+      empty.append(
+        makeElement("h3", "", query ? "No matching venues" : "No venues yet"),
         makeElement(
           "p",
-          "empty-state",
-          query ? "No venues match this search." : "No venues have been added.",
+          "",
+          query
+            ? "Try another search or clear it."
+            : "Add a venue before adding its first show.",
         ),
       );
+      if (query)
+        empty.append(
+          libraryAction("Clear search", "clear-venue-filters", "", "venues"),
+        );
+      elements.venuesList.append(empty);
       return;
     }
-    for (const venue of filtered) {
-      const card = makeElement("article", "record-card");
-      const main = makeElement("div", "record-main");
-      main.append(makeElement("h3", "", venue.name || "Unnamed venue"));
-      main.append(makeElement("p", "", venue.address || "No address"));
-      const actions = makeElement("div", "record-actions");
-      actions.append(
-        actionButton("Edit", "edit-venue", venue.id),
-        actionButton("Remove", "remove-venue", venue.id, true),
-      );
-      card.append(main, actions);
-      elements.venuesList.append(card);
-    }
+    for (const venue of filtered) appendVenueCard(venue);
   }
 
   function renderCatalog() {
+    syncShowFilters();
     renderShows();
     renderVenues();
+    renderOverview();
     updateChangeState();
+  }
+
+  function lookupPortalPhoto(type, record) {
+    if (!record) return null;
+    const custom = record.photo;
+    if (custom && /^https:\/\//i.test(custom.src) && isHttpUrl(custom.src) && custom.alt && custom.credit && isHttpUrl(custom.source)) {
+      return { ...custom, thumb: custom.src };
+    }
+    const collection = window.GRLPhotos?.[type === "show" ? "artists" : "venues"];
+    const key = type === "show" ? record.artist : record.id;
+    if (!collection || !Object.hasOwn(collection, key)) return null;
+    const photo = collection[key];
+    return { ...photo, src: "../" + photo.src, thumb: "../" + (photo.thumb || photo.src) };
+  }
+
+  function desk(id) {
+    return document.getElementById(id);
+  }
+
+  const changeLabels = {
+    venueId: "venue", startDate: "start date", endDate: "end date", sourceCheckedDate: "source check date",
+    verifiedAt: "verification date", time: "start time", endTime: "end time", sourceStatus: "source status",
+    genres: "genre", features: "features", photo: "photo", url: "website", sources: "sources",
+  };
+
+  function changedFields(oldRecord, record) {
+    const keys = new Set([...Object.keys(oldRecord), ...Object.keys(record)]);
+    return [...keys].filter(key => JSON.stringify(oldRecord[key]) !== JSON.stringify(record[key]))
+      .map(key => changeLabels[key] || key.replace(/([A-Z])/g, " $1").toLowerCase());
+  }
+
+  function catalogChanges() {
+    if (!state.catalog || !state.publishedCatalog) return [];
+    const changes = [];
+    for (const [group, noun] of [[state.showKey, "Show"], ["venues", "Venue"]]) {
+      const previous = new Map(state.publishedCatalog[group].map(record => [record.id, record]));
+      for (const record of state.catalog[group]) {
+        const oldRecord = previous.get(record.id);
+        const name = record.title || record.name || record.id;
+        const fields = oldRecord ? changedFields(oldRecord, record) : [];
+        if (!oldRecord || fields.length) changes.push({ name, action: oldRecord ? "Edited" : "Added", detail: [noun, ...fields].join(" · ") });
+        previous.delete(record.id);
+      }
+      for (const record of previous.values()) {
+        changes.push({ name: record.title || record.name || record.id, action: "Removed", detail: noun });
+      }
+    }
+    const edition = editionFormChanged() ? { ...state.catalog.edition, ...editionFormValues() } : state.catalog.edition;
+    const fields = changedFields(state.publishedCatalog.edition, edition);
+    if (fields.length) changes.push({ name: "Guide edition", action: "Edited", detail: fields.join(" · ") });
+    return changes;
+  }
+
+  function updatePublishingTools() {
+    if (!state.catalog) return;
+    const changes = catalogChanges();
+    desk("desk-review-status").textContent = state.conflict ? "A newer revision is available. Resolve the changes before publishing." : changes.length
+      ? changes.length + (changes.length === 1 ? " change ready to review." : " changes ready to review.")
+      : "Published revision " + state.revision + ". All changes are live.";
+    desk("desk-review-changes").disabled = !changes.length || state.busy;
+    desk("desk-discard").disabled = !changes.length || state.busy || state.conflict;
+    desk("desk-review-publish").disabled = !changes.length || state.busy || state.conflict;
+    const listing = desk("desk-change-list");
+    listing.replaceChildren();
+    for (const item of changes) {
+      const row = makeElement("li");
+      row.append(makeElement("strong", "", item.name), makeElement("span", "", item.action + " · " + item.detail));
+      listing.append(row);
+    }
+  }
+
+  function renderDeskAgenda() {
+    const date = desk("desk-agenda-date").value;
+    const list = desk("desk-agenda-list");
+    list.replaceChildren();
+    const records = shows().filter(show => show.date === date).sort((a, b) =>
+      (a.time || "99").localeCompare(b.time || "99") || a.title.localeCompare(b.title));
+    for (const record of records) {
+      const row = makeElement("li");
+      const time = makeElement("span", "desk-show-time", formatTime(record.time) || "Time TBA");
+      const content = makeElement("div", "desk-show-name");
+      content.append(makeElement("strong", "", record.title), makeElement("span", "", venueName(record.venueId)));
+      const edit = makeElement("button", "desk-link", "Edit");
+      edit.type = "button";
+      edit.dataset.deskEdit = record.id;
+      edit.setAttribute("aria-label", "Edit " + record.title);
+      row.append(time, content, edit);
+      list.append(row);
+    }
+    if (!records.length) list.append(makeElement("li", "desk-no-shows", "No shows scheduled."));
+  }
+
+  function renderOverview() {
+    if (!state.catalog) return;
+    desk("desk-edition").textContent = state.catalog.edition.label || "Guide edition";
+    desk("desk-shows").textContent = shows().length;
+    desk("desk-venues").textContent = venues().length;
+    const dates = [...new Set(shows().map(record => record.date))].sort();
+    const picker = desk("desk-agenda-date");
+    const preferred = picker.value;
+    const today = localDate();
+    picker.replaceChildren();
+    for (const date of dates) picker.add(new Option(formatDate(date), date));
+    if (dates.length) picker.value = dates.includes(preferred) ? preferred : dates.find(date => date >= today) || dates[dates.length - 1];
+    picker.parentElement.hidden = !dates.length;
+    renderDeskAgenda();
+  }
+
+  async function discardCatalogDraft() {
+    if (!hasChanges() || state.busy || state.conflict) return;
+    if (!(await confirmAction({title: "Discard unpublished changes?", message: "All edits made since the last publication in this tab will be lost.", label: "Discard changes"}))) return;
+    state.catalog = clone(state.publishedCatalog);
+    renderEdition();
+    renderCatalog();
+    setStatus("Unpublished changes discarded.");
+    desk("desk-export").focus();
   }
 
   function selectTab(tab, focus = false) {
     state.activeTab = tab;
     const items = [
+      ["overview", desk("overview-tab"), desk("overview-panel")],
       ["shows", elements.showsTab, elements.showsPanel],
       ["venues", elements.venuesTab, elements.venuesPanel],
       ["edition", elements.editionTab, elements.editionPanel],
@@ -738,6 +1161,54 @@
     return id;
   }
 
+  function editorSection(id, title, description = "", optional = false) {
+    const section = document.createElement(optional ? "details" : "fieldset");
+    section.id = "editor-" + id;
+    section.className = "editor-section full-field";
+    if (optional) {
+      const summary = makeElement("summary", "editor-section-heading");
+      summary.append(
+        makeElement("span", "editor-section-number", "Optional"),
+        makeElement("strong", "", title),
+      );
+      section.append(summary);
+    } else {
+      const legend = document.createElement("legend");
+      legend.append(makeElement("strong", "", title));
+      section.append(legend);
+    }
+    if (description) section.append(makeElement("p", "editor-section-copy", description));
+    const grid = makeElement("div", "editor-section-grid");
+    section.append(grid);
+    elements.editorFields.append(section);
+    return { section, grid };
+  }
+
+  function renderEditorShortcuts(sections) {
+    elements.editorShortcuts.replaceChildren();
+    for (const { section, label } of sections) {
+      const link = makeElement("a", "", label);
+      link.href = "#" + section.id;
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (section instanceof HTMLDetailsElement) section.open = true;
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+        section.querySelector("input, select, textarea, button")?.focus({ preventScroll: true });
+      });
+      elements.editorShortcuts.append(link);
+    }
+  }
+
+  function addHiddenField(name, value) {
+    const field = document.createElement("input");
+    field.type = "hidden";
+    field.id = "edit-" + name;
+    field.name = name;
+    field.value = value ?? "";
+    elements.editorFields.append(field);
+    return field;
+  }
+
   function addField({
     name,
     label,
@@ -748,6 +1219,8 @@
     full = false,
     help = "",
     maxLength = 500,
+    placeholder = "",
+    autocomplete = "",
     parent = elements.editorFields,
   }) {
     const wrapper = makeElement("label", full ? "full-field" : "");
@@ -761,6 +1234,8 @@
     control.name = name;
     if (type !== "textarea") control.type = type;
     control.value = value ?? "";
+    if (placeholder) control.placeholder = placeholder;
+    if (autocomplete) control.autocomplete = autocomplete;
     control.required = required;
     control.readOnly = readonly;
     if (maxLength) control.maxLength = maxLength;
@@ -770,7 +1245,7 @@
     return control;
   }
 
-  function addVenueSelect(value) {
+  function addVenueSelect(value, parent = elements.editorFields) {
     const wrapper = makeElement("label", "full-field");
     wrapper.append(makeElement("span", "", "Venue"));
     const select = document.createElement("select");
@@ -795,7 +1270,8 @@
       select.append(missing);
     }
     wrapper.append(select);
-    elements.editorFields.append(wrapper);
+    parent.append(wrapper);
+    return select;
   }
 
   function syncSourceRecords() {
@@ -856,19 +1332,19 @@
     });
   }
 
-  function addSourceEditor(record) {
+  function addSourceEditor(record, parent = elements.editorFields) {
     const fieldset = makeElement("fieldset", "source-editor full-field");
-    fieldset.append(makeElement("legend", "", "Sources"));
+    fieldset.append(makeElement("legend", "", "Published links"));
     fieldset.append(
       makeElement(
         "p",
         "field-help",
-        "Add at least one published source for this show.",
+        "Add the event page, venue post or other link that confirms this listing.",
       ),
     );
     const rows = makeElement("div", "source-rows");
     rows.id = "source-rows";
-    const add = makeElement("button", "secondary-button", "Add source");
+    const add = makeElement("button", "secondary-button", "Add another source");
     add.type = "button";
     add.addEventListener("click", () => {
       syncSourceRecords();
@@ -881,22 +1357,21 @@
       );
     });
     fieldset.append(rows, add);
-    elements.editorFields.append(fieldset);
+    parent.append(fieldset);
     renderSourceRows();
   }
 
-  function addPhotoFields(record, type) {
-    const box = makeElement("details", "photo-fields full-field");
-    box.append(makeElement("summary", "", type === "show" ? "Performer photo" : "Venue photo"));
-    box.append(makeElement("p", "field-help", "Use a photo you have permission to publish. Clear all four fields to use the guide’s usual photo."));
+  function addPhotoFields(record, type, parent = elements.editorFields) {
+    const box = makeElement("div", "photo-field-grid full-field");
+    box.append(makeElement("p", "field-help", "Use a photo you have permission to publish. Leave every field empty to use the guide’s usual photo."));
     const photo = record.photo || {};
     for (const [key, label, limit] of [
-      ["src", "Image URL", 2000], ["alt", "Image description", 400],
-      ["credit", "Photo credit", 200], ["source", "Credit link", 2000],
+      ["src", type === "show" ? "Performer image URL" : "Venue image URL", 2000], ["alt", "Image description", 400],
+      ["credit", "Photographer or source", 200], ["source", "Credit link", 2000],
     ]) {
       addField({ name: "photo-" + key, label, value: photo[key], maxLength: limit, parent: box });
     }
-    elements.editorFields.append(box);
+    parent.append(box);
   }
 
   function readPhoto(data) {
@@ -904,17 +1379,28 @@
       [key, String(data.get("photo-" + key) || "").trim()]);
     if (entries.every(([, value]) => !value)) return null;
     const photo = Object.fromEntries(entries);
-    if (entries.some(([, value]) => !value)) throw new Error("Complete all four photo fields, or clear all four to use the guide’s usual photo.");
+    const missing = entries.find(([, value]) => !value);
+    if (missing)
+      throw editorFailure(
+        "Complete all four photo fields, or clear all four to use the guide’s usual photo.",
+        elements.editorFields.querySelector("#edit-photo-" + missing[0]),
+      );
     if (![photo.src, photo.source].every(value => isHttpUrl(value) && /^https:\/\//i.test(value)))
-      throw new Error("The image URL and credit link must both begin with https://.");
+      throw editorFailure(
+        "The image URL and credit link must both begin with https://.",
+        elements.editorFields.querySelector("#edit-photo-src"),
+      );
     return photo;
   }
 
-  function openEditor(type, id = "") {
+  function openEditor(type, id = "", options = {}) {
     clearMessages();
     const collection = type === "show" ? shows() : venues();
-    const existing = id ? collection.find((item) => item.id === id) : null;
-    const record = existing
+    const existing = !options.seed && id ? collection.find((item) => item.id === id) : null;
+    const duplicated = Boolean(type === "show" && options.duplicate && options.seed);
+    const record = options.seed
+      ? clone(options.seed)
+      : existing
       ? clone(existing)
       : type === "show"
         ? {
@@ -930,7 +1416,7 @@
             summary: "",
             sourceStatus: "GRL guide",
             sourceNote: "",
-            verifiedAt: localDate(),
+            verifiedAt: "",
             sources: [],
           }
         : {
@@ -941,11 +1427,16 @@
             description: "",
             features: [],
           };
+    if (duplicated) {
+      record.id = uniqueId("show");
+      record.date = "";
+      record.verifiedAt = "";
+    }
     state.returnFocus = document.activeElement;
     state.editor = {
       type,
       id: record.id,
-      isNew: !existing,
+      isNew: !existing || duplicated,
       original: record,
       sourceRecords:
         type === "show" &&
@@ -959,37 +1450,59 @@
     elements.editorFields.replaceChildren();
     elements.editorError.hidden = true;
     elements.editorError.textContent = "";
+    elements.editorKicker.textContent =
+      type === "show" ? "Music guide listing" : "Venue directory";
     elements.editorTitle.textContent =
-      (existing ? "Edit " : "Add ") + (type === "show" ? "show" : "venue");
-    elements.editorSave.textContent = existing ? "Save changes" : "Add " + type;
+      duplicated
+        ? "Schedule another date"
+        : (existing ? "Edit " : "Add ") + (type === "show" ? "show" : "venue");
+    elements.editorSave.textContent = existing && !duplicated ? "Save changes" : "Add " + type;
+    elements.editorActionNote.textContent = duplicated
+      ? "Set the new date and check the source links for this booking."
+      : "Save stages this record. Publish when the guide is ready.";
 
-    addField({
-      name: "id",
-      label: "ID",
-      value: record.id,
-      readonly: true,
-      full: true,
-    });
+    addHiddenField("id", record.id);
+    const sections = [];
     if (type === "show") {
+      const basics = editorSection(
+        "show-basics",
+        "Who and where",
+        "Name the act and choose where the performance takes place.",
+      );
+      sections.push({ section: basics.section, label: "Basics" });
       addField({
         name: "title",
-        label: "Show title",
+        label: "Listing title",
         value: record.title,
         required: true,
+        placeholder: "Dathan Martin",
+        parent: basics.grid,
       });
       addField({
         name: "artist",
-        label: "Artist",
+        label: "Artist or group",
         value: record.artist,
         required: true,
+        placeholder: "Artist name",
+        parent: basics.grid,
       });
-      addVenueSelect(record.venueId);
+      addVenueSelect(record.venueId, basics.grid);
+
+      const schedule = editorSection(
+        "show-schedule",
+        "Date and time",
+        duplicated
+          ? "Choose the new performance date. The time was copied from the original listing."
+          : "Use the venue’s local Grapevine date and time.",
+      );
+      sections.push({ section: schedule.section, label: "Schedule" });
       addField({
         name: "date",
         label: "Date",
         value: record.date,
         type: "date",
         required: true,
+        parent: schedule.grid,
       });
       addField({
         name: "time",
@@ -997,63 +1510,98 @@
         value: record.time,
         type: "time",
         required: true,
+        parent: schedule.grid,
       });
       addField({
         name: "endTime",
         label: "End time",
         value: record.endTime,
         type: "time",
+        help: "Optional",
+        parent: schedule.grid,
       });
+
+      const presentation = editorSection(
+        "show-presentation",
+        "Guide details",
+        "Add the information visitors need to decide whether to go.",
+      );
+      sections.push({ section: presentation.section, label: "Details" });
       addField({
         name: "genres",
         label: "Genre or format",
         value: record.genres,
         required: true,
-        full: true,
+        placeholder: "Live music",
+        parent: presentation.grid,
       });
       addField({
         name: "cover",
         label: "Cover or admission",
         value: record.cover,
         required: true,
-        full: true,
+        placeholder: "Free, $10 or Not listed",
+        parent: presentation.grid,
       });
       addField({
         name: "summary",
-        label: "Summary",
+        label: "Visitor summary",
         value: record.summary,
         type: "textarea",
         full: true,
         maxLength: 1200,
+        placeholder: "What should someone know before heading out?",
+        help: "Optional. Keep it short and specific.",
+        parent: presentation.grid,
       });
+
+      const verification = editorSection(
+        "show-sources",
+        "Sources and review",
+        "Record where the listing came from and when it was last checked.",
+      );
+      sections.push({ section: verification.section, label: "Sources" });
       addField({
         name: "sourceStatus",
         label: "Source status",
         value: record.sourceStatus,
-        full: true,
+        placeholder: "GRL guide",
+        parent: verification.grid,
+      });
+      addField({
+        name: "verifiedAt",
+        label: "Last checked",
+        value: record.verifiedAt,
+        type: "date",
+        help: "Optional. Enter this after reviewing the source links.",
+        parent: verification.grid,
       });
       addField({
         name: "sourceNote",
-        label: "Source note",
+        label: "Public source note",
         value: record.sourceNote,
         type: "textarea",
         full: true,
         maxLength: 1200,
+        help: "Optional. Appears in show details under “Check before you go” and in calendar descriptions.",
+        parent: verification.grid,
       });
-      addField({
-        name: "verifiedAt",
-        label: "Checked date",
-        value: record.verifiedAt,
-        type: "date",
-      });
-      addSourceEditor(record);
+      addSourceEditor(record, verification.grid);
     } else {
+      const basics = editorSection(
+        "venue-basics",
+        "Venue information",
+        "Use the public name, complete address and official website.",
+      );
+      sections.push({ section: basics.section, label: "Basics" });
       addField({
         name: "name",
         label: "Venue name",
         value: record.name,
         required: true,
         full: true,
+        placeholder: "Venue name",
+        parent: basics.grid,
       });
       addField({
         name: "address",
@@ -1061,6 +1609,8 @@
         value: record.address,
         required: true,
         full: true,
+        autocomplete: "street-address",
+        parent: basics.grid,
       });
       addField({
         name: "url",
@@ -1069,7 +1619,16 @@
         type: "url",
         required: true,
         full: true,
+        placeholder: "https://",
+        parent: basics.grid,
       });
+
+      const presentation = editorSection(
+        "venue-presentation",
+        "Directory description",
+        "Explain the room and list the features visitors care about.",
+      );
+      sections.push({ section: presentation.section, label: "Description" });
       addField({
         name: "description",
         label: "Description",
@@ -1078,22 +1637,38 @@
         required: true,
         full: true,
         maxLength: 1200,
+        placeholder: "Describe the venue, its music and the experience.",
+        parent: presentation.grid,
       });
       addField({
         name: "features",
-        label: "Features",
+        label: "Features and amenities",
         value: Array.isArray(record.features) ? record.features.join("\n") : "",
         type: "textarea",
         full: true,
-        help: "Enter one feature per line.",
+        help: "Enter one per line, such as Patio, Food or All ages.",
+        parent: presentation.grid,
       });
     }
-    addPhotoFields(record, type);
+    const photo = editorSection(
+      "record-photo",
+      type === "show" ? "Performer photo" : "Venue photo",
+      "Add a licensed image and complete credit when this record needs its own photo.",
+      true,
+    );
+    photo.section.classList.add("photo-fields");
+    sections.push({ section: photo.section, label: "Photo" });
+    addPhotoFields(record, type, photo.grid);
+    renderEditorShortcuts(sections);
     state.editor.initialState = editorState();
     elements.editorDialog.showModal();
-    elements.editorFields
-      .querySelector("input:not([readonly]), select, textarea")
-      ?.focus();
+    const first = elements.editorFields.querySelector(
+      type === "show" ? "#edit-title" : "#edit-name",
+    );
+    const focusTarget = duplicated
+      ? elements.editorFields.querySelector("#edit-date")
+      : first;
+    window.requestAnimationFrame(() => focusTarget?.focus());
   }
 
   function editorState() {
@@ -1104,45 +1679,78 @@
     return Boolean(state.editor && editorState() !== state.editor.initialState);
   }
 
-  function setEditorError(message) {
+  function editorFailure(message, target) {
+    const error = new Error(message);
+    error.focusTarget = target;
+    return error;
+  }
+
+  function setEditorError(message, target = null) {
     elements.editorError.textContent = message;
     elements.editorError.hidden = !message;
-    if (message) elements.editorError.focus();
+    if (!message) return;
+    const details = target?.closest("details");
+    if (details) details.open = true;
+    window.requestAnimationFrame(() => (target || elements.editorError).focus());
   }
 
   function sourcesFromEditor() {
     syncSourceRecords();
     const sources = state.editor.sourceRecords || [];
     if (!sources.length) throw new Error("Add at least one source.");
-    return sources.map((source) => {
+    return sources.map((source, index) => {
       const label = String(source.label || "").trim();
       const value = String(source.url || "").trim();
-      if (!label) throw new Error("Complete every source label.");
+      const row = elements.editorFields.querySelector(`.source-row[data-index="${index}"]`);
+      const labelInput = row?.querySelector('[data-source-field="label"]');
+      const urlInput = row?.querySelector('[data-source-field="url"]');
+      if (!label) throw editorFailure("Add a label for every published link.", labelInput);
       let url;
       try {
         url = new URL(value);
       } catch (_error) {
-        throw new Error("Each source needs a complete web address.");
+        throw editorFailure("Each published link needs a complete web address.", urlInput);
       }
       if (!/^https?:$/.test(url.protocol))
-        throw new Error("Source URLs must begin with http:// or https://.");
+        throw editorFailure("Published links must begin with http:// or https://.", urlInput);
       return { ...source, label, url: value };
     });
   }
 
   function validateEditor() {
+    let firstInvalid = null;
     for (const field of elements.editorForm.querySelectorAll("[required]")) {
       field.setCustomValidity("");
-      if (!String(field.value).trim())
+      field.removeAttribute("aria-invalid");
+      if (!String(field.value).trim()) {
         field.setCustomValidity("Please complete this field.");
+        field.setAttribute("aria-invalid", "true");
+        firstInvalid ||= field;
+      }
     }
-    return elements.editorForm.reportValidity();
+    firstInvalid ||= [...elements.editorForm.elements].find(
+      (field) => typeof field.checkValidity === "function" && !field.checkValidity(),
+    );
+    if (!firstInvalid) return true;
+    firstInvalid.setAttribute("aria-invalid", "true");
+    const label = firstInvalid.closest("label")?.querySelector("span")?.textContent || "required field";
+    const message = firstInvalid.validity.valueMissing
+      ? "Complete the required field: " + label + "."
+      : label + ": " + (firstInvalid.validationMessage || "Enter a valid value.");
+    setEditorError(message, firstInvalid);
+    firstInvalid.reportValidity();
+    return false;
   }
 
   function saveEditor(event) {
     event.preventDefault();
     setEditorError("");
     if (!state.editor || !validateEditor()) return;
+    if (!state.editor.isNew && !editorDirty()) {
+      closeEditor();
+      setStatus("No changes to save.");
+      return;
+    }
     const data = new FormData(elements.editorForm);
     try {
       const type = state.editor.type;
@@ -1171,17 +1779,29 @@
           updated[field] = String(data.get(field) || "").trim();
         updated.sources = sourcesFromEditor();
         if (!isDate(updated.date) || !isTime(updated.time))
-          throw new Error("Enter a valid show date and start time.");
+          throw editorFailure(
+            "Enter a valid show date and start time.",
+            !isDate(updated.date)
+              ? elements.editorFields.querySelector("#edit-date")
+              : elements.editorFields.querySelector("#edit-time"),
+          );
         if (updated.endTime && !isTime(updated.endTime))
-          throw new Error("Enter a valid end time.");
+          throw editorFailure(
+            "Enter a valid end time.",
+            elements.editorFields.querySelector("#edit-endTime"),
+          );
         if (updated.verifiedAt && !isDate(updated.verifiedAt))
-          throw new Error("Enter a valid checked date.");
+          throw editorFailure(
+            "Enter a valid checked date.",
+            elements.editorFields.querySelector("#edit-verifiedAt"),
+          );
       } else {
         for (const field of ["name", "address", "url", "description"])
           updated[field] = String(data.get(field) || "").trim();
         if (!isHttpUrl(updated.url))
-          throw new Error(
+          throw editorFailure(
             "The venue website must begin with http:// or https://.",
+            elements.editorFields.querySelector("#edit-url"),
           );
         updated.features = [
           ...new Set(
@@ -1208,16 +1828,27 @@
           " saved. Publish changes when ready.",
       );
     } catch (error) {
-      setEditorError(error.message || "Review the form and try again.");
+      setEditorError(error.message || "Review the form and try again.", error.focusTarget);
     }
   }
 
   function closeEditor() {
+    const editorType = state.editor?.type;
     state.editor = null;
     elements.editorDialog.close();
     const target = state.returnFocus;
+    const action = target?.dataset?.action || "";
+    const id = target?.dataset?.id || "";
     state.returnFocus = null;
-    window.requestAnimationFrame(() => target?.isConnected && target.focus());
+    window.requestAnimationFrame(() => {
+      const replacement = action
+        ? [...document.querySelectorAll("button[data-action]")].find(
+            (button) => button.dataset.action === action && button.dataset.id === id,
+          )
+        : null;
+      const fallback = editorType === "show" ? elements.addShow : elements.addVenue;
+      (target?.isConnected ? target : replacement || fallback)?.focus();
+    });
   }
 
   async function requestEditorClose() {
@@ -1303,7 +1934,10 @@
 
   async function publishCatalog() {
     if (!hasChanges() || state.busy || state.conflict) return;
-    if (editionFormChanged() && !applyEdition(null, true)) return;
+    if (editionFormChanged()) {
+      selectTab("edition");
+      if (!applyEdition(null, true)) return;
+    }
     if (!isDirty()) return;
     clearMessages();
     try {
@@ -1365,7 +1999,7 @@
   async function reloadLatest() {
     if (state.busy) return;
     if (
-      hasChanges() &&
+      (hasChanges() || state.conflictDraft) &&
       !(await confirmAction({
         title: "Reload latest catalog?",
         message: "Your unpublished changes will be discarded.",
@@ -1389,8 +2023,9 @@
   }
 
   function downloadUnpublishedCopy() {
-    const draft =
-      state.conflictDraft || (state.conflict ? state.catalog : null);
+    if (!state.catalog) return;
+    const draft = clone(state.conflictDraft || state.catalog);
+    if (!state.conflictDraft && editionFormChanged()) draft.edition = { ...draft.edition, ...editionFormValues() };
     if (!draft) return;
     const blob = new Blob([JSON.stringify(draft, null, 2) + "\n"], {
       type: "application/json",
@@ -1398,19 +2033,19 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "grl-unpublished-catalog-" + localDate() + ".json";
+    link.download = (state.conflictDraft || hasChanges() ? "grl-unpublished-catalog-" : "grl-catalog-") + localDate() + ".json";
     link.hidden = true;
     document.body.append(link);
     link.click();
     link.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setStatus("Unpublished copy downloaded.");
+    setStatus("Catalog downloaded.");
   }
 
   async function signOut() {
     if (state.busy) return;
     if (
-      hasChanges() &&
+      (hasChanges() || state.conflictDraft) &&
       !(await confirmAction({
         title: "Sign out?",
         message: "Your unpublished changes will be discarded.",
@@ -1430,21 +2065,61 @@
     }
   }
 
+  function clearShowFilters({ focus = false } = {}) {
+    elements.showSearch.value = "";
+    elements.showDateFilter.value = "";
+    elements.showVenueFilter.value = "";
+    elements.showSort.value = "soonest";
+    renderShows();
+    if (focus) elements.showSearch.focus();
+  }
+
+  function clearVenueFilters({ focus = false } = {}) {
+    elements.venueSearch.value = "";
+    elements.venueSort.value = "name";
+    renderVenues();
+    if (focus) elements.venueSearch.focus();
+  }
+
+  function filterShowsByVenue(venueId) {
+    const venue = venues().find((record) => record.id === venueId);
+    if (!venue) return;
+    elements.showSearch.value = "";
+    elements.showDateFilter.value = "";
+    elements.showVenueFilter.value = venueId;
+    elements.showSort.value = "soonest";
+    selectTab("shows");
+    renderShows();
+    elements.showVenueFilter.focus();
+    setStatus("Showing shows at " + venue.name + ".");
+  }
+
   function handleRecordAction(event) {
     const button = event.target.closest("button[data-action]");
     if (!button) return;
     clearMessages();
     const { action, id } = button.dataset;
     if (action === "edit-show") openEditor("show", id);
+    if (action === "duplicate-show") {
+      const show = shows().find((record) => record.id === id);
+      if (show) openEditor("show", "", { seed: show, duplicate: true });
+      else
+        setWorkspaceAlert(
+          "This show could not be duplicated. Open it and add a new show instead.",
+        );
+    }
     if (action === "remove-show") removeShow(id);
     if (action === "edit-venue") openEditor("venue", id);
     if (action === "remove-venue") removeVenue(id);
+    if (action === "filter-shows") filterShowsByVenue(id);
+    if (action === "clear-show-filters") clearShowFilters({ focus: true });
+    if (action === "clear-venue-filters") clearVenueFilters({ focus: true });
   }
 
   function handleTabKeys(event) {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
-    const order = ["shows", "venues", "edition"];
+    const order = ["overview", "shows", "venues", "edition"];
     if (event.key === "Home") return selectTab(order[0], true);
     if (event.key === "End") return selectTab(order.at(-1), true);
     const current = order.indexOf(state.activeTab),
@@ -1452,6 +2127,7 @@
       next = (current + offset + order.length) % order.length;
     selectTab(order[next], true);
   }
+
 
   clearLegacyAccessKey();
   elements.loginForm.addEventListener("submit", signIn);
@@ -1472,19 +2148,32 @@
   elements.editionTab.addEventListener("click", () => selectTab("edition"));
   elements.showsTab.parentElement.addEventListener("keydown", handleTabKeys);
   elements.showSearch.addEventListener("input", renderShows);
+  elements.showDateFilter.addEventListener("change", renderShows);
+  elements.showVenueFilter.addEventListener("change", renderShows);
+  elements.showSort.addEventListener("change", renderShows);
+  elements.showFiltersClear.addEventListener("click", () =>
+    clearShowFilters({ focus: true }),
+  );
   elements.venueSearch.addEventListener("input", renderVenues);
+  elements.venueSort.addEventListener("change", renderVenues);
+  elements.venueFiltersClear.addEventListener("click", () =>
+    clearVenueFilters({ focus: true }),
+  );
   elements.editionForm.addEventListener("submit", applyEdition);
   elements.editionForm.addEventListener("input", (event) => {
     event.target.setCustomValidity("");
-    elements.editionError.hidden = true;
+    event.target.removeAttribute("aria-invalid");
+    setEditionError("");
     updateChangeState();
   });
   elements.showsList.addEventListener("click", handleRecordAction);
   elements.venuesList.addEventListener("click", handleRecordAction);
   elements.editorForm.addEventListener("submit", saveEditor);
-  elements.editorForm.addEventListener("input", (event) =>
-    event.target.setCustomValidity?.(""),
-  );
+  elements.editorForm.addEventListener("input", (event) => {
+    event.target.setCustomValidity?.("");
+    event.target.removeAttribute?.("aria-invalid");
+    setEditorError("");
+  });
   elements.editorCancel.addEventListener("click", requestEditorClose);
   elements.editorClose.addEventListener("click", requestEditorClose);
   elements.editorDialog.addEventListener("cancel", (event) => {
@@ -1494,10 +2183,28 @@
   elements.confirmDialog.addEventListener("close", finishConfirmation);
   window.addEventListener("hashchange", clearLegacyAccessKey);
   window.addEventListener("beforeunload", (event) => {
-    if (!hasChanges()) return;
+    if (!hasChanges() && !editorDirty() && !state.conflictDraft && !state.pendingReauth) return;
     event.preventDefault();
     event.returnValue = "";
   });
 
-  selectTab("shows");
+  desk("overview-tab").addEventListener("click", () => selectTab("overview"));
+  elements.workspace.addEventListener("click", event => {
+    const tab = event.target.closest("[data-desk-tab]");
+    if (tab) selectTab(tab.dataset.deskTab, true);
+    const edit = event.target.closest("[data-desk-edit]");
+    if (edit) openEditor("show", edit.dataset.deskEdit);
+  });
+  desk("desk-agenda-date").addEventListener("change", renderDeskAgenda);
+  desk("desk-add-show").addEventListener("click", () => elements.addShow.click());
+  desk("desk-add-venue").addEventListener("click", () => elements.addVenue.click());
+  desk("desk-review-changes").addEventListener("click", () => desk("review-dialog").showModal());
+  desk("desk-review-publish").addEventListener("click", () => {
+    desk("review-dialog").close();
+    publishCatalog();
+  });
+  desk("desk-export").addEventListener("click", downloadUnpublishedCopy);
+  desk("desk-refresh").addEventListener("click", reloadLatest);
+  desk("desk-discard").addEventListener("click", discardCatalogDraft);
+  selectTab("overview");
 })();

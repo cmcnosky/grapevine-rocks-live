@@ -936,6 +936,12 @@
   width: 100%;
   object-fit: cover;
 }
+.grl-listing-images img.grl-photo-fit-contain,
+.grl-directory-image img.grl-photo-fit-contain,
+.grl-photo img.grl-photo-fit-contain {
+  object-fit: contain;
+  background: var(--ink);
+}
 .grl-listing-images figure { min-height: 0; overflow: hidden; }
 .grl-listing-images figure a { display: block; width: 100%; height: 100%; }
 .grl-listing-images figure a:focus-visible { outline-offset: -3px; }

@@ -5,7 +5,7 @@ window.GRLPhotos = {
       "alt": "Aautumn singing and playing acoustic guitar on the PIAF patio",
       "credit": "Grapevine Rocks Live / Gary",
       "height": 1800,
-      "position": "50% 46%",
+      "position": "50% 22%",
       "source": "https://www.instagram.com/reel/DeDuTx6thfW/",
       "src": "assets/photos/artists/aautumn.webp",
       "thumb": "assets/photos/thumbs/artists/aautumn.webp",
@@ -36,21 +36,26 @@ window.GRLPhotos = {
       "alt": "Brendon Preece holding an acoustic guitar by the beach.",
       "credit": "LuLu's / Brendon Preece event listing",
       "height": 1267,
-      "position": "50% 35%",
+      "position": "50% 25%",
       "source": "https://lulusfunfoodmusic.com/event/brendon-preece-destin/2025-04-28/",
       "src": "assets/photos/artists/brendon-preece.webp",
       "thumb": "assets/photos/thumbs/artists/brendon-preece.webp",
       "width": 1155
     },
     "Brent Rozell & The Soulmates": {
-      "alt": "Brent Rozell singing and playing guitar at Bohemian Bull Grapevine",
-      "credit": "Grapevine Rocks Live / Gary",
-      "height": 1136,
-      "position": "50% 45%",
-      "source": "https://www.instagram.com/reel/DfLqi6ftbrB/",
-      "src": "assets/photos/artists/brent-rozell-and-the-soulmates.webp",
-      "thumb": "assets/photos/thumbs/artists/brent-rozell-and-the-soulmates.webp",
-      "width": 640
+      "alt": "Two guitarists playing together in front of a wall of album covers.",
+      "credit": "Brent Rozell and the Soulmates",
+      "framing": {
+        "listing": {
+          "fit": "contain"
+        }
+      },
+      "height": 800,
+      "position": "50% 38%",
+      "source": "https://www.brentrozell.com/photos.html",
+      "src": "assets/photos/artists/brent-rozell-and-the-soulmates.webp?v=4d06c19167",
+      "thumb": "assets/photos/thumbs/artists/brent-rozell-and-the-soulmates.webp?v=e711b46906",
+      "width": 1067
     },
     "Chasing Angels": {
       "alt": "Chasing Angels performing together onstage at Rock & Brews Grapevine",
@@ -137,7 +142,7 @@ window.GRLPhotos = {
       "alt": "Country artist Dusty Moats standing with folded arms against a pale-blue wood backdrop",
       "credit": "Dusty Moats press kit",
       "height": 1200,
-      "position": "50% 35%",
+      "position": "50% 12%",
       "source": "https://www.dropbox.com/scl/fo/pkp787kspv1pldst86okw/APITi6sij0JowMkl-PktUwQ/17E4A7E5-F3B2-4CD4-9F91-A3CE5DF72E89.JPEG?rlkey=mipz6di586t8i39oit6iuurc8&dl=0",
       "src": "assets/photos/artists/dusty-moats.webp",
       "thumb": "assets/photos/thumbs/artists/dusty-moats.webp",
@@ -187,7 +192,7 @@ window.GRLPhotos = {
       "alt": "Josh Ingram singing and playing acoustic guitar on the AJ’s on Main patio",
       "credit": "Grapevine Rocks Live / Shots from Gary",
       "height": 960,
-      "position": "50% 45%",
+      "position": "50% 0%",
       "source": "https://www.instagram.com/p/Dc73cyOlgCO/",
       "src": "assets/photos/artists/josh-ingram.webp",
       "thumb": "assets/photos/thumbs/artists/josh-ingram.webp",
@@ -237,6 +242,14 @@ window.GRLPhotos = {
       "alt": "Members of Strangle Love playing guitar and bass during a live performance",
       "credit": "Strangle Love official video",
       "height": 720,
+      "framing": {
+        "detail": {
+          "fit": "contain"
+        },
+        "listing": {
+          "fit": "contain"
+        }
+      },
       "position": "50% 38%",
       "source": "https://www.youtube.com/watch?v=ECg1Rcy9dYY",
       "src": "assets/photos/artists/strangle-love.webp",
@@ -257,6 +270,14 @@ window.GRLPhotos = {
       "alt": "The 8 Tracks performing onstage with their vocalist at center.",
       "credit": "The 8 Tracks",
       "height": 1080,
+      "framing": {
+        "detail": {
+          "fit": "contain"
+        },
+        "listing": {
+          "fit": "contain"
+        }
+      },
       "position": "50% 45%",
       "source": "https://8tracksband.com/",
       "src": "assets/photos/artists/the-8-tracks.webp",
@@ -277,6 +298,11 @@ window.GRLPhotos = {
       "alt": "The Halftones performing together on a blue-lit stage.",
       "credit": "The Halftones",
       "height": 666,
+      "framing": {
+        "detail": {
+          "fit": "contain"
+        }
+      },
       "position": "50% 50%",
       "source": "https://www.thehalftonesband.com/theband",
       "src": "assets/photos/artists/the-halftones.webp",
@@ -306,14 +332,14 @@ window.GRLPhotos = {
       "width": 800
     },
     "bohemian-bull": {
-      "alt": "Bohemian Bull Grapevine patio with its venue banner, red umbrellas, and shade tree.",
+      "alt": "Bohemian Bull’s Grapevine frontage, with red patio umbrellas and a fenced outdoor seating area.",
       "credit": "Bohemian Bull Grapevine",
-      "height": 640,
-      "position": "50% 55%",
+      "height": 1069,
+      "position": "50% 45%",
       "source": "https://www.bohemianbull.com/locations/grapevine-tx.html",
-      "src": "assets/photos/venues/bohemian-bull.webp",
-      "thumb": "assets/photos/thumbs/venues/bohemian-bull.webp",
-      "width": 480
+      "src": "assets/photos/venues/bohemian-bull.webp?v=6440b90751",
+      "thumb": "assets/photos/thumbs/venues/bohemian-bull.webp?v=f34e36cf18",
+      "width": 1600
     },
     "chez-fabien": {
       "alt": "Chez Fabien dining room with exposed brick, red booths, and wood details.",
@@ -436,14 +462,14 @@ window.GRLPhotos = {
       "width": 1360
     },
     "willhoites": {
-      "alt": "Willhoite's Restaurant brick storefront on South Main Street in Grapevine.",
+      "alt": "Willhoite's Restaurant brick storefront with green signs and a historic red gas pump on South Main Street in Grapevine.",
       "credit": "Willhoite's Restaurant",
-      "height": 359,
+      "height": 1200,
       "position": "50% 50%",
-      "source": "https://www.willhoites.com/",
-      "src": "assets/photos/venues/willhoites.webp",
-      "thumb": "assets/photos/thumbs/venues/willhoites.webp",
-      "width": 619
+      "source": "https://www.willhoites.com/about-us/",
+      "src": "assets/photos/venues/willhoites.webp?v=bd6a86dd8d",
+      "thumb": "assets/photos/thumbs/venues/willhoites.webp?v=418fd694f8",
+      "width": 1600
     }
   }
 };

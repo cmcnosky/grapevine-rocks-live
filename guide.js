@@ -988,20 +988,26 @@
     return collection && Object.hasOwn(collection, key) ? collection[key] : null;
   }
 
-  function photoImage(photo, small) {
-    const position = /^\d{1,3}% \d{1,3}%$/.test(photo.position || "")
-      ? ' style="object-position:' + photo.position + '"' : "";
+  function photoImage(photo, small, surface = "detail") {
+    const framing = photo.framing && typeof photo.framing === "object" &&
+      photo.framing[surface] && typeof photo.framing[surface] === "object"
+      ? photo.framing[surface] : {};
+    const preferredPosition = framing.position || photo.position || "";
+    const position = /^\d{1,3}% \d{1,3}%$/.test(preferredPosition)
+      ? ' style="object-position:' + preferredPosition + '"' : "";
+    const fitClass = /^(cover|contain)$/.test(framing.fit || "") && framing.fit === "contain"
+      ? ' class="grl-photo-fit-contain"' : "";
     const src = small && photo.thumb ? photo.thumb : photo.src;
     const width = Number.isInteger(photo.width) && photo.width > 0 ? photo.width : 800;
     const height = Number.isInteger(photo.height) && photo.height > 0 ? photo.height : 550;
     return '<img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="' +
       escapeHTML(src) + '" alt="' + escapeHTML(photo.alt) + '" width="' + width +
-      '" height="' + height + '"' + position + '>';
+      '" height="' + height + '"' + fitClass + position + '>';
   }
 
-  function creditedPhoto(photo, className) {
+  function creditedPhoto(photo, className, surface = "detail") {
     if (!photo) return "";
-    return '<figure class="grl-photo ' + className + '">' + photoImage(photo, false) +
+    return '<figure class="grl-photo ' + className + '">' + photoImage(photo, false, surface) +
       '<figcaption>' + (photo.caption ? escapeHTML(photo.caption) + ' ' : '') + '<a href="' + escapeHTML(safeURL(photo.source)) +
       '" target="_blank" rel="noreferrer">' + escapeHTML(photo.credit) + '</a>' +
       ' · <a href="' + escapeHTML(photo.src) + '" target="_blank" rel="noreferrer">Full photo</a>' +
@@ -1012,9 +1018,9 @@
     if (!artist && !room) return "";
     return '<div class="grl-listing-images' + (artist && room ? ' paired' : '') + '">' +
       (artist ? '<figure class="artist-shot"><a href="#show/' + encodeURIComponent(event.id) +
-        '" aria-label="Show details for ' + escapeHTML(event.title) + '">' + photoImage(artist, true) + '</a></figure>' : '') +
+        '" aria-label="Show details for ' + escapeHTML(event.title) + '">' + photoImage(artist, true, "listing") + '</a></figure>' : '') +
       (room ? '<figure class="venue-shot"><a href="#venue/' + encodeURIComponent(venue.id) +
-        '" aria-label="Venue: ' + escapeHTML(venue.name) + '">' + photoImage(room, true) +
+        '" aria-label="Venue: ' + escapeHTML(venue.name) + '">' + photoImage(room, true, "listing") +
         '<span class="grl-room-label">Venue</span></a></figure>' : '') + '</div>';
   }
 
@@ -1217,7 +1223,7 @@
     }).length;
     return [
       '<article class="grl-venue-card">',
-      listingPhoto("venues", venue) ? '<a class="grl-directory-image" href="#venue/' + encodeURIComponent(venue.id) + '" aria-label="View ' + escapeHTML(venue.name) + '">' + photoImage(listingPhoto("venues", venue), true) + '</a>' : "",
+      listingPhoto("venues", venue) ? '<a class="grl-directory-image" href="#venue/' + encodeURIComponent(venue.id) + '" aria-label="View ' + escapeHTML(venue.name) + '">' + photoImage(listingPhoto("venues", venue), true, "directory") + '</a>' : "",
       '<div class="grl-venue-card-top">',
       "<span>Grapevine venue</span><span>",
       count ? count + (count === 1 ? " listing" : " listings") : "Venue profile",
@@ -1394,7 +1400,7 @@
         '</dd></div>' : '', '</dl>',
       '<div class="grl-show-actions"><button class="grl-button" type="button" id="grl-download-show">Add to calendar (.ics)</button></div></section>',
       venue ? '<section class="grl-show-location"><h2><a href="#venue/' + encodeURIComponent(venue.id) +
-        '">' + escapeHTML(venue.name) + '</a></h2>' + creditedPhoto(listingPhoto("venues", venue), "grl-location-photo") +
+        '">' + escapeHTML(venue.name) + '</a></h2>' + creditedPhoto(listingPhoto("venues", venue), "grl-location-photo", "location") +
         '<p class="grl-location-address">' + escapeHTML(venue.address) + '</p><div class="grl-card-actions">' +
         '<a href="' + escapeHTML(directionsURL(venue.address)) + '" target="_blank" rel="noreferrer" aria-label="Get directions to ' +
         escapeHTML(venue.name) + '">Directions</a><a href="' + escapeHTML(safeURL(venue.url)) +
